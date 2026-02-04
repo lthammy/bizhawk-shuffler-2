@@ -173,6 +173,7 @@ plugin.description =
 	-Ghouls'n Ghosts (Genesis/Mega Drive), 1p
 	-Gimmick! (NES/Famicom), 1p
 	-Goof Troop (SNES), 1-2p
+	-Gradius III (World, program code R) (Arcade), 1p
 	-Gremlins 2: The New Batch (NES), 1p
 	-Gunstar Heroes (Genesis/Mega Drive), 1p
 	-Hammerin' Harry (NES), 1p
@@ -193,6 +194,7 @@ plugin.description =
 	-Kabuki Quantum Fighter (NES), 1p
 	-Kuru Kuru Kururin (GBA), 1p
 	-Last Alert (TG-16 CD), 1p
+	-Lifeforce (US) (Arcade), 1p
 	-Little Samson (NES), 1p
 	-Lion King, The (NES), 1p
 	-Lion King, The (bootleg) (NES), 1p
@@ -238,6 +240,7 @@ plugin.description =
 	-Rocket Knight Adventures (Genesis/Mega Drive), 1p
 	-Rollergames (NES), 1p
 	-Rubble Saver II (GB), 1p
+	-Salamander 2 (ver JAA) (Arcade), 1p
 	-Sanrio World Smash Ball! (SNES), 1-2p
 	-Saturday Night Slam Masters (SNES), 1p
 	-SD Gundam Sangokushi Rainbow Tairiku Senki (Japan) (Arcade), 1p
@@ -5296,6 +5299,25 @@ local gamedata = {
 		maxlives=function() return 69 end,
 		ActiveP1=function() return true end, -- P1 is always active! lives do not apply elsewhere
 	},
+	['LifeForce_ARC']={ -- Lifeforce (US)
+		func=singleplayer_withlives_swap,
+		p1gethp=function() return 1 end, -- barrier value hard to find
+		p1getlc=function()
+			local livesHex = memory.read_u8(0x0380, "m68000 : ram : 0x80000-0x87FFF")
+			-- Get upper nybble, bit-shift right 4 bits
+			local tens = (livesHex & 0xF0)>>4
+			-- Just the lower nybble
+			local ones = livesHex & 0x0F
+			-- Merge 'em
+			local lives = (tens * 10) + ones
+			return lives end,
+		maxhp=function() return 1 end,
+		CanHaveInfiniteLives=true,
+		p1livesaddr=function() return 0x0380 end,
+		LivesWhichRAM=function() return "m68000 : ram : 0x80000-0x87FFF" end,
+		maxlives=function() return 0x70 end, -- lives stored as hex
+		ActiveP1=function() return true end, -- p1 is always active!
+	},
 	['LittleSamson_NES']={ -- Little Samson, NES
 		func=singleplayer_withlives_swap,
 		-- we'll track every character's hp and maxhp individually
@@ -7717,6 +7739,20 @@ local gamedata = {
 		ActiveP1=function() return true end, -- p1 is always active!
 		grace=90, -- TODO: Find good value for health that drains with no I-frames
 	},
+	['Salamander2_ARC']={ -- Salamander 2 (ver JAA)
+		func=singleplayer_withlives_swap,
+		p1gethp=function() 
+			local swap_on_shield_damage = false -- if you want to swap when the shield is damaged, set this to true
+			if swap_on_shield_damage ~= true then return 0 end
+			return memory.read_u8(0x000494, "m68ec020 : ram : 0xC00000-0xC1FFFF") end, -- shield durability
+		p1getlc=function() return memory.read_u8(0x000461, "m68ec020 : ram : 0xC00000-0xC1FFFF") end, 
+		maxhp=function() return 7 end,
+		CanHaveInfiniteLives=true,
+		p1livesaddr=function() return 0x000461 end,
+		LivesWhichRAM=function() return "m68ec020 : ram : 0xC00000-0xC1FFFF" end,
+		maxlives=function() return 11 end,
+		ActiveP1=function() return true end, -- p1 is always active!
+	},	
 	['SanrioWorldSmashBall_SNES']={ -- Sanrio World Smash Ball!, SNES
 		-- infinite lives does not apply, you can always continue
 		-- track the opponent's wins by treating them as reverse lives
@@ -7764,6 +7800,18 @@ local gamedata = {
 		is_valid_gamestate=function() return true end,
 		get_health=function() return memory.read_u8(0x0018B2, "WRAM") end,
 		other_swaps=function() return false end,
+	},
+	['Gradius3_ARC']={ -- Gradius III (World, program code R) (Arcade)
+		func=singleplayer_withlives_swap,
+		p1gethp=function() return 1 end,
+		p1getlc=function() return memory.read_u8(0x1050, "m68000 : ram : 0x100000-0x103FFF") end,
+		maxhp=function() return 1 end,
+		gmode=function() return memory.read_u8(0x03EF, "m68000 : ram : 0x40000-0x43FFF")==51 end,
+		CanHaveInfiniteLives=true,
+		p1livesaddr=function() return 0x1050 end,
+		LivesWhichRAM=function() return "m68000 : ram : 0x100000-0x103FFF" end,
+		maxlives=function() return 10 end,
+		ActiveP1=function() return true end, -- p1 is always active!
 	},
 	['Gremlins2_NES']={ -- Gremlins 2: The New Batch, NES (US)
 		func=singleplayer_withlives_swap,
