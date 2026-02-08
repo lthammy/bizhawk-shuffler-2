@@ -345,6 +345,7 @@ B01DC83C                                 Bubsy3D_PS1                  -- Bubsy 3
 1FA4F11F5A5B39E0F9AC4323E681A07CAB9B80C9 BugsBunnyBB_NES              -- Bugs Bunny: Birthday Blowout (US)
 3769F52F919019098C4DD3CE81E029A015E720DD BugsBunnyCC_NES              -- Bugs Bunny: Crazy Castle (US)
 E708011B76EE757EB27D1B0626071A055DEACACB Castlevania2_GB              -- Castlevania II - Belmont's Revenge (US)
+60BB0116B706FC30A76840ED0B5DA458         ChinaWarrior_TG16            -- China Warrior (U)
 2BD30479556DA5C310D8F2A1FE66E8FA         ContraHardCorps_GEN          -- Contra - Hard Corps (US)
 9FD4867AA64804A97F600550B8A11233D8D034D6 ContraHardCorps_GEN          -- Contra - Hard Corps (US with Health Mod)
 5EE3AF9C                                 ChocoboRacing_PSX            -- Chocobo Racing (US)
@@ -398,6 +399,7 @@ E8C38075334CFED4A3AEE5C420E9D0E60B21E27E KonamiKrazyRacers_GBA        -- Konami 
 6025EF597DB2684AE064FFE22B4FD1D37941F887 KurukuruKururin_GBA          -- KuruKuru Kururin (EU)
 E5319132495FD34D03F141962D9D6E3D76FE7B02 LionKing_SNES                -- The Lion King (US)
 7841C458014849207BB63B60E1DA7D5C6884C5DD LionKing_NES                 -- The Lion King (EU)
+2E9B57CA21C5C3A6F8A09A31DE4B23BD         MadStalker_TG16              -- Mad Stalker - Full Metal Force (Japan) (TurboGrafx-CD)
 30E75CF0749A99E88F6C710B44C1B36F0EC0F4A5 MagicalQuestMickey1_SNES     -- Magical Quest Starring Mickey Mouse, The (USA)
 D90D6CDCAA108738C7D41E1E9D79DA5C8DDC8853 MagicalQuestMickey2_SNES     -- Great Circus Mystery Starring Mickey & Minnie, The (USA)
 8A153F92AD2498FBF66E4CB100F6E5B950098044 MagicalQuestMickey3_SNES     -- Mickey to Donald - Magical Adventure 3 (Japan)
@@ -412,6 +414,7 @@ DB009866ECF20CFDCE93DCA861F5BE1F9DFAAF2B MarbleMadness_NES            -- Marble 
 53B7A42FB2A18C661BF2199D963D90710729217E MetalSlug1_ARC               -- Metal Slug - Super Vehicle-001 (US)
 F569F70DBBEE96A348E053A958120F64F05B7D04 MetalStorm_NES               -- Metal Storm (US)
 7FA231C5A64B9AF1B4E718B019975B21512A2E51 MetalStorm_NES               -- Metal Storm (US), 3 hit hack
+F2B093F57B511FC30D40114649DAFC342872186B PowerRangers_SNES            -- Mighty Morphin Power Rangers (USA) (SNES)
 82FBE365BC96FE3F03C3EB12E1620910B15F01F9 PowerRangersMovie_SNES       -- Mighty Morphin Power Rangers - The Movie (USA)
 B1C7FB96C162BD24751AEC2596BE2D8A         MinnesotaFatsPoolLegend_SAT  -- Minnesota Fats - Pool Legend (R) [Saturn]
 A1DD8A3E4B8C98DEE49D5E90D6B87903         MortalKombat1_GEN            -- Mortal Kombat (US), Genesis
