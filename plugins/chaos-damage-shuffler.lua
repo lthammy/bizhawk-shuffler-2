@@ -245,6 +245,7 @@ plugin.description =
 	-Shatterhand (NES), 1p
 	-Shinobi III (Genesis/Mega Drive), 1p
 	-Simpsons: Bart vs. the World (NES), 1p
+	-Skyblazer (USA) (NES), 1p
 	-Snake Rattle 'n Roll (NES), 1p
 	-Sonic Jam 6 (bootleg) (Genesis/Mega Drive), 1p
 	-Sparkster (SNES), 1p
@@ -6215,6 +6216,18 @@ local gamedata = {
 		LivesWhichRAM=function() return "RAM" end,
 		p1livesaddr=function() return 0x06c1 end,
 		maxlives=function() return 5 end,
+		ActiveP1=function() return true end, -- p1 is always active!
+	},
+	['Skyblazer_SNES']={ -- Skyblazer (USA)
+		func=health_swap,
+		is_valid_gamestate=function() return memory.read_u8(0x00308D, "WRAM") == 13 -- game is running normally and is not in intro stage end cutscene
+			and memory.read_u8(0x00009F, "WRAM") ~= 0 end, -- not in stage transition; hp drops to zero for exactly one frame during screen transitions
+		get_health=function() return memory.read_u8(0x00F801, "WRAM") end,	
+		other_swaps=function() return false end,
+		CanHaveInfiniteLives=true,
+		p1livesaddr=function() return 0x001F00 end,
+		LivesWhichRAM=function() return "WRAM" end,
+		maxlives=function() return 69 end,
 		ActiveP1=function() return true end, -- p1 is always active!
 	},
 	['Sparkster_SNES']={ -- Sparkster, SNES
