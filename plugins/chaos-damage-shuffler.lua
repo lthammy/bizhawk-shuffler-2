@@ -4270,24 +4270,9 @@ local gamedata = {
 	},
 	['LegendaryAxe_TG16']={ -- The Legendary Axe (U)
 		func=singleplayer_withlives_swap,
-		p1gethp=function() 
-			-- Legendary Axe uses one value for each full visible unit on the health bar.
-			local health_fullunits, health_subunits
-			
-			health_fullunits = memory.read_u8(0x0093, "Main Memory")
-			if health_fullunits == 0x10 then health_fullunits = 10 end -- the value is stored as hex, but since 10 is the highest value, we only need to convert 10 
-			health_fullunits = health_fullunits * 3 -- Since the subunit has three possible values, we'll treat a full unit as valued 3.
-			
-			--there are three subunits of health, but they aren't stored consistently, so must be translated. The values progress as 11X or 10X > 5X or 6X > X. The units digit is not meaningful.
-			health_subunits = memory.read_u8(0x0092, "Main Memory")
-			if health_subunits > 100 then health_subunits = 2
-				elseif health_subunits > 50 then health_subunits = 1
-				else health_subunits = 0 end
-
-			-- treat the combined values as a single health value
-			return health_fullunits + health_subunits end,
+		p1gethp=function() return memory.read_u16_le(0x0092, "Main Memory") end,
 		p1getlc=function() return memory.read_s8(0x0009, "Main Memory") end,
-		maxhp=function() return 30 end, -- health begins with a full unit value of 10 and the subunits value are 0, which we can treat as (3*10)+0=30
+		maxhp=function() return 0x1000 end,
 		gmode=function() return memory.read_u8(0x0FC5, "Main Memory")==63 end,
 		CanHaveInfiniteLives=true,
 		p1livesaddr=function() return 0x0009 end,
