@@ -167,6 +167,7 @@ plugin.description =
 	-Einhänder (PSX), 1p
 	-F-Zero (SNES), 1p
 	-Family Feud (SNES), 1-2p
+	-Final Zone (JU) [!] (Mega Drive/Genesis), 1p
 	-Garfield: A Week of Garfield (NES), 1p
 	-Gargoyle's Quest II (NES), 1p
 	-Ghosts'n Goblins (NES), 1p
@@ -4151,6 +4152,18 @@ local gamedata = {
 		getstrike=function() return memory.read_u8(0x020E, "WRAM") end,
 		getwhichplayer=function() return memory.read_u8(0x08DF, "WRAM") end,
 		CanHaveInfiniteLives=false
+	},
+	['FinalZone3_GEN']={ -- Final Zone (JU) [!] (Genesis)
+		func=singleplayer_withlives_swap,
+		p1gethp=function() return memory.read_u8(0x00E431, "68K RAM") end,
+		p1getlc=function() return memory.read_u8(0x00FFEF, "68K RAM") end,
+		maxhp=function() return 14 end,
+		CanHaveInfiniteLives=true,
+		p1livesaddr=function() return 0x00FFEF end,
+		LivesWhichRAM=function() return "68K RAM" end,
+		maxlives=function() return 9 end,
+		ActiveP1=function() return true end, -- p1 is always active!
+		grace=15,
 	},
 	['Monopoly_NES']={ -- Monopoly (NES)
 		func=Monopoly_NES_swap,
