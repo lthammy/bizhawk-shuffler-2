@@ -4614,7 +4614,7 @@ local gamedata = {
 		p1gethp=function() return memory.read_u16_le(0x0014CA, "WRAM") end,
 		p1getlc=function() return memory.read_u8(0x0001FA, "WRAM") end,
 		maxhp=function() return 256 end,
-		gmode=function() return memory.read_u8(0x000148, "WRAM")==5 end,
+		gmode=function() return memory.read_u8(0x001B6C, "WRAM")==1 end,
 		CanHaveInfiniteLives=true,
 		p1livesaddr=function() return 0x0001FA end,
 		LivesWhichRAM=function() return "WRAM" end,
