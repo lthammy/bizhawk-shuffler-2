@@ -7802,7 +7802,7 @@ local gamedata = {
 		LivesWhichRAM=function() return "m68000 : ram : 0x1F0000-0x1FFFFF" end,
 		maxlives=function() return 9 end,
 		ActiveP1=function() return true end, -- p1 is always active!
-		grace=25,
+		grace=35,
 	},
 	['ShaqFu_GEN']={ -- Shaq-Fu, Genesis
 		func=singleplayer_withlives_swap,
