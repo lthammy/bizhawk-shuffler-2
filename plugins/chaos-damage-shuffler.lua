@@ -7842,6 +7842,7 @@ local gamedata = {
 		LivesWhichRAM=function() return "WRAM" end,
 		maxlives=function() return 9 end,
 		ActiveP1=function() return true end, -- p1 is always active!
+		grace=20,
 	},
 	['PowerRangersMovie_SNES']={ -- Mighty Morphin Power Rangers - The Movie, SNES (USA)
 		func=singleplayer_withlives_swap,
