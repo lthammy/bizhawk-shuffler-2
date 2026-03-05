@@ -4301,6 +4301,7 @@ local gamedata = {
 		LivesWhichRAM=function() return "v33 : ram : 0xE0000-0xEFFFF" end,
 		maxlives=function() return 69 end,
 		ActiveP1=function() return true end, -- p1 is always active!
+		grace=35,
 	},
 	['EINHANDER_PS1']={ -- Einhänder, PS1
 		func=singleplayer_withlives_swap,
