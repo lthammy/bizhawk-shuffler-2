@@ -4424,7 +4424,7 @@ local gamedata = {
 		LivesWhichRAM=function() return "68K RAM" end,
 		maxlives=function() return 3 end,
 		ActiveP1=function() return true end, -- p1 is always active!
-		grace=30,
+		grace=40,
 	},
 	['SNAKE_RATTLE_N_ROLL_NES']={ -- Snake Rattle 'N' Roll, NES
 		func=singleplayer_withlives_swap,
