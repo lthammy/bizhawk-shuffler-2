@@ -7197,6 +7197,7 @@ local gamedata = {
 		LivesWhichRAM=function() return "68K RAM" end,
 		maxlives=function() return 10 end,
 		ActiveP1=function() return true end, -- p1 is always active!
+		grace=15,
 	},
 	['SatNightSlamMasters_SNES']={ -- Saturday Night Slam Masters, SNES - 1p (for now)
 		func=health_swap,
