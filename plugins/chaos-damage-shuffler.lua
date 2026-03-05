@@ -8141,6 +8141,7 @@ local gamedata = {
 				end
 			return -2 end, -- failsafe, shouldn't be used
 		other_swaps=function() return false end,
+		grace=20,
 	},
 	['JurassicPark1_SNES']={ -- Jurassic Park, SNES (USA)
 		func=singleplayer_withlives_swap,
