@@ -7367,7 +7367,7 @@ local gamedata = {
 		LivesWhichRAM=function() return "mc6809 : ram : 0x0-0x1DFF" end,
 		maxlives=function() return 5 end,
 		ActiveP1=function() return true end, -- p1 is always active!
-		grace=15,
+		grace=45,
 	},
 	['TwistedMetal2_PSX']={ -- Twisted Metal 2, PSX
 		func=singleplayer_withlives_swap,
