@@ -6646,6 +6646,7 @@ local gamedata = {
 			-- health does not change on finishing blow, need to track when game over state is reached
 			local gameover_changed, gameover_curr, gameover_prev = update_prev('gameover', memory.read_u8(0x0329, "RAM"))
 			return gameover_changed and gameover_curr == 1 end,
+		grace=20,
 	},
 	['TaleSpin_NES']={ -- TaleSpin, NES
 		func=singleplayer_withlives_swap,
