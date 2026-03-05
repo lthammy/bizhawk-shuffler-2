@@ -7052,6 +7052,7 @@ local gamedata = {
 		LivesWhichRAM=function() return "m68000 : ram : 0x200000-0x20FFFF" end,
 		maxlives=function() return 10 end,
 		ActiveP1=function() return true end, -- p1 is always active!
+		grace=30,
 	},
 	['MarbleMadness_NES']={ -- Marble Madness, NES
 		func=iframe_health_swap,
