@@ -4931,10 +4931,10 @@ local gamedata = {
 		
 			local gmode = memory.read_u8(0x2EF1, "IWRAM")==66
 			
-			local hptypeused = memory.read_u8(0x000520, "EWRAM")
+			local hptypeused = memory.read_u8(0x029937, "EWRAM")
 			
-			local platformhptype=204
-			local fighthptype=216
+			local platformhptype=0
+			local fighthptype=3
 			
 			if gmode then -- check for gmode
 				if hptypeused == platformhptype and platformhealth_curr >= minhp and platformhealth_curr <= maxplatformhp then
