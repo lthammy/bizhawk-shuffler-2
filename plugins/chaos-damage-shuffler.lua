@@ -6236,10 +6236,23 @@ local gamedata = {
 		ActiveP1=function() return true end, -- p1 is always active!
 	},
 	['SimCity_SNES']={ -- SimCity, SNES (USA)
-		func=health_swap,
-		is_valid_gamestate=function() return true end,
-		get_health=function() return memory.read_u32_le(0x000BA5, "WRAM") end,
-		other_swaps=function() return false end,	
+		func=function() return function()
+			-- population used as health; population decline treated as damage
+			local population_changed, population_curr, population_prev = update_prev('population', memory.read_u32_le(0x000BA5, "WRAM"))
+			
+			-- to reduce repeated shuffles when population is just generally trending downwards, require population to increase at least once before shuffling 
+			if prevdata["haspopulationrisen"] == nil then prevdata["haspopulationrisen"] = false end -- set a starting value of false, but do not overwrite a true value
+			
+			if population_changed then
+				if population_curr > population_prev then prevdata["haspopulationrisen"] = true -- flag population increase to prepare to shuffle
+				elseif prevdata["haspopulationrisen"] == true and population_curr < population_prev then
+					-- shuffle on population loss only when primed
+					prevdata["haspopulationrisen"] = false
+					return true end
+			end
+			
+			return false end
+		end,
 	},
 	['SimpsonsBartvsWorld_NES']={ -- The Simpsons: Bart vs. the World, NES
 		func=singleplayer_withlives_swap,
