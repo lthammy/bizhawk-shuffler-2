@@ -6088,9 +6088,9 @@ local gamedata = {
 		maxhp=function() return 16 end,
 		gmode=function() return memory.read_u8(0x0117, "konami_cpu : ram : 0x700-0x1FFF")==1 end,
 		CanHaveInfiniteLives=true,
-		p1livesaddr=function() return 0x11C4 end,
+		p1livesaddr=function() return 0x012E end, -- haunted castle's invisible continue limit
 		LivesWhichRAM=function() return "konami_cpu : ram : 0x700-0x1FFF" end,
-		maxlives=function() return 0x69 end,
+		maxlives=function() return 0 end,
 		ActiveP1=function() return true end, -- p1 is always active!
 	},
 	['HighSeasHavoc_GEN']={ -- High Seas Havoc, Genesis
