@@ -6086,6 +6086,7 @@ local gamedata = {
 		p1gethp=function() return memory.read_u8(0x010C, "konami_cpu : ram : 0x700-0x1FFF") end,
 		p1getlc=function() return memory.read_u8(0x11C4, "konami_cpu : ram : 0x700-0x1FFF") end,
 		maxhp=function() return 16 end,
+		gmode=function() return memory.read_u8(0x0117, "konami_cpu : ram : 0x700-0x1FFF")==1 end,
 		CanHaveInfiniteLives=true,
 		p1livesaddr=function() return 0x11C4 end,
 		LivesWhichRAM=function() return "konami_cpu : ram : 0x700-0x1FFF" end,
