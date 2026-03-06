@@ -7197,6 +7197,7 @@ local gamedata = {
 			if gametype == 0 then return memory.read_u8(0x001CDB, "WRAM") end -- compatikaiser lives
 			return memory.read_u8(0x0000E0, "WRAM") end, -- on foot lives
 		maxhp=function() return 96 end, -- max 32 on foot, max 96 in Compatikaiser
+		gmode=function() return memory.read_u8(0x001CE3, "WRAM") == 255 end,
 		swap_exceptions=function() 
 			-- suppress shuffling when game type changes to prevent unintended shuffles due to different life counters
 			local gametype_changed, gametype_curr, gametype_prev = update_prev('gametype', memory.read_u8(0x000026, "WRAM"))
