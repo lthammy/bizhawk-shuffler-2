@@ -7325,7 +7325,7 @@ local gamedata = {
 	},
 	['RohgaArmorForce_SAT']={ -- Wolf Fang SS - Kuuga 2001 (Japan)
 		func=health_swap,
-		is_valid_gamestate=function() return true end,
+		is_valid_gamestate=function() return memory.read_u8(0x0557E1, "Work Ram High")==32 end,
 		get_health=function() return memory.read_u8(0x060905, "Work Ram High") end,
 		other_swaps=function()
 			-- There are no actual lives, so instead shuffle when the continue screen appears.
