@@ -7389,6 +7389,7 @@ local gamedata = {
 		gmode=function() return memory.read_u8(0x000BAD, "WRAM") == 1 end,
 		p1gethp=function() return memory.read_u8(0x00089F, "WRAM") end,
 		maxhp=function() return 80 end,
+		gmode=function() return memory.read_u8(0x000B23, "WRAM")==1 end,
 		refereecount=function() return 10 - memory.read_u8(0x000BC2, "WRAM") end, -- count is reversed
 		isplayerdown=function() return memory.read_u8(0x0050CA, "WRAM") == 56 end,
 		swap_exceptions=function() 
