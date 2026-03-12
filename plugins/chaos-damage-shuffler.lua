@@ -168,6 +168,7 @@ plugin.description =
 	-Einhänder (PSX), 1p
 	-F-Zero (SNES), 1p
 	-Family Feud (SNES), 1-2p
+	-Fantasy Zone (Arcade), 1p
 	-Garfield: A Week of Garfield (NES), 1p
 	-Gargoyle's Quest II (NES), 1p
 	-Ghosts'n Goblins (NES), 1p
@@ -4154,6 +4155,17 @@ local gamedata = {
 		getstrike=function() return memory.read_u8(0x020E, "WRAM") end,
 		getwhichplayer=function() return memory.read_u8(0x08DF, "WRAM") end,
 		CanHaveInfiniteLives=false
+	},
+	['FantasyZone_ARC']={ -- Fantasy Zone (Rev A, unprotected)
+		func=singleplayer_withlives_swap,
+		p1gethp=function() return 1 end,
+		p1getlc=function() return memory.read_u8(0x0003, "m68000 : ram : 0xC70000-0xC73FFF") end,
+		maxhp=function() return 1 end,
+		CanHaveInfiniteLives=true,
+		p1livesaddr=function() return 0x0003 end,
+		LivesWhichRAM=function() return "m68000 : ram : 0xC70000-0xC73FFF" end,
+		maxlives=function() return 6 end,
+		ActiveP1=function() return true end, -- p1 is always active!
 	},
 	['Monopoly_NES']={ -- Monopoly (NES)
 		func=Monopoly_NES_swap,
