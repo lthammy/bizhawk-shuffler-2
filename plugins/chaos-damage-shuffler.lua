@@ -221,6 +221,7 @@ plugin.description =
 	-Ninja Gaiden III - The Ancient Ship of Doom (NES), 1p
 	-Ninjawarriors (SNES), 1p
 	-Pac-Land (World) (Arcade), 1p
+	-Pac-Land (U) (TG-16), 1p
 	-Pac-Man Championship Edition, (NES), 1p
 	-PaRappa the Rapper (PSX), 1p - shuffles on dropping a rank
 	-Pebble Beach Golf Links (Sega Saturn), 1p - Tournament Mode, shuffles after stroke
@@ -5544,6 +5545,17 @@ local gamedata = {
 		p1livesaddr=function() return 0x0100 end,
 		LivesWhichRAM=function() return "mc6809e : ram : 0x2000-0x37FF" end,
 		maxlives=function() return 9 end,
+		ActiveP1=function() return true end, -- p1 is always active!
+	},
+	['PacLand_TG16']={ -- Pac-Land (U) (TurboGrafx-16)
+		func=singleplayer_withlives_swap,
+		p1gethp=function() return 1 end,
+		p1getlc=function() return memory.read_u8(0x0167, "Main Memory") end,
+		maxhp=function() return 1 end,
+		CanHaveInfiniteLives=true,
+		p1livesaddr=function() return 0x0167 end,
+		LivesWhichRAM=function() return "Main Memory" end,
+		maxlives=function() return 70 end,
 		ActiveP1=function() return true end, -- p1 is always active!
 	},
 	['PacManChampionship_NES']={ -- Pac-Man Championship Edition, NES
