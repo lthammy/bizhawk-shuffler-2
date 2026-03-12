@@ -223,6 +223,7 @@ plugin.description =
 	-Ninja Gaiden II - The Dark Sword of Chaos (NES), 1p
 	-Ninja Gaiden III - The Ancient Ship of Doom (NES), 1p
 	-Ninjawarriors (SNES), 1p
+	-Panzer Bandit (Japan) (PS1), 1p
 	-PaRappa the Rapper (PSX), 1p - shuffles on dropping a rank
 	-Pebble Beach Golf Links (Sega Saturn), 1p - Tournament Mode, shuffles after stroke
 	-Pepsiman (PSX), 1p
@@ -7805,6 +7806,18 @@ local gamedata = {
 		is_valid_gamestate=function() return true end,
 		get_health=function() return memory.read_u8(0x0018B2, "WRAM") end,
 		other_swaps=function() return false end,
+	},
+	['PanzerBandit_PS1']={ -- Panzer Bandit (Japan)
+		func=singleplayer_withlives_swap,
+		p1gethp=function() return memory.read_u8(0x1DDDA0, "MainRAM") end,
+		p1getlc=function() return memory.read_u8(0x09FE48, "MainRAM") end,
+		maxhp=function() return 192 end,
+		CanHaveInfiniteLives=true,
+		p1livesaddr=function() return 0x09FE48 end,
+		LivesWhichRAM=function() return "MainRAM" end,
+		maxlives=function() return 9 end,
+		ActiveP1=function() return true end, -- p1 is always active!
+		grace=20,
 	},
 	['Gremlins2_NES']={ -- Gremlins 2: The New Batch, NES (US)
 		func=singleplayer_withlives_swap,
