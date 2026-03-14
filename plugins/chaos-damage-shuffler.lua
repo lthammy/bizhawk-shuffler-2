@@ -200,6 +200,7 @@ plugin.description =
 	-Lion King, The (SNES), 1p
 	-Lion King 2 (bootleg) (Genesis/Mega Drive), 1p
 	-Mad Stalker - Full Metal Force (Japan) (CD-ROM²/TurboGrafx-CD), 1p
+	-Mad Stalker - Full Metal Force (Japan) (PS1), 1p
 	-Magical Kid's Doropie / Krion Conquest (NES), 1p
 	-Majuu Ou (Japan) / King of Demons (SNES), 1p
 	-Marble Madness (NES), 1-2p
@@ -5439,6 +5440,24 @@ local gamedata = {
 		LivesWhichRAM=function() return "Main Memory" end,
 		maxlives=function() return 3 end,
 		ActiveP1=function() return true end,
+		grace=20,
+	},
+	['MadStalker_PS1']={ -- Mad Stalker - Full Metal Force (Japan)
+		func=function() return function()
+			local maxhealth = 192
+			
+			--health wraps past maximum when dead, so treat as negative when above max.
+			local rawhealth = memory.read_u8(0x1BA250, "MainRAM")
+			if rawhealth > maxhealth then rawhealth = -1 end
+			
+			local health_changed, health_curr, health_prev = update_prev('health', rawhealth)
+		
+			if health_changed --[[and isdamaged]] and
+				((health_curr <= -1 and health_prev > -1 ) or -- shuffle if player dies from any kind of damage
+				health_curr < (health_prev - 1)) then return true end -- shuffle if player takes more than minimal damage so not to repeatedly shuffle from machinegunners
+			
+			return false end
+		end,
 		grace=20,
 	},
 	['MagicalDoropie_NES']={ -- Magical Doropie / Krion Conquest, NES
