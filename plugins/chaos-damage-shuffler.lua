@@ -174,6 +174,7 @@ plugin.description =
 	-Gimmick! (NES/Famicom), 1p
 	-Goof Troop (SNES), 1-2p
 	-Gradius III (World, program code R) (Arcade), 1p
+	-Gradius III (USA) (SNES), 1p
 	-Gremlins 2: The New Batch (NES), 1p
 	-Gunstar Heroes (Genesis/Mega Drive), 1p
 	-Hammerin' Harry (NES), 1p
@@ -7811,6 +7812,18 @@ local gamedata = {
 		p1livesaddr=function() return 0x1050 end,
 		LivesWhichRAM=function() return "m68000 : ram : 0x100000-0x103FFF" end,
 		maxlives=function() return 10 end,
+		ActiveP1=function() return true end, -- p1 is always active!
+	},
+	['Gradius3_SNES']={ -- Gradius III (USA) (SNES)
+		func=singleplayer_withlives_swap,
+		p1gethp=function() return 1 end,
+		p1getlc=function() return memory.read_s8(0x00007C, "WRAM") end,
+		maxhp=function() return 1 end,
+		gmode=function() return memory.read_u8(0x000032, "WRAM")==4 end,
+		CanHaveInfiniteLives=true,
+		p1livesaddr=function() return 0x001E06 end, -- unlimited credits provided instead of lives to allow loadout changes
+		LivesWhichRAM=function() return "WRAM" end,
+		maxlives=function() return 9 end,
 		ActiveP1=function() return true end, -- p1 is always active!
 	},
 	['Gremlins2_NES']={ -- Gremlins 2: The New Batch, NES (US)
