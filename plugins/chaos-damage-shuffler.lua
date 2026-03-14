@@ -283,6 +283,8 @@ plugin.description =
 	-U.N. Squadron (SNES), 1p
 	-Ultimate Mortal Kombat 3 (SNES), 1p (for now)
 	-Valkyrie no Densetsu (Japan) (Arcade), 1p
+	-Valkyrie no Densetsu (J) (TG-16), 1p
+	-Valkyrie no Densetsu (J) (Cabbage English translation) (TG-16), 1p
 	-Vice: Project Doom (NES), 1p
 	-Vs. Ice Climber, set IC4-4 B-1 (Arcade), 1p
 	-WarioWare, Inc.: Mega Microgame$! (GBA), 1p - bonus games including 2p are pending
@@ -7505,6 +7507,13 @@ local gamedata = {
 		maxlives=function() return 69 end,
 		ActiveP1=function() return true end, -- p1 is always active!
 		gmode=function() return memory.read_u8(0x004672, "m68000 : ram : 0x100000-0x10FFFF")==1 end,
+	},
+	['ValkyrieDensetsu_TG16']={ -- Valkyrie no Densetsu (J) (TurboGrafx-16)
+		func=health_swap,
+		is_valid_gamestate=function() return true end,
+		other_swaps=function() return false end,
+		get_health=function() return memory.read_u8(0x00BF, "Main Memory") end,
+		maxhp=function() return 8 end,
 	},
 	['THPS1_PS1']={ -- Tony Hawk's Pro Skater, PS1
 		func=thps_swap,
