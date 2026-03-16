@@ -167,6 +167,7 @@ plugin.description =
 	-Einhänder (PSX), 1p
 	-F-Zero (SNES), 1p
 	-Family Feud (SNES), 1-2p
+	-Final Zone II (U) (TG16-CD), 1p
 	-Final Zone (JU) [!] (Mega Drive/Genesis), 1p
 	-Garfield: A Week of Garfield (NES), 1p
 	-Gargoyle's Quest II (NES), 1p
@@ -4152,6 +4153,14 @@ local gamedata = {
 		getstrike=function() return memory.read_u8(0x020E, "WRAM") end,
 		getwhichplayer=function() return memory.read_u8(0x08DF, "WRAM") end,
 		CanHaveInfiniteLives=false
+	},
+	['FinalZone2_TG16']={ -- Final Zone II (U)
+		func=health_swap,
+		is_valid_gamestate=function() return memory.read_u8(0x0371, "Main Memory")==1 end,
+		other_swaps=function() return false end,
+		get_health=function() return memory.read_u8(0x0760, "Main Memory") end,
+		maxhp=function() return 127 end,
+		grace=40,
 	},
 	['FinalZone3_GEN']={ -- Final Zone (JU) [!] (Genesis)
 		func=singleplayer_withlives_swap,
