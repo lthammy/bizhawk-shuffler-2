@@ -7313,7 +7313,14 @@ local gamedata = {
 		p1getlc=function() return memory.read_u8(0x00E0, "RAM") end,
 		maxhp=function() return 1 end,
 		minhp=-1,
-		swap_exceptions=function() return memory.read_u8(0x07FE, "RAM")==0 end, -- player character jumping onto stage sequence; catches false positive during stage intro
+		swap_exceptions=function()
+			-- power potion is lost on the frame when boss fight begins, potentially causing shuffles, so suppress shuffling for that frame
+			local is_fighting_boss_changed, is_fighting_boss_curr, is_fighting_boss_prev = update_prev('is_fighting_boss', memory.read_u8(0x0068, "RAM"))
+			if is_fighting_boss_changed and is_fighting_boss_curr == 1 and is_fighting_boss_prev == 0 then return true end
+		
+			-- player character jumping onto stage sequence; catches false positive during stage intro
+			if memory.read_u8(0x07FE, "RAM")==0 then return true end
+			return false end,
 		CanHaveInfiniteLives=true,
 		p1livesaddr=function() return 0x00E0 end,
 		LivesWhichRAM=function() return "RAM" end,
