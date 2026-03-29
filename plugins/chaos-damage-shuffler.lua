@@ -8049,7 +8049,7 @@ local gamedata = {
 			-- max health changes depending on difficulty mode. prevent shuffling when different difficulty modes are selected
 			local max_health_changed, max_health_curr, max_health_prev = update_prev('max_health', memory.read_u8(0x2806, "IWRAM"))
 			return not max_health_changed end,
-		get_health=function() return memory.read_u32_le(0x2802, "IWRAM") end,
+		get_health=function() return memory.read_u8(0x2802, "IWRAM") end,
 		other_swaps=function() 
 			-- shuffle on missing the qte in the battle with blue knight
 			local qtestate_changed, qtestate_curr, qtestate_prev = update_prev('qtestate', memory.read_u8(0x5219, "IWRAM"))
