@@ -4156,7 +4156,14 @@ local gamedata = {
 	},
 	['FatalFury1_ARC']={ -- Fatal Fury - King of Fighters / Garou Densetsu - Shukumei no Tatakai (NGM-033 ~ NGH-033)
 		func=health_swap,
-		is_valid_gamestate=function() return memory.read_u8(0x00002A, "m68000 : ram : 0x100000-0x10FFFF")==54 end,
+		is_valid_gamestate=function() 
+			-- player takes chip damage when hit by special attacks while blocking. suppress shuffling when taking chip damage, unless it ko's
+			if memory.read_u8(0x000316, "m68000 : ram : 0x100000-0x10FFFF")==142 -- marks that damage was taken when blocking
+				and memory.read_s8(0x0003B9, "m68000 : ram : 0x100000-0x10FFFF")>0 -- health is above zero
+				then return false end
+		
+			-- gmode
+			return memory.read_u8(0x00002A, "m68000 : ram : 0x100000-0x10FFFF")==54 end,
 		get_health=function() return memory.read_s8(0x0003B9, "m68000 : ram : 0x100000-0x10FFFF") end,
 		other_swaps=function() return false end,
 		grace=30,
