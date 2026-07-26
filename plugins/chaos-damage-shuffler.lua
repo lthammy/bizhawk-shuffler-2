@@ -5679,15 +5679,36 @@ local gamedata = {
 		grace=30,
 	},
 	['KingOfTheMonsters2_ARC']={ -- King of the Monsters 2 - The Next Thing (NGM-039 ~ NGH-039)
-		func=singleplayer_withlives_swap,
-		p1gethp=function() return memory.read_u8(0x001417, "m68000 : ram : 0x100000-0x10FFFF") end,
-		p1getlc=function() return memory.read_u8(0x0013B8, "m68000 : ram : 0x100000-0x10FFFF") end,
-		maxhp=function() return 64 end,
+		func=function() return function()
+			local health_changed, health_curr, health_prev = update_prev('health', memory.read_u8(0x001417, "m68000 : ram : 0x100000-0x10FFFF"))
+			local lives_changed, lives_curr, lives_prev = update_prev('lives', memory.read_u8(0x0013B8, "m68000 : ram : 0x100000-0x10FFFF"))
+			local credits_changed, credits_curr, credits_prev = update_prev('credits', memory.read_u8(0x000034, "m68000 : ram : 0xD00000-0xD0FFFF"))
+			
+			local gmode = memory.read_u8(0x0013B4, "m68000 : ram : 0x100000-0x10FFFF")==255
+			
+			local maxhp=64
+			
+			if gmode then
+				if health_changed and health_curr > 0 and health_curr <= maxhp then
+					if health_curr < health_prev then return true end
+				end
+				
+				if lives_changed and health_prev == 0 then	
+					if lives_curr == lives_prev - 1 then return true end
+				end
+			
+				if credits_changed and health_prev == 0 and lives_prev == 0 then
+					if credits_curr < credits_prev then return true end
+				end
+			end
+			return false end
+		end,
 		CanHaveInfiniteLives=false, -- infinite lives not provided to enable character switching, coins can't be pushed
-		p1livesaddr=function() return 0x000034 end,
+		p1livesaddr=function() return 0x0013B8 end,
 		LivesWhichRAM=function() return "m68000 : ram : 0xD00000-0xD0FFFF" end,
 		maxlives=function() return 69 end,
 		ActiveP1=function() return true end, -- p1 is always active!
+		grace=30,
 	},
 	['KingOfTheMonsters2_GEN']={ -- King of the Monsters 2 (U) [!]
 		func=singleplayer_withlives_swap,
