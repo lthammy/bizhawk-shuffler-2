@@ -4427,9 +4427,9 @@ local gamedata = {
 		maxhp=function() return 1 end,
 		gmode=function() return memory.read_u8(0x03D6, "RAM")==32 end,
 		CanHaveInfiniteLives=true,
-		p1livesaddr=function() return 0x0612 end,
+		p1livesaddr=function() return 0x05E6 end, -- lives are temporarily stored in this address during the death screen
 		LivesWhichRAM=function() return "RAM" end,
-		maxlives=function() return 3 end,
+		maxlives=function() return 10 end,
 		ActiveP1=function() return true end, -- p1 is always active!
 	},
 	['SNAKE_RATTLE_N_ROLL_NES']={ -- Snake Rattle 'N' Roll, NES
