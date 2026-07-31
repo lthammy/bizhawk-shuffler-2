@@ -5715,6 +5715,7 @@ local gamedata = {
 		p1gethp=function() return memory.read_u8(0x000993, "68K RAM") end,
 		p1getlc=function() return 2 - memory.read_u8(0x000533, "68K RAM") end, -- p2 rounds won
 		maxhp=function() return 80 end,
+		swap_exceptions=function() return memory.read_u8(0x000933, "68K RAM")==27 end, -- suppress shuffling when player is blocking
 		CanHaveInfiniteLives=true,
 		p1livesaddr=function() return 0x00051D end, -- continues
 		LivesWhichRAM=function() return "68K RAM" end,
