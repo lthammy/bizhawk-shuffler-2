@@ -5425,7 +5425,7 @@ local gamedata = {
 		p1gethp=function() return memory.read_u8(0x12D2, "IWRAM") end,
 		maxhp=function() return 90 end,
 		refereecount=function()
-			--[[ There are other values that more directly represent the referee's count, but they don't differentiate between the KO call and a 9 count, don't
+			--[[ There are other values that more directly represent the referee's count, but they don't differentiate between the KO call and a 9 count, or don't
 			differentiate between the KO call and when the timer's not being used, so it leads to potential false shuffles when those are confused. Also some might
 			not be consistent between opponents.]]	 
 			local currcount = memory.read_u8(0x0E8D, "IWRAM")
@@ -5441,7 +5441,7 @@ local gamedata = {
 			if currcount == 120 then return 0 end
 			return 10 -- catchall for other values
 		end,
-		isplayerdown=function() return memory.read_u8(0x0EE2, "IWRAM") == 1 end,
+		isplayerdown=function() return memory.read_u8(0x133F, "IWRAM") == 0 end,
 		CanHaveInfiniteLives=false,
 	},
 	['WarioWare_GBA']={ -- WarioWare, Inc. / Made in Wario, GBA
