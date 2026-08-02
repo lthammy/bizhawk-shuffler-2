@@ -95,8 +95,9 @@ plugin.description =
 	-Super Metroid x LTTP Crossover Randomizer, aka SMZ3 (SNES), 1p
 
 	CONTRA BLOCK
-	-Contra (US / Asia, set 1) (Arcade), 1p
+	-Contra (Arcade), 1p
 	-Contra/Probotector (NES), 1-2p
+	-Super Contra (Arcade), 1p
 	-Super C/Super Contra/Probotector II (NES), 1-2p
 	-Contra III: The Alien Wars/Super Probotector: Alien Rebels/Contra Spirits (SNES), 1-2p
 	-Contra: Hard Corps (Genesis/Mega Drive), 1-2p
