@@ -271,7 +271,7 @@ plugin.description =
 	-The Magical Quest Starring Mickey Mouse (SNES), 1-2p
 	-The Magical Quest 2: The Great Circus Mystery Starring Mickey & Minnie (SNES), 1-2p
 	-The Magical Quest 3: Mickey to Donald - Magical Adventure 3 (SNES), 1-2p
-	-The Speed Rumbler (set 1) (Arcade)
+	-The Speed Rumbler (Arcade), 1p
 	-Tiny Toon Adventures (NES), 1p
 	-Titenic (bootleg) (NES), 1p
 	-Trip World (GB) and Trip World DX (GBC), 1p
