@@ -137,7 +137,7 @@ plugin.description =
 	-Anticipation (NES), up to 4 players, shuffles on incorrect player answers, correct CPU answers, and running out of time.
 	-Arkanoid: Doh it Again (SNES), 1p
 	-Astro Boy - Omega Factor (USA) (GBA), 1p
-	-Bakuretsu Muteki Bangaioh (Japan) (N64), 1p
+	-Bakuretsu Muteki Bangaioh (N64), 1p
 	-Banjo-Kazooie (N64), 1p
 	-Bao Qing Tian (Ch) (NES), 1p
 	-Batman (NES), 1p
@@ -155,7 +155,7 @@ plugin.description =
 	-Chip and Dale Rescue Rangers 2 (NES), 1-2p
 	-Crash Bandicoot 1-3 (PSX), 1p, US version
 	-Crash Bandicoot 4 (Bootleg) (NES), 1p
-	-Cybernator (USA) (SNES), 1p
+	-Cybernator (SNES), 1p
 	-Darkwing Duck (NES), 1p
 	-Demon's Crest (SNES), 1p
 	-Dick Tracy (NES), 1p
@@ -231,7 +231,7 @@ plugin.description =
 	-Power Blade (NES), 1p
 	-Power Blade 2 (NES), 1p
 	-Powerslave/Exhumed, Saturn
-	-Psycho-Nics Oscar (World revision 0) (Arcade), 1p
+	-Psycho-Nics Oscar (Arcade), 1p
 	-Rainbow Islands - The Story of Bubble Bobble 2 (NES), 1p
 	-Resident Evil (PSX), 1p - includes OG, Director's Cut, Dualshock and True Director's Cut Hack
 	-Resident Evil 2 (PSX), 1p - includes Regular & DualShock Ver (recommend using multi-disk bundler to work between disks)
@@ -291,7 +291,7 @@ plugin.description =
 	-Wild Guns (SNES), 1p
 	-Windjammers / Flying Power Disc (Arcade), 1p
 	-Wit's (NES), 1p
-	-Wolf Fang SS - Kuuga 2001 (Japan) (Saturn), 1p
+	-Wolf Fang SS - Kuuga 2001 (Saturn), 1p
 
 	NICHE ZONE
 	- NES 240p Suite: shuffles on every second that passes in Stopwatch Mode. Can be useful for testing a single game.
