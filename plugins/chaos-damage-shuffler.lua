@@ -137,7 +137,7 @@ plugin.description =
 	-Anticipation (NES), up to 4 players, shuffles on incorrect player answers, correct CPU answers, and running out of time.
 	-Arkanoid: Doh it Again (SNES), 1p
 	-Astro Boy - Omega Factor (USA) (GBA), 1p
-	-Balloon Fight, (NES) (US), 1p
+	-Balloon Fight (NES), 1p
 	-Banjo-Kazooie (N64), 1p
 	-Bao Qing Tian (Ch) (NES), 1p
 	-Batman (NES), 1p
