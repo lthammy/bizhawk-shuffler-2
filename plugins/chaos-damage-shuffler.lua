@@ -167,8 +167,8 @@ plugin.description =
 	-Einhänder (PSX), 1p
 	-F-Zero (SNES), 1p
 	-Family Feud (SNES), 1-2p
-	-Final Zone II (U) (TG16-CD), 1p
-	-Final Zone (JU) [!] (Mega Drive/Genesis), 1p
+	-Final Zone II (TG16-CD), 1p
+	-Final Zone (Mega Drive/Genesis), 1p
 	-Garfield: A Week of Garfield (NES), 1p
 	-Gargoyle's Quest II (NES), 1p
 	-Ghosts'n Goblins (NES), 1p
