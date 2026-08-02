@@ -282,9 +282,8 @@ plugin.description =
 	-Twisted Metal 2 (PSX), 1p
 	-U.N. Squadron (SNES), 1p
 	-Ultimate Mortal Kombat 3 (SNES), 1p (for now)
-	-Valkyrie no Densetsu (Japan) (Arcade), 1p
-	-Valkyrie no Densetsu (J) (TG-16), 1p
-	-Valkyrie no Densetsu (J) (Cabbage English translation) (TG-16), 1p
+	-Valkyrie no Densetsu (Arcade), 1p
+	-Valkyrie no Densetsu (TG-16), 1p (supports Cabbage English translation)
 	-Vice: Project Doom (NES), 1p
 	-Vs. Ice Climber, set IC4-4 B-1 (Arcade), 1p
 	-WarioWare, Inc.: Mega Microgame$! (GBA), 1p - bonus games including 2p are pending
