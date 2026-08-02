@@ -167,7 +167,7 @@ plugin.description =
 	-Einhänder (PSX), 1p
 	-F-Zero (SNES), 1p
 	-Family Feud (SNES), 1-2p
-	-Fatal Fury - King of Fighters / Garou Densetsu - Shukumei no Tatakai (NGM-033 ~ NGH-033) (Arcade), 1p
+	-Fatal Fury - King of Fighters / Garou Densetsu - Shukumei no Tatakai (Arcade), 1p
 	-Garfield: A Week of Garfield (NES), 1p
 	-Gargoyle's Quest II (NES), 1p
 	-Ghosts'n Goblins (NES), 1p
@@ -246,7 +246,7 @@ plugin.description =
 	-Shatterhand (NES), 1p
 	-Shinobi III (Genesis/Mega Drive), 1p
 	-Simpsons: Bart vs. the World (NES), 1p
-	-Slaughter Sport (U) [c][!] (Genesis/Mega Drive), 1p
+	-Slaughter Sport (Genesis/Mega Drive), 1p
 	-Snake Rattle 'n Roll (NES), 1p
 	-Sonic Jam 6 (bootleg) (Genesis/Mega Drive), 1p
 	-Sparkster (SNES), 1p
