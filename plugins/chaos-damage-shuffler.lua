@@ -251,7 +251,7 @@ plugin.description =
 	-StarTropics (NES), 1p
 	-Street Fighter 2010: The Final Fight (NES), 1p
 	-Streets of Rage II (Genesis/Mega Drive), 1-2p (includes duel mode)
-	-Star Fox (USA) (Rev 2) (SNES), 1p (30 fps patch v2.0 supported)
+	-Star Fox (SNES), 1p (30 fps patch v2.0 supported)
 	-Star Fox 64 (N64), 1p-4p
 	-Sunset Riders (SNES, Genesis, Arcade), 1p
 	-Super Aladdin (bootleg) (NES), 1p
