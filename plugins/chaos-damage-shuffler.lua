@@ -154,7 +154,7 @@ plugin.description =
 	-Chip and Dale Rescue Rangers 2 (NES), 1-2p
 	-Crash Bandicoot 1-3 (PSX), 1p, US version
 	-Crash Bandicoot 4 (Bootleg) (NES), 1p
-	-Darius Twin (USA) (SNES), 1p
+	-Darius Twin (SNES), 1p
 	-Darkwing Duck (NES), 1p
 	-Demon's Crest (SNES), 1p
 	-Dick Tracy (NES), 1p
@@ -231,7 +231,7 @@ plugin.description =
 	-Power Blade (NES), 1p
 	-Power Blade 2 (NES), 1p
 	-Powerslave/Exhumed, Saturn
-	-R-Type Leo (World) (Arcade), 1p
+	-R-Type Leo (Arcade), 1p
 	-Rainbow Islands - The Story of Bubble Bobble 2 (NES), 1p
 	-Resident Evil (PSX), 1p - includes OG, Director's Cut, Dualshock and True Director's Cut Hack
 	-Resident Evil 2 (PSX), 1p - includes Regular & DualShock Ver (recommend using multi-disk bundler to work between disks)
