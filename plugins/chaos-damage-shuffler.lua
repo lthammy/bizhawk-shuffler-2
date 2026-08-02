@@ -141,7 +141,7 @@ plugin.description =
 	-Bao Qing Tian (Ch) (NES), 1p
 	-Batman (NES), 1p
 	-Blades of Steel (NES - NA/Europe), 1-2p
-	-Bonanza Bros (US, Floppy DS3-5000-07d? Based) (Arcade), 1p
+	-Bonanza Bros (Arcade), 1p
 	-Bonk's Adventure (TG-16), 1p
 	-Bubble Bobble (NES), 1p
 	-Bubsy in Claws Encounters of the Furred Kind (aka Bubsy 1) (SNES), 1p
