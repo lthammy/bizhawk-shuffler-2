@@ -160,7 +160,7 @@ plugin.description =
 	-Do-Re-Mi Fantasy - Milon no Dokidoki Daibouken (SNES), 1p
 	-Double Dragon 1 (NES), 1-2p, Mode A or B, shuffles on knockdown and death
 	-Double Dragon 2 (NES), 1-2p, shuffles on knockdown and death
-	-Dragon Ball - Advanced Adventure (USA) (GBA), 1p
+	-Dragon Ball - Advanced Adventure (GBA), 1p
 	-DuckTales (NES), 1p
 	-DuckTales 2 (NES), 1p
 	-Dynamite Headdy (Genesis/Mega Drive), 1p
