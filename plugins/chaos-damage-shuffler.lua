@@ -173,8 +173,8 @@ plugin.description =
 	-Ghouls'n Ghosts (Genesis/Mega Drive), 1p
 	-Gimmick! (NES/Famicom), 1p
 	-Goof Troop (SNES), 1-2p
-	-Gradius III (World, program code R) (Arcade), 1p
-	-Gradius III (USA) (SNES), 1p
+	-Gradius III (Arcade), 1p
+	-Gradius III (SNES), 1p
 	-Gremlins 2: The New Batch (NES), 1p
 	-Gunstar Heroes (Genesis/Mega Drive), 1p
 	-Hammerin' Harry (NES), 1p
@@ -195,7 +195,7 @@ plugin.description =
 	-Kabuki Quantum Fighter (NES), 1p
 	-Kuru Kuru Kururin (GBA), 1p
 	-Last Alert (TG-16 CD), 1p
-	-Lifeforce (US) (Arcade), 1p
+	-Lifeforce (Arcade), 1p
 	-Little Samson (NES), 1p
 	-Lion King, The (NES), 1p
 	-Lion King, The (bootleg) (NES), 1p
@@ -241,7 +241,7 @@ plugin.description =
 	-Rocket Knight Adventures (Genesis/Mega Drive), 1p
 	-Rollergames (NES), 1p
 	-Rubble Saver II (GB), 1p
-	-Salamander 2 (ver JAA) (Arcade), 1p
+	-Salamander 2 (Arcade), 1p
 	-Sanrio World Smash Ball! (SNES), 1-2p
 	-Saturday Night Slam Masters (SNES), 1p
 	-SD Gundam Sangokushi Rainbow Tairiku Senki (Japan) (Arcade), 1p
