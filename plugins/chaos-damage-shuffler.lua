@@ -149,7 +149,7 @@ plugin.description =
 	-Bucky O'Hare (NES), 1p
 	-Bugs Bunny: Birthday Blowout (NES), 1p
 	-Bugs Bunny: Crazy Castle (NES), 1p
-	-Cabal (NES) (US), 1p
+	-Cabal (NES), 1p
 	-Captain Novolin (SNES), 1p
 	-Chip and Dale Rescue Rangers 1 (NES), 1-2p
 	-Chip and Dale Rescue Rangers 2 (NES), 1-2p
@@ -279,7 +279,7 @@ plugin.description =
 	-Tony Hawk's Pro Skater 2 (PSX), 1p
 	-Tony Hawk's Pro Skater 3 (PSX), 1p
 	-Tony Hawk's Pro Skater 4 (PSX), 1p
-	-Tsumi to Batsu - Hoshi no Keishousha (Japan) / Sin and Punishment (N64), 1p
+	-Tsumi to Batsu - Hoshi no Keishousha / Sin and Punishment (N64), 1p
 	-Twisted Metal 2 (PSX), 1p
 	-U.N. Squadron (SNES), 1p
 	-Ultimate Mortal Kombat 3 (SNES), 1p (for now)
