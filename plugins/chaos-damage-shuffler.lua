@@ -113,8 +113,8 @@ plugin.description =
 	-Kirby: Super Star (SNES), 1p
 	-Kirby: Nightmare in Dream Land (GBA), 1p
 	-Kirby and the Amazing Mirror (GBA), 1p
-	-Kirby's Block Ball (USA, Europe), 1p
-	-Kirby's Pinball Land (USA, Europe), 1p
+	-Kirby's Block Ball (GB), 1p
+	-Kirby's Pinball Land (GB), 1p
 
 	
 	SONIC BLOCK
