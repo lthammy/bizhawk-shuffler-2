@@ -198,7 +198,7 @@ plugin.description =
 	-Lion King, The (bootleg) (NES), 1p
 	-Lion King, The (SNES), 1p
 	-Lion King 2 (bootleg) (Genesis/Mega Drive), 1p
-	-Mad Gear (US) (Arcade), 1p
+	-Mad Gear (Arcade), 1p
 	-Magical Kid's Doropie / Krion Conquest (NES), 1p
 	-Majuu Ou (Japan) / King of Demons (SNES), 1p
 	-Marble Madness (NES), 1-2p
