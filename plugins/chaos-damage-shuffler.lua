@@ -220,9 +220,9 @@ plugin.description =
 	-Ninja Gaiden II - The Dark Sword of Chaos (NES), 1p
 	-Ninja Gaiden III - The Ancient Ship of Doom (NES), 1p
 	-Ninjawarriors (SNES), 1p
-	-Pac-Land (World) (Arcade), 1p
-	-Pac-Land (U) (TG-16), 1p
-	-Pac-Man Championship Edition, (NES), 1p
+	-Pac-Land (Arcade), 1p
+	-Pac-Land (TG-16), 1p
+	-Pac-Man Championship Edition (NES), 1p
 	-PaRappa the Rapper (PSX), 1p - shuffles on dropping a rank
 	-Pebble Beach Golf Links (Sega Saturn), 1p - Tournament Mode, shuffles after stroke
 	-Pepsiman (PSX), 1p
