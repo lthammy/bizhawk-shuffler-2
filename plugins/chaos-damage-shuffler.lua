@@ -173,8 +173,8 @@ plugin.description =
 	-Ghouls'n Ghosts (Genesis/Mega Drive), 1p
 	-Gimmick! (NES/Famicom), 1p
 	-Goof Troop (SNES), 1-2p
-	-Great Battle IV, The (Japan) (SNES), 1p
-	-Great Battle V, The (Japan) (SNES), 1p
+	-Great Battle IV, The (SNES), 1p
+	-Great Battle V, The (SNES), 1p
 	-Gremlins 2: The New Batch (NES), 1p
 	-Gunstar Heroes (Genesis/Mega Drive), 1p
 	-Hammerin' Harry (NES), 1p
