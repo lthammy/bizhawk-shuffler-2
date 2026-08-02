@@ -208,7 +208,7 @@ plugin.description =
 	-Mendel Palace (NES), 1p
 	-Metal Slug - Super Vehicle-001 (Arcade), 1p
 	-Metal Storm (NES), 1p
-	-Metamorphic Force (ver EAA) (Arcade), 1p
+	-Metamorphic Force (Arcade), 1p
 	-Mighty Morphin Power Rangers - The Movie (SNES), 1p
 	-Minnesota Fats - Pool Legend (Saturn), 1p story mode
 	-Ms. Pac-Man (Tengen) (NES), 1p
@@ -217,7 +217,7 @@ plugin.description =
 	-Mortal Kombat II (SNES), 1p (for now)
 	-Mystic Warriors (Arcade), 1p
 	-NBA JAM Tournament Edition (PSX), 1p - shuffles on points scored by opponent and on end of quarter
-	-Ninja Baseball Bat Man (World) (Arcade), 1p
+	-Ninja Baseball Bat Man (Arcade), 1p
 	-Ninja Gaiden (NES), 1p
 	-Ninja Gaiden II - The Dark Sword of Chaos (NES), 1p
 	-Ninja Gaiden III - The Ancient Ship of Doom (NES), 1p
@@ -243,7 +243,7 @@ plugin.description =
 	-Sanrio World Smash Ball! (SNES), 1-2p
 	-Saturday Night Slam Masters (SNES), 1p
 	-SD Gundam Sangokushi Rainbow Tairiku Senki (Japan) (Arcade), 1p
-	-Shadow Force (World, Version 3) (Arcade), 1p
+	-Shadow Force (Arcade), 1p
 	-Shaq-Fu (Genesis/Mega Drive), 1p
 	-Shatterhand (NES), 1p
 	-Shinobi III (Genesis/Mega Drive), 1p
@@ -285,7 +285,7 @@ plugin.description =
 	-U.N. Squadron (SNES), 1p
 	-Ultimate Mortal Kombat 3 (SNES), 1p (for now)
 	-Vice: Project Doom (NES), 1p
-	-Violent Storm (ver EAC) (Arcade), 1p
+	-Violent Storm (Arcade), 1p
 	-Vs. Ice Climber, set IC4-4 B-1 (Arcade), 1p
 	-WarioWare, Inc.: Mega Microgame$! (GBA), 1p - bonus games including 2p are pending
 	-Wild Guns (SNES), 1p
