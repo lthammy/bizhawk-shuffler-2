@@ -150,7 +150,7 @@ plugin.description =
 	-Bugs Bunny: Birthday Blowout (NES), 1p
 	-Bugs Bunny: Crazy Castle (NES), 1p
 	-Captain Novolin (SNES), 1p
-	-China Warrior (U) (PC Engine/TurboGrafx-16), 1p
+	-China Warrior (TG-16), 1p
 	-Chip and Dale Rescue Rangers 1 (NES), 1-2p
 	-Chip and Dale Rescue Rangers 2 (NES), 1-2p
 	-Crash Bandicoot 1-3 (PSX), 1p, US version
@@ -199,8 +199,8 @@ plugin.description =
 	-Lion King, The (bootleg) (NES), 1p
 	-Lion King, The (SNES), 1p
 	-Lion King 2 (bootleg) (Genesis/Mega Drive), 1p
-	-Mad Stalker - Full Metal Force (Japan) (CD-ROM²/TurboGrafx-CD), 1p
-	-Mad Stalker - Full Metal Force (Japan) (PS1), 1p
+	-Mad Stalker - Full Metal Force (TG-CD), 1p
+	-Mad Stalker - Full Metal Force (PS1), 1p
 	-Magical Kid's Doropie / Krion Conquest (NES), 1p
 	-Majuu Ou (Japan) / King of Demons (SNES), 1p
 	-Marble Madness (NES), 1-2p
@@ -211,7 +211,7 @@ plugin.description =
 	-Mendel Palace (NES), 1p
 	-Metal Slug - Super Vehicle-001 (Arcade), 1p
 	-Metal Storm (NES), 1p
-	-Mighty Morphin Power Rangers (USA) (SNES), 1p
+	-Mighty Morphin Power Rangers (SNES), 1p
 	-Mighty Morphin Power Rangers - The Movie (SNES), 1p
 	-Minnesota Fats - Pool Legend (Saturn), 1p story mode
 	-Ms. Pac-Man (Tengen) (NES), 1p
@@ -224,7 +224,7 @@ plugin.description =
 	-Ninja Gaiden II - The Dark Sword of Chaos (NES), 1p
 	-Ninja Gaiden III - The Ancient Ship of Doom (NES), 1p
 	-Ninjawarriors (SNES), 1p
-	-Panzer Bandit (Japan) (PS1), 1p
+	-Panzer Bandit (PS1), 1p
 	-PaRappa the Rapper (PSX), 1p - shuffles on dropping a rank
 	-Pebble Beach Golf Links (Sega Saturn), 1p - Tournament Mode, shuffles after stroke
 	-Pepsiman (PSX), 1p
