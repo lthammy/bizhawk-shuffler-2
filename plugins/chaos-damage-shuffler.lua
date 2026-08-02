@@ -245,7 +245,7 @@ plugin.description =
 	-Shatterhand (NES), 1p
 	-Shinobi III (Genesis/Mega Drive), 1p
 	-Simpsons: Bart vs. the World (NES), 1p
-	-Skyblazer (USA) (NES), 1p
+	-Skyblazer (SNES), 1p
 	-Snake Rattle 'n Roll (NES), 1p
 	-Sonic Jam 6 (bootleg) (Genesis/Mega Drive), 1p
 	-Sparkster (SNES), 1p
