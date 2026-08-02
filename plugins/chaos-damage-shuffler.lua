@@ -193,7 +193,7 @@ plugin.description =
 	-Kabuki Quantum Fighter (NES), 1p
 	-Kuru Kuru Kururin (GBA), 1p
 	-Last Alert (TG-16 CD), 1p
-	-The Legendary Axe (U) (TG-16), 1p
+	-The Legendary Axe (TG-16), 1p
 	-Little Samson (NES), 1p
 	-Lion King, The (NES), 1p
 	-Lion King, The (bootleg) (NES), 1p
