@@ -133,8 +133,8 @@ plugin.description =
 	-Aero the Acro-Bat (SNES), 1p
 	-Aladdin (Genesis/Mega Drive), 1p
 	-Aladdin (SNES), 1p
-	-Alex Kidd: The Lost Stars (set 2, unprotected) (Arcade), 1p
-	-Alex Kidd in Shinobi World (UE) (Master System), 1p
+	-Alex Kidd: The Lost Stars (Arcade), 1p
+	-Alex Kidd in Shinobi World (Master System), 1p
 	-Alundra (PSX), 1p, supports patched versions (e.g., Unworked Designs)
 	-Anticipation (NES), up to 4 players, shuffles on incorrect player answers, correct CPU answers, and running out of time.
 	-Arkanoid: Doh it Again (SNES), 1p
