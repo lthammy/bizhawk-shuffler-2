@@ -191,9 +191,9 @@ plugin.description =
 	-Jungle Book, The (NES, SNES, Genesis/Mega Drive), 1p
 	-Jurassic Park (SNES), 1p
 	-Kabuki Quantum Fighter (NES), 1p
-	-King of the Monsters, (arcade) (set 1), 1p
-	-King of the Monsters 2 - The Next Thing (NGM-039 ~ NGH-039) (Arcade), 1p
-	-King of the Monsters 2 (U) [!] (Genesis/Mega Drive), 1p
+	-King of the Monsters, (arcade), 1p
+	-King of the Monsters 2 - The Next Thing (Arcade), 1p
+	-King of the Monsters 2 (Genesis/Mega Drive), 1p
 	-Kuru Kuru Kururin (GBA), 1p
 	-Last Alert (TG-16 CD), 1p
 	-Little Samson (NES), 1p
