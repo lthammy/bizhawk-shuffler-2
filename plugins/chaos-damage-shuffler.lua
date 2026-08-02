@@ -128,7 +128,7 @@ plugin.description =
 
 	ADDITIONAL SUPPORTED GAMES
 	-ActRaiser (SNES), 1p
-	-Advance Wars (USA) (GBA), 1p
+	-Advance Wars (GBA), 1p
 	-Adventures in the Magic Kingdom (NES), 1p
 	-Adventures of the Gummi Bears (bootleg) (Genesis/Mega Drive), 1p
 	-Aero the Acro-Bat (SNES), 1p
@@ -245,7 +245,7 @@ plugin.description =
 	-Shaq-Fu (Genesis/Mega Drive), 1p
 	-Shatterhand (NES), 1p
 	-Shinobi III (Genesis/Mega Drive), 1p
-	-SimCity, (SNES) (USA), 1p
+	-SimCity (SNES), 1p
 	-Simpsons: Bart vs. the World (NES), 1p
 	-Snake Rattle 'n Roll (NES), 1p
 	-Sonic Jam 6 (bootleg) (Genesis/Mega Drive), 1p
