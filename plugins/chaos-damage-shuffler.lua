@@ -176,7 +176,7 @@ plugin.description =
 	-Gremlins 2: The New Batch (NES), 1p
 	-Gunstar Heroes (Genesis/Mega Drive), 1p
 	-Hammerin' Harry (NES), 1p
-	-Haunted Castle (version M) (Arcade), 1p
+	-Haunted Castle (Arcade), 1p
 	-Hercules II (Bootleg) (Genesis/Mega Drive), 1p
 	-High Seas Havoc (Genesis/Mega Drive), 1p
 	-Ice Climber (NES), 1-2p
