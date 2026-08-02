@@ -133,7 +133,7 @@ plugin.description =
 	-Aero the Acro-Bat (SNES), 1p
 	-Aladdin (Genesis/Mega Drive), 1p
 	-Aladdin (SNES), 1p
-	-Aliens (World set 1) (Arcade), 1p
+	-Aliens (Arcade), 1p
 	-Alundra (PSX), 1p, supports patched versions (e.g., Unworked Designs)
 	-Anticipation (NES), up to 4 players, shuffles on incorrect player answers, correct CPU answers, and running out of time.
 	-Arkanoid: Doh it Again (SNES), 1p
@@ -148,7 +148,7 @@ plugin.description =
 	-Bubsy in Fractured Furry Tales (Jaguar), 1p
 	-Bubsy 3D: Furbitten Planet (PS1), 1p
 	-Bucky O'Hare (NES), 1p
-	-Bucky O'Hare (ver EAB) (Arcade), 1p
+	-Bucky O'Hare (Arcade), 1p
 	-Bugs Bunny: Birthday Blowout (NES), 1p
 	-Bugs Bunny: Crazy Castle (NES), 1p
 	-Captain Novolin (SNES), 1p
