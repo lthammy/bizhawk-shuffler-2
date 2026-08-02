@@ -219,8 +219,8 @@ plugin.description =
 	-Ninja Gaiden (NES), 1p
 	-Ninja Gaiden II - The Dark Sword of Chaos (NES), 1p
 	-Ninja Gaiden III - The Ancient Ship of Doom (NES), 1p
-	-Ninja Gaiden Shadow (USA), 1p
-	-Ninja Spirit (U) (TurboGrafx-16), 1p
+	-Ninja Gaiden Shadow (GB), 1p
+	-Ninja Spirit (TG-16), 1p
 	-Ninjawarriors (SNES), 1p
 	-PaRappa the Rapper (PSX), 1p - shuffles on dropping a rank
 	-Pebble Beach Golf Links (Sega Saturn), 1p - Tournament Mode, shuffles after stroke
