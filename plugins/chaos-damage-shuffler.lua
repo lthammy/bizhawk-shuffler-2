@@ -174,8 +174,8 @@ plugin.description =
 	-Gimmick! (NES/Famicom), 1p
 	-Goof Troop (SNES), 1-2p
 	-Gremlins 2: The New Batch (NES), 1p
-	-Gunforce - Battle Fire Engulfed Terror Island (World) (Arcade), 1p
-	-Gun Force II (US) (Arcade), 1p
+	-Gunforce - Battle Fire Engulfed Terror Island (Arcade), 1p
+	-Gun Force II (Arcade), 1p
 	-Gunstar Heroes (Genesis/Mega Drive), 1p
 	-Hammerin' Harry (NES), 1p
 	-Hercules II (Bootleg) (Genesis/Mega Drive), 1p
