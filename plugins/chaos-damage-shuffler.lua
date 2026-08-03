@@ -7046,8 +7046,10 @@ local gamedata = {
 		p1gethp=function() return memory.read_u8(0x0063, "m68000 : ram : 0x211000-0x21FFFF") end,
 		p1getlc=function() return memory.read_u8(0x00080C, "m68000 : ram : 0x200000-0x20FFFF") end,
 		maxhp=function() return 96 end,
+		minhp=-1, -- player is still alive at zero health
 		gmode=function() return memory.read_u8(0x000835, "m68000 : ram : 0x200000-0x20FFFF") == 1 end,
-		swap_exceptions=function() return memory.read_u8(0x00B0, "m68000 : ram : 0x211000-0x21FFFF") == 16 end, -- player is attacking; used so that megacrush doesn't shuffle			
+		swap_exceptions=function() return memory.read_u8(0x0005, "m68000 : ram : 0x211000-0x21FFFF") == 19 -- megacrush animation; used so that megacrush doesn't shuffle
+			or memory.read_u8(0x004A, "m68000 : ram : 0x211000-0x21FFFF") == 0 end, -- outside of screen transition
 		CanHaveInfiniteLives=true,
 		p1livesaddr=function() return 0x0000C1 end, -- credits provided instead of lives to allow for character switching
 		LivesWhichRAM=function() return "m68000 : ram : 0x200000-0x20FFFF" end,
