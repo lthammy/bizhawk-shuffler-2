@@ -7374,12 +7374,12 @@ local gamedata = {
 			local health_changed, health_curr, health_prev = update_prev('health', memory.read_u8(0x0D5A9B, "RDRAM"))
 			local timer_curr = memory.read_u8(0x0D5A97, "RDRAM")
 			return health_changed and timer_curr == 0 and health_curr == (health_prev - 1) end,
-		gmode=function() return memory.read_u8(0x068A92, "RDRAM") == 0 end,
+		gmode=function() return memory.read_u8(0x075C13, "RDRAM") == 100 end,
 		CanHaveInfiniteLives=true,
 		p1livesaddr=function() return 0x0D5C0F end,
 		LivesWhichRAM=function() return "RDRAM" end,
 		maxlives=function() return 69 end,
-		ActiveP1=function() return memory.read_u8(0x068A92, "RDRAM") == 0 end, -- to prevent the game from freezing during startup
+		ActiveP1=function() return memory.read_u8(0x075C13, "RDRAM") == 100 end, -- to prevent the game from freezing during startup
 	},
 	['TwistedMetal2_PSX']={ -- Twisted Metal 2, PSX
 		func=singleplayer_withlives_swap,
