@@ -5623,6 +5623,7 @@ local gamedata = {
 			local health_1p_changed, health_1p_curr, health_1p_prev = update_prev('health_1p', memory.read_u8(0x000946, "m68000 : ram : 0x80000-0x8FFFF"))
 			local lives_1p_changed, lives_1p_curr, lives_1p_prev = update_prev('lives_1p', memory.read_u8(0x000945, "m68000 : ram : 0x80000-0x8FFFF"))
 			return lives_1p_changed and health_1p_changed and lives_1p_curr > lives_1p_prev and health_1p_curr < health_1p_prev end,
+		gmode=function() return memory.read_u8(0x000072, "m68000 : ram : 0x80000-0x8FFFF") == 1 end,
 		CanHaveInfiniteLives=true,
 		p1livesaddr=function() return 0x000051 end, -- unlimited credits given to allow for character switching
 		LivesWhichRAM=function() return "m68000 : ram : 0x80000-0x8FFFF" end,
