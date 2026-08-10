@@ -185,7 +185,7 @@ plugin.description =
 	-Jackie Chan's Action Kung-Fu (NES), 1p
 	-James Bond Jr. (SNES), 1p
 	-Jaws (NES), 1p
-	-Jim Power - The Lost Dimension in 3D (SNES), 1p
+	-Jim Power - The Lost Dimension in 3D (SNES), 1p (Compatible with Svambo parallax scroll fix)
 	-Journey to Silius (NES), 1p
 	-Jungle Book, The (NES, SNES, Genesis/Mega Drive), 1p
 	-Jurassic Park (SNES), 1p
