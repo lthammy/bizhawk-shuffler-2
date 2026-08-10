@@ -7661,7 +7661,7 @@ local gamedata = {
 		other_swaps=function()
 			-- Swap for "boss" levels where something chases you towards the screen.
 			-- Damage seems to be in distance rather than health points or something like that, so the target value differs between stages and changes each frame after hit until the target.
-			local chase_damage = memory.read_u8(0x0CEF78, "MainRAM")		
+			local chase_damage = memory.read_u16_le(0x0CEF78, "MainRAM")		
 			
 			-- i-frames are at a different address per stage, but always goes from 0 to 60 when hit.
 			local stage1_iframes_changed, stage1_iframes_cur, stage1_iframes_prev = update_prev('stage1_iframes', memory.read_u8(0x0F80B0, "MainRAM"))
@@ -7670,10 +7670,10 @@ local gamedata = {
 			local stage4_iframes_changed, stage4_iframes_cur, stage4_iframes_prev = update_prev('stage4_iframes', memory.read_u8(0x0F4AD8, "MainRAM"))
 			
 			return
-			(stage1_iframes_changed and stage1_iframes_cur == 60 and stage1_iframes_prev == 0 and chase_damage > 32) or
-			(stage2_iframes_changed and stage2_iframes_cur == 60 and stage2_iframes_prev == 0 and chase_damage > 114) or
-			(stage3_iframes_changed and stage3_iframes_cur == 60 and stage3_iframes_prev == 0 and chase_damage > 88) or
-			(stage4_iframes_changed and stage4_iframes_cur == 60 and stage4_iframes_prev == 0 and chase_damage > 32)
+			(stage1_iframes_changed and stage1_iframes_cur == 60 and stage1_iframes_prev == 0 and chase_damage < 65312) or
+			(stage2_iframes_changed and stage2_iframes_cur == 60 and stage2_iframes_prev == 0 and chase_damage < 64882) or 
+			(stage3_iframes_changed and stage3_iframes_cur == 60 and stage3_iframes_prev == 0 and chase_damage < 65112) or 
+			(stage4_iframes_changed and stage4_iframes_cur == 60 and stage4_iframes_prev == 0 and chase_damage < 65312)
 			end,
 	},
 	['MarioKartSuperCircuit_GBA']={ -- Mario Kart: Super Circuit (GBA), 1p, GP mode
