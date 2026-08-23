@@ -2636,7 +2636,7 @@ local gamedata = {
 		-- several potential values, but if it's ever odd, we're not in-game.
 		maxhp=function() return 60 end,
 	},
-	['Cabal_NES']={ -- Cabal, NES (US)
+	['Cabal_NES']={ -- Cabal, NES
 		func=singleplayer_withlives_swap,
 		p1gethp=function() return 1 end,
 		p1getlc=function() return memory.read_u8(0x00D4, "RAM") - 242 end, -- lives, starts counting with 242 being zero
@@ -7363,7 +7363,7 @@ local gamedata = {
 		ActiveP1=function() return mainmemory.read_u8(0x400) > 0 end,
 		ActiveP2=function() return mainmemory.read_u8(0x500) > 0 end,
 	},
-	['SinAndPunishment_N64']={ -- Tsumi to Batsu - Hoshi no Keishousha (Japan) / Sin and Punishment
+	['SinAndPunishment_N64']={ -- Tsumi to Batsu - Hoshi no Keishousha / Sin and Punishment (N64)
 		func=singleplayer_withlives_swap,
 		p1gethp=function() return memory.read_u8(0x0D5A9B, "RDRAM") end,
 		p1getlc=function() return memory.read_u8(0x0D5C0F, "RDRAM") end,
