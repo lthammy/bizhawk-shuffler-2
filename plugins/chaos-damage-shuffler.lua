@@ -5894,7 +5894,7 @@ local gamedata = {
 			return false
 		end,
 	},
-	['KirbyBlockBall_GB']={ -- Kirby's Block Ball (USA, Europe)
+	['KirbyBlockBall_GB']={ -- Kirby's Block Ball (GB)
 		func=singleplayer_withlives_swap,
 		p1gethp=function() return 1 end, -- no health system
 		p1getlc=function() return memory.read_u8(0x01C9, "WRAM") end,
@@ -5919,7 +5919,7 @@ local gamedata = {
 			local boss_health = memory.read_u8(0x1910, "WRAM")
 			return not (on_boss_stage and boss_health == 0) end,
 	},
-	['KirbyPinballLand_GB']={ -- Kirby's Pinball Land (USA, Europe)
+	['KirbyPinballLand_GB']={ -- Kirby's Pinball Land (GB)
 		func=function() return function()	
 			local lives_changed, lives_curr, lives_prev = update_prev('lives', memory.read_u8(0x00B0, "WRAM"))
 			
