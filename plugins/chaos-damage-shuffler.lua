@@ -4637,7 +4637,7 @@ local gamedata = {
 		-- so you get 60 + x lives instead.
 		ActiveP1=function() return true end, -- P1 is always active!
 	},
-	['Contra_ARC']={ -- Contra (US / Asia, set 1) (Arcade)
+	['Contra_ARC']={ -- Contra (Arcade)
 		func=singleplayer_withlives_swap,
 		p1gethp=function() return 1 end,
 		p1getlc=function()
@@ -4733,7 +4733,7 @@ local gamedata = {
 		-- player is either inactive or in death sequence when these addresses == 1, lives go down the same frame that these addresses tick to 0
 		maxhp=function() return 0 end,
 	},
-	['SuperContra_ARC']={ -- Super Contra (set 1) (Arcade)
+	['SuperContra_ARC']={ -- Super Contra (Arcade)
 		func=singleplayer_withlives_swap,
 		p1gethp=function() return 1 end,
 		p1getlc=function() return memory.read_u8(0x00A0, "konami_cpu : ram : 0x4000-0x57FF") end,
