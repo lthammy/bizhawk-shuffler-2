@@ -5535,7 +5535,7 @@ local gamedata = {
 		end,
 		grace=60, -- Professional/Action Mode (Nintendo Super System only???? Must verify) can combo you too rapidly to recover
 	},
-	['AdvanceWars_GBA']={ -- Advance Wars (USA)
+	['AdvanceWars_GBA']={ -- Advance Wars, GBA
 		func=health_swap,
 		is_valid_gamestate=function() return true end,
 		get_health=function()
@@ -6235,7 +6235,7 @@ local gamedata = {
 		maxlives=function() return 69 end,
 		ActiveP1=function() return true end, -- p1 is always active!
 	},
-	['SimCity_SNES']={ -- SimCity, SNES (USA)
+	['SimCity_SNES']={ -- SimCity, SNES
 		func=function() return function()
 			-- population used as health; population decline treated as damage
 			local population_changed, population_curr, population_prev = update_prev('population', memory.read_u32_le(0x000BA5, "WRAM"))
