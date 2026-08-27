@@ -9190,17 +9190,7 @@ local gamedata = {
 	['CyberLip_ARC']={ -- Cyber-Lip (NGM-010)
 		func=singleplayer_withlives_swap,
 		p1gethp=function() return 1 end,
-		p1getlc=function()
-			--(binary-coded decimal conversation taken from Bubsy Jaguar implementation)
-			-- Need to convert binary-coded decimal hexadecimal value to just plain decimal
-			local livesHex = memory.read_u8(0x00209D, "m68000 : ram : 0x100000-0x10FFFF")
-			-- Get upper nybble, bit-shift right 4 bits
-			local tens = (livesHex & 0xF0)>>4
-			-- Just the lower nybble
-			local ones = livesHex & 0x0F
-			-- Merge 'em
-			local lives = (tens * 10) + ones
-			return lives end,
+		p1getlc=function() return from_bcd(memory.read_u8(0x00209D, "m68000 : ram : 0x100000-0x10FFFF")) end,
 		maxhp=function() return 1 end,
 		CanHaveInfiniteLives=true,
 		p1livesaddr=function() return 0x00209D end,
