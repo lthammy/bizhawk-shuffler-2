@@ -6,6 +6,7 @@ plugin.minversion = "2.9.1"
 plugin.settings =
 {
 	{ name='InfiniteLives', type='boolean', label='Infinite* Lives (see notes)' },
+	{ name='UngenuineGameplay', type='boolean', label='Enable other QoL cheats where applicable' },
 	{ name='ClingerSpeed', type='boolean', label='BT NES: Auto-Clinger-Winger (unpatched ONLY)' },
 	{ name='BTSNESRash', type='boolean', label='BT SNES: I want Rash, pick 2P, give Pimple 1 HP'},
 	{ name='SuppressLog', type='boolean', label='Suppress "ROM unrecognized"/"on Level 1" logs'},
@@ -13,6 +14,7 @@ plugin.settings =
 	{ name='SMW2YI_MiniBonusSwaps', type='boolean', label="Yoshi's Island: Shuffle on Mini Battle damage/loss", default=true},
 	{ name='IceClimberBonusSwaps', type='boolean', label="Ice Climber (NES): Shuffle on failing the bonus game"},
 	{ name='grace', type='number', label="Minimum grace period before swapping (won't go < 10 frames)", default=10 },
+	{ name='GraceOnHit', type='boolean', label="Apply grace period from last hit instead of last swap" },
 }
 
 plugin.description =
@@ -25,8 +27,6 @@ plugin.description =
 	Randomizers should be supported (e.g., ALTTPR, VARIA, ZOoTR, SMZ3) by adding your game's hash to the .dat file.
 	Additional ideas from the TownEater fork have been implemented.
 	Thank you to Diabetus, Smight and ConstantineDTW for extensive playthroughs that tracked down bugs!
-
-	ENABLE EXPANSION SLOT FOR N64 GAMES! This should be the default configuration, but check!
 
 	YOU WILL NEED BizHawk 2.10 MINIMUM for Sega CD and Sega Saturn games to be recognized and shuffled correctly!
 
@@ -156,7 +156,7 @@ plugin.description =
 	-Chip and Dale Rescue Rangers 1 (NES), 1-2p
 	-Chip and Dale Rescue Rangers 2 (NES), 1-2p
 	-Crash Bandicoot 1-3 (PSX), 1p, US version
-	-Crash Bandicoot 4 (Bootleg) (NES), 1p
+	-Crash Bandicoot 4 (bootleg) (GBA), 1p
 	-Darkwing Duck (NES), 1p
 	-Demon's Crest (SNES), 1p
 	-Dick Tracy (NES), 1p
@@ -179,7 +179,7 @@ plugin.description =
 	-Gremlins 2: The New Batch (NES), 1p
 	-Gunstar Heroes (Genesis/Mega Drive), 1p
 	-Hammerin' Harry (NES), 1p
-	-Hercules II (Bootleg) (Genesis/Mega Drive), 1p
+	-Hercules II (bootleg) (Genesis/Mega Drive), 1p
 	-High Seas Havoc (Genesis/Mega Drive), 1p
 	-Ice Climber (NES), 1-2p
 	--- check toggle for whether you want bonus game losses to swap!
@@ -297,7 +297,6 @@ plugin.description =
 
 	----PREPARATION----
 	Set Min and Max Seconds VERY HIGH, assuming you don't want time swaps in addition to damage swaps.
-	If adding N64 games, enable the Expansion Slot. Some games will fail to shuffle or crash BizHawk without it.
 
 	Non-Battletoads games: just put your game in the games folder.
 
@@ -354,6 +353,7 @@ plugin.description =
 	Suppress Logs: if you do not want the lua console log to tell you about file naming errors, or unrecognized ROMs. This can help keep the log cleaner if you are also using the Mega Man Damage Shuffler or other plugins!
 
 	Grace period: 10 frames is the default minimum frames between swaps. Adjust up as needed. This idea originated in the TownEater fork of the damage shuffler!
+	- This can be adjusted to be 'minimum frames since damage before swapping again' if needed to help with 'combo hits' causing large numbers of swaps.
 
 	Enjoy? Send bug reports?
 
@@ -369,8 +369,10 @@ local tag
 local gamemeta
 local prevdata
 local debug_timer
+local last_hit
 local swap_scheduled
 local shouldSwap
+local game_settings
 local gamesleft
 local prev_framecount
 
@@ -402,6 +404,14 @@ local bt_snes_level_names = { "Khaos Mountains",
 
 local bt_snes_level_recoder = { 0, 1, 2, 3, 4, 6, 8, 7 } -- THIS GAME DOESN'T STORE LEVELS IN THE ORDER YOU PLAY THEM, COOL
 ---------------
+
+---
+-- get the value of the named setting
+-- if default is provided, it will be returned instead of a nil value
+local function get_setting(name, default)
+	local value = game_settings[name]
+	if value ~= nil then return value else return default end
+end
 
 -- update value in prevdata and return whether the value has changed, new value, and old value
 -- value is only considered changed if it wasn't nil before
@@ -447,6 +457,24 @@ local function update_countdown(key)
 	return false
 end
 
+-- gets a value that may be stored in a table, using the named key if needed
+local function unwrap(value, name)
+	if type(value) == "table" then
+		return value[name]
+	else
+		return value
+	end
+end
+
+-- if value is not already a table, stores it in a table using the named key
+local function wrap(value, name)
+	if type(value) == "table" then
+		return value
+	else
+		return { [name] = value }
+	end
+end
+
 -- If value is a number between min and max (inclusive), return value.
 -- Otherwise, return fallback (or nil if unspecified)
 local function value_in_range(value, min, max, fallback)
@@ -455,6 +483,38 @@ local function value_in_range(value, min, max, fallback)
 	else
 		return fallback
 	end
+end
+
+-- converts an unsigned value from BCD format, e.g. 0x1234 -> 1234
+local function from_bcd(value)
+
+	local acc, mul = 0, 1
+	
+	while value > 0 do
+		local digit = value & 0xF
+		acc = acc + digit * mul
+		
+		value = value >> 4
+		mul = mul * 10
+	end
+	
+	return acc
+end
+
+-- converts an unsigned value to BCD format, e.g. 1234 -> 0x1234
+local function to_bcd(value)
+
+	local acc, mul = 0, 1
+	
+	while value > 0 do
+		local digit = value % 10
+		acc = acc + digit * mul
+		
+		value = value // 10
+		mul = mul << 4
+	end
+	
+	return acc
 end
 
 -- Follow a 32-bit pointer chain, given a start address and a series of offsets.
@@ -547,6 +607,8 @@ local function singleplayer_withlives_swap(gamemeta)
 		
 		local p1currhp = gamemeta.p1gethp()
 		local p1currlc = gamemeta.p1getlc()
+		local p1currcc = gamemeta.p1getcc and gamemeta.p1getcc() or 0
+		
 		local currtogglecheck = 0
 		if gamemeta.gettogglecheck ~= nil then
 			currtogglecheck = gamemeta.gettogglecheck()
@@ -561,13 +623,24 @@ local function singleplayer_withlives_swap(gamemeta)
 			return false
 		end
 
+		-- this delay ensures that when the game ticks away health for the end of a level,
+		-- we can catch its purpose and hopefully not swap, since this isnt damage related
+		if data.p1hpcountdown ~= nil and data.p1hpcountdown > 0 then
+			data.p1hpcountdown = data.p1hpcountdown - 1
+			if data.p1hpcountdown == 0 and p1currhp > minhp then
+				return true
+			end
+		end
+		
 		-- retrieve previous health and lives before backup
 		local p1prevhp = data.p1prevhp
 		local p1prevlc = data.p1prevlc
+		local p1prevcc = data.p1prevcc
 		local prevtogglecheck = data.prevtogglecheck
 
 		data.p1prevhp = p1currhp
 		data.p1prevlc = p1currlc
+		data.p1prevcc = p1currcc
 		data.prevtogglecheck = currtogglecheck
 		
 		-- if we have found a toggle flag, that changes at the same time as a junk hp/lives change, then don't swap.
@@ -581,15 +654,6 @@ local function singleplayer_withlives_swap(gamemeta)
 			return false
 		end
 		
-		-- this delay ensures that when the game ticks away health for the end of a level,
-		-- we can catch its purpose and hopefully not swap, since this isnt damage related
-		if data.p1hpcountdown ~= nil and data.p1hpcountdown > 0 then
-			data.p1hpcountdown = data.p1hpcountdown - 1
-			if data.p1hpcountdown == 0 and p1currhp > minhp then
-				return true
-			end
-		end
-		
 		-- if the health goes to 0, we will rely on the life count to tell us whether to swap
 		if p1prevhp ~= nil and p1currhp < p1prevhp and p1currhp > minhp and p1currhp < maxhp then
 			data.p1hpcountdown = gamemeta.delay or 3
@@ -601,10 +665,16 @@ local function singleplayer_withlives_swap(gamemeta)
 			-- MUST CHECK THAT LIVES ALWAYS GO DOWN BY 1. BUT THIS SHOULD HELP REMOVE NONSENSE SWAPS
 			return true
 		end
+		
+		-- swap if a continue/credit was deducted
+		if p1prevcc ~= nil and p1currcc == p1prevcc - 1 then
+			return true
+		end
 
 		-- sometimes you want to swap for things that don't take standard health or lives, like non-standard game overs
-		if gamemeta.other_swaps and gamemeta.other_swaps() then
-			data.p1hpcountdown = gamemeta.delay or 3
+		if gamemeta.other_swaps then
+			local swap, delay = gamemeta.other_swaps()
+			return swap, delay or gamemeta.delay
 		end
 		
 		return false
@@ -715,8 +785,11 @@ local function twoplayers_withlives_swap(gamemeta)
 
 		local p1currhp = gamemeta.p1gethp()
 		local p1currlc = gamemeta.p1getlc()
+		local p1currcc = gamemeta.p1getcc and gamemeta.p1getcc() or 0
 		local p2currhp = gamemeta.p2gethp()
 		local p2currlc = gamemeta.p2getlc()
+		local p2currcc = gamemeta.p2getcc and gamemeta.p2getcc() or 0
+		
 		local currtogglecheck = 0
 		if gamemeta.gettogglecheck ~= nil then
 			currtogglecheck = gamemeta.gettogglecheck()
@@ -735,31 +808,6 @@ local function twoplayers_withlives_swap(gamemeta)
 			return false
 		end
 
-		-- retrieve previous health and lives before backup
-		local p1prevhp = data.p1prevhp
-		local p1prevlc = data.p1prevlc
-		local p2prevhp = data.p2prevhp
-		local p2prevlc = data.p2prevlc
-		local prevtogglecheck = data.prevtogglecheck
-
-		data.p1prevhp = p1currhp
-		data.p1prevlc = p1currlc
-		data.p2prevhp = p2currhp
-		data.p2prevlc = p2currlc
-		data.prevtogglecheck = currtogglecheck
-		
-		
-		-- if we have found a toggle flag, that changes at the same time as a junk hp/lives change, then don't swap.
-		if prevtogglecheck ~= nil and prevtogglecheck ~= currtogglecheck then
-			return false
-		end
-
-		-- Sometimes you will want to update hp and lives without triggering a swap (e.g., on swapping between characters).
-		-- If a method is provided for swap_exceptions and its conditions are true, process the hp and lives but don't swap.
-		if gamemeta.swap_exceptions and gamemeta.swap_exceptions(gamemeta) then
-			return false
-		end
-
 		-- this delay ensures that when the game ticks away health for the end of a level,
 		-- we can catch its purpose and hopefully not swap, since this isnt damage related
 		if data.p1hpcountdown ~= nil and data.p1hpcountdown > 0 then
@@ -774,6 +822,35 @@ local function twoplayers_withlives_swap(gamemeta)
 			if data.p2hpcountdown == 0 and p2currhp > minhp then
 				return true
 			end
+		end
+
+		-- retrieve previous health and lives before backup
+		local p1prevhp = data.p1prevhp
+		local p1prevlc = data.p1prevlc
+		local p1prevcc = data.p1prevcc
+		local p2prevhp = data.p2prevhp
+		local p2prevlc = data.p2prevlc
+		local p2prevcc = data.p2prevcc
+		local prevtogglecheck = data.prevtogglecheck
+
+		data.p1prevhp = p1currhp
+		data.p1prevlc = p1currlc
+		data.p1prevcc = p1currcc
+		data.p2prevhp = p2currhp
+		data.p2prevlc = p2currlc
+		data.p2prevcc = p2currcc
+		data.prevtogglecheck = currtogglecheck
+		
+		
+		-- if we have found a toggle flag, that changes at the same time as a junk hp/lives change, then don't swap.
+		if prevtogglecheck ~= nil and prevtogglecheck ~= currtogglecheck then
+			return false
+		end
+
+		-- Sometimes you will want to update hp and lives without triggering a swap (e.g., on swapping between characters).
+		-- If a method is provided for swap_exceptions and its conditions are true, process the hp and lives but don't swap.
+		if gamemeta.swap_exceptions and gamemeta.swap_exceptions(gamemeta) then
+			return false
 		end
 
 		-- if the health goes to 0, we will rely on the life count to tell us whether to swap
@@ -794,105 +871,20 @@ local function twoplayers_withlives_swap(gamemeta)
 		if p2prevlc ~= nil and p2currlc == p2prevlc - 1 then
 			return true
 		end
+		
+		-- swap if a continue/credit was deducted
+		if p1prevcc ~= nil and p1currcc == p1prevcc - 1 then
+			return true
+		end
+		
+		if p2prevcc ~= nil and p2currcc == p2prevcc - 1 then
+			return true
+		end
 
 		-- sometimes you want to swap for things that don't take standard health or lives, like non-standard game overs
-		if gamemeta.other_swaps and gamemeta.other_swaps() then
-			data.p1hpcountdown = gamemeta.delay or 3
-			data.p2hpcountdown = gamemeta.delay or 3
-		end
-
-		return false
-	end
-end
-
-local function SMAS_swap(gamemeta)
-	return function(data)
-		-- if a method is provided and we are not in normal gameplay, don't ever swap
-		if gamemeta.gmode and not gamemeta.gmode() then
-			return false
-		end
-
-		local p1currhp = gamemeta.p1gethp()
-		local p1currlc = gamemeta.p1getlc()
-		local p2currhp = gamemeta.p2gethp()
-		local p2currlc = gamemeta.p2getlc()
-		local currsmb2mode = gamemeta.getsmb2mode()
-		local currtogglecheck = 0
-		if gamemeta.gettogglecheck ~= nil then
-			currtogglecheck = gamemeta.gettogglecheck()
-		end
-		
-		-- we should now be able to use the typical shuffler functions normally.
-
-		local maxhp = gamemeta.maxhp()
-		local minhp = gamemeta.minhp or 0
-
-		-- health must be within an acceptable range to count
-		-- ON ACCOUNT OF ALL THE GARBAGE VALUES BEING STORED IN THESE ADDRESSES
-		if p1currhp < minhp or p1currhp > maxhp then
-			return false
-		elseif p2currhp < minhp or p2currhp > maxhp then
-			return false
-		end
-
-		-- retrieve previous health and lives before backup
-		local p1prevhp = data.p1prevhp
-		local p1prevlc = data.p1prevlc
-		local p2prevhp = data.p2prevhp
-		local p2prevlc = data.p2prevlc
-		local prevsmb2mode = data.prevsmb2mode
-		local prevtogglecheck = data.prevtogglecheck
-		
-		data.p1prevhp = p1currhp
-		data.p1prevlc = p1currlc
-		data.p2prevhp = p2currhp
-		data.p2prevlc = p2currlc
-		data.prevsmb2mode = currsmb2mode
-		data.prevtogglecheck = currtogglecheck
-		
-		-- DON'T SWAP WHEN WE JUST CAME OUT OF SMB2 SLOTS OR MENU
-		if currsmb2mode ~= prevsmb2mode then
-			return false
-		end
-		
-		--if we have found a toggle flag, that changes at the same time as a junk hp/lives change, then don't swap.
-		if prevtogglecheck ~= nil and prevtogglecheck ~= currtogglecheck then
-			return false
-		end
-
-		-- this delay ensures that when the game ticks away health for the end of a level,
-		-- we can catch its purpose and hopefully not swap, since this isnt damage related
-		if data.p1hpcountdown ~= nil and data.p1hpcountdown > 0 then
-			data.p1hpcountdown = data.p1hpcountdown - 1
-			if data.p1hpcountdown == 0 and p1currhp > minhp then
-				return true
-			end
-		end
-
-		if data.p2hpcountdown ~= nil and data.p2hpcountdown > 0 then
-			data.p2hpcountdown = data.p2hpcountdown - 1
-			if data.p2hpcountdown == 0 and p2currhp > minhp then
-				return true
-			end
-		end
-
-		-- if the health goes to 0, we will rely on the life count to tell us whether to swap
-		if p1prevhp ~= nil and p1currhp < p1prevhp then
-			data.p1hpcountdown = gamemeta.delay or 3
-		end
-		
-		if p2prevhp ~= nil and p2currhp < p2prevhp then
-			data.p2hpcountdown = gamemeta.delay or 3
-		end
-
-		-- check to see if the life count went down
-		
-		if p1prevlc ~= nil and p1currlc == p1prevlc - 1 then
-			return true
-		end
-		
-		if p2prevlc ~= nil and p2currlc == p2prevlc - 1 then
-			return true
+		if gamemeta.other_swaps then
+			local swap, delay = gamemeta.other_swaps()
+			return swap, delay or gamemeta.delay
 		end
 
 		return false
@@ -1429,16 +1421,6 @@ local function iframe_health_swap(gamemeta)
 	return function(data)
 		local iframes_changed, iframes_curr, iframes_prev = update_prev('iframes', gamemeta.get_iframes())
 		local health_changed, health_curr, health_prev = false, 0, 0
-		-- If a swap is already scheduled, decrease it but do no further processing.
-		if data.delayCountdown ~= nil and data.delayCountdown > 0 then
-			--console.log("delayCountdown: "..data.delayCountdown);
-			data.delayCountdown = data.delayCountdown - 1
-			if data.delayCountdown == 0 then
-				--console.log("delayCountdown is 0; swapping");
-				return true;
-			end
-			return false;
-		end
 		if gamemeta.get_health then
 			health_changed, health_curr, health_prev = update_prev('health', gamemeta.get_health())
 		end
@@ -1459,14 +1441,15 @@ local function iframe_health_swap(gamemeta)
 		if gamemeta.get_health then
 			-- check 0 health for games that don't set iframes on death
 			if (iframes_valid or health_curr == 0) and health_changed and health_curr < health_prev then
-				data.delayCountdown = gamemeta.delay or 3
+				return true, gamemeta.delay
 			end
 		elseif iframes_valid then
-			data.delayCountdown = gamemeta.delay or 3
+			return true, gamemeta.delay
 		end
 		-- sometimes you want to swap for things that don't give iframes and change health, like non-standard game overs
-		if gamemeta.other_swaps() then
-			data.delayCountdown = gamemeta.delay or 3
+		if gamemeta.other_swaps then
+			local swap, delay = gamemeta.other_swaps()
+			return swap, delay or gamemeta.delay
 		end
 	end
 end
@@ -1479,26 +1462,19 @@ local function health_swap(gamemeta)
 		end
 		-- for games where iframes are unhelpful
 		local health_changed, health_curr, health_prev = update_prev('health', gamemeta.get_health())
-		-- If a swap is already scheduled, decrease it but do no further processing.
-		if data.delayCountdown ~= nil and data.delayCountdown > 0 then
-			--console.log("delayCountdown: "..data.delayCountdown);
-			data.delayCountdown = data.delayCountdown - 1
-			if data.delayCountdown == 0 then
-				--console.log("delayCountdown is 0; swapping");
-				return true;
-			end
-			return false;
-		end
 		-- check if we're in a valid gamestate
 		if not gamemeta.is_valid_gamestate() then
 			return false
 		end
-		if health_changed and health_curr < health_prev then
-			data.delayCountdown = gamemeta.delay or 3
+		-- only swap if health drops below current max health
+		local max_health = gamemeta.get_max_health and gamemeta.get_max_health()
+		if health_changed and health_curr < health_prev and (not max_health or health_curr < max_health) then
+			return true, gamemeta.delay
 		end
 		-- sometimes you want to swap for things that don't reduce health
-		if gamemeta.other_swaps() then
-			data.delayCountdown = gamemeta.delay or 3
+		if gamemeta.other_swaps then
+			local swap, delay = gamemeta.other_swaps()
+			return swap, delay or gamemeta.delay
 		end
 	end
 end
@@ -1545,16 +1521,6 @@ local function jonathan_charlotte_swap(gamemeta)
 		local j_iframes_changed, j_iframes_curr, j_iframes_prev = update_prev('jonathan iframes', gamemeta.get_jonathan_iframes())
 		local c_iframes_changed, c_iframes_curr, c_iframes_prev = update_prev('charlotte iframes', gamemeta.get_charlotte_iframes())
 		local health_changed, health_curr, health_prev = update_prev('health', gamemeta.get_health())
-		-- If a swap is already scheduled, decrease it but do no further processing.
-		if data.delayCountdown ~= nil and data.delayCountdown > 0 then
-			--console.log("delayCountdown: "..data.delayCountdown);
-			data.delayCountdown = data.delayCountdown - 1
-			if data.delayCountdown == 0 then
-				--console.log("delayCountdown is 0; swapping");
-				return true;
-			end
-			return false;
-		end
 		if not gamemeta.is_valid_gamestate() then
 			return false
 		end
@@ -1563,12 +1529,12 @@ local function jonathan_charlotte_swap(gamemeta)
 			and health_changed and health_curr < health_prev
 		then
 			-- jonathan!
-			data.delayCountdown = gamemeta.delay or 3
+			return true, gamemeta.delay
 		elseif not gamemeta.is_jonathan() and c_iframes_changed and c_iframes_prev <= 1
 			and health_changed and health_curr < health_prev
 		then
 			-- charlotte!
-			data.delayCountdown = gamemeta.delay or 3
+			return true, gamemeta.delay
 		end
 	end
 end
@@ -1578,27 +1544,18 @@ local function damage_buffer_swap(gamemeta)
 		-- games that instead of decreasing health directly, set a "damage buffer" value that then decreases health per frame
 		local iframes_changed, iframes_curr, iframes_prev = update_prev('iframes', gamemeta.get_iframes())
 		local buffer_changed, buffer_curr, buffer_prev = update_prev('damage buffer', gamemeta.get_damage_buffer())
-		-- If a swap is already scheduled, decrease it but do no further processing.
-		if data.delayCountdown ~= nil and data.delayCountdown > 0 then
-			--console.log("delayCountdown: "..data.delayCountdown);
-			data.delayCountdown = data.delayCountdown - 1
-			if data.delayCountdown == 0 then
-				--console.log("delayCountdown is 0; swapping");
-				return true;
-			end
-			return false;
-		end
 		if not gamemeta.is_valid_gamestate() then
 			return false
 		end
 		if iframes_changed and iframes_prev == 0 and buffer_changed and buffer_curr > buffer_prev then
 			-- if the buffer is very large, it may not hit 0 before iframes run out
 			-- will this ever actually happen in practice? maybe not, but may as well future-proof this
-			data.delayCountdown = gamemeta.delay or 3
+			return true, gamemeta.delay
 		end
 		-- sometimes you want to swap for things that don't reduce health
-		if gamemeta.other_swaps() then
-			data.delayCountdown = gamemeta.delay or 3
+		if gamemeta.other_swaps then
+			local swap, delay = gamemeta.other_swaps()
+			return swap, delay or gamemeta.delay
 		end
 	end
 end
@@ -1689,17 +1646,6 @@ end
 
 local function Pebble_Beach_Golf_Links_swap(gamemeta)
 	return function(data)
-		-- If a swap is already scheduled, decrease it but do no further processing.
-		if data.delayCountdown ~= nil and data.delayCountdown > 0 then
-			--console.log("delayCountdown: "..data.delayCountdown);
-			data.delayCountdown = data.delayCountdown - 1
-			if data.delayCountdown == 0 then
-				--console.log("delayCountdown is 0; swapping");
-				return true;
-			end
-			return false;
-		end
-
 		if (gamemeta.gmode and not gamemeta.gmode()) then
 			return false; -- Not actually in a round
 		end
@@ -1717,7 +1663,7 @@ local function Pebble_Beach_Golf_Links_swap(gamemeta)
 			--console.log("P1 Strokes on hole "..hole.." has changed from "..prevPlayer1Strokes.." to "..player1Strokes);
 		end
 		if (player1StrokesChanged and (player1Strokes == (prevPlayer1Strokes + 1) or player1Strokes == (prevPlayer1Strokes + 2))) then
-			data.delayCountdown = gamemeta.delay;
+			return true, gamemeta.delay;
 		end
 	end
 end
@@ -1736,16 +1682,6 @@ local function NBA_Jam_swap(gamemeta)
 			--console.log(string.format("Quarter went from %d to %d; swapping", prevQuarter, quarter));
 			return true;
 		end
-		-- If a swap is already scheduled, decrease it but do no further processing.
-		if data.delayCountdown ~= nil and data.delayCountdown > 0 then
-			--console.log("delayCountdown: "..data.delayCountdown);
-			data.delayCountdown = data.delayCountdown - 1
-			if data.delayCountdown == 0 then
-				--console.log("delayCountdown is 0; swapping");
-				return true;
-			end
-			return false;
-		end
 		-- Don't do any further processing if the game mode is wrong.
 		if (gamemeta.gmode and not gamemeta.gmode()) then
 			return false;
@@ -1753,94 +1689,15 @@ local function NBA_Jam_swap(gamemeta)
 		-- If opposing team score went up, swap after a delay
 		if (opposingTeamScoreChanged and opposingTeamScore > prevOpposingTeamScore) then
 			--console.log(string.format("Opposing team score went from %d to %d; swapping in %d frames", prevOpposingTeamScore, opposingTeamScore, gamemeta.delay));
-			data.delayCountdown = gamemeta.delay;
+			return true, gamemeta.delay;
 		end
 		-- If "SHOT CLOCK VIOLATION" is flashing on-screen and the player's team had the ball, swap after a delay
 		if (shotClockViolationMessageTimerChanged and shotClockViolationMessageTimer > prevShotClockViolationMessageTimer) then
 			if (teamWithBall == 0 or (teamWithBall == -1 and teamWithBallChanged and prevTeamWithBall == 0)) then
 				--console.log(string.format("Player held the ball too long without shooting; swapping in %d frames", gamemeta.delay));
-				data.delayCountdown = gamemeta.delay;
+				return true, gamemeta.delay;
 			end
 		end
-	end
-end
-
--- An entire clone of singleplayer_withlives_swap because RKA has to be SPECIAL
--- with everything it does vis-à-vis health and lives 😒
-local function Rocket_Knight_Adventures_swap(gamemeta)
-	return function(data)
-		-- if a method is provided and we are not in normal gameplay, don't ever swap
-		if gamemeta.gmode and not gamemeta.gmode() then
-			--console.log("Not gamemode; skipping");
-			return false
-		end
-
-		local p1currhp = gamemeta.p1gethp()
-		local p1currlc = gamemeta.p1getlc()
-		local currtogglecheck = 0
-		if gamemeta.gettogglecheck ~= nil then currtogglecheck = gamemeta.gettogglecheck() end
-
-		local maxhp = gamemeta.maxhp()
-
-		-- health must be within an acceptable range to count
-		-- ON ACCOUNT OF ALL THE GARBAGE VALUES BEING STORED IN THESE ADDRESSES
-		-- but don't check minhp BECAUSE ANY NEGATIVE VALUE IS VALID IN THIS GAME
-		if p1currhp > maxhp then
-			--console.log("p1currhp ("..p1currhp..") > "..maxhp.."; skipping");
-			return false
-		end
-
-		-- retrieve previous health and lives before backup
-		local p1prevhp = data.p1prevhp
-		local p1prevlc = data.p1prevlc
-		local prevtogglecheck = data.prevtogglecheck
-
-		data.p1prevhp = p1currhp
-		data.p1prevlc = p1currlc
-		data.prevtogglecheck = currtogglecheck
-
-		--if we have found a toggle flag, that changes at the same time as a junk hp/lives change, then don't swap.
-		if prevtogglecheck ~= nil and prevtogglecheck ~= currtogglecheck then return false end
-
-		-- this delay ensures that when the game ticks away health for the end of a level,
-		-- we can catch its purpose and hopefully not swap, since this isnt damage related
-		if data.p1hpcountdown ~= nil and data.p1hpcountdown > 0 then
-			data.p1hpcountdown = data.p1hpcountdown - 1
-			--console.log("p1hpcountdown: "..data.p1hpcountdown);
-			if data.p1hpcountdown == 0 and p1currhp >= 0 then
-				--console.log("p1hpcountdown is 0; HP "..p1currhp.." >= 0, so swapping");
-				return true
-			end
-		end
-
-		-- if health goes below 0, we will rely on life count to tell us whether to swap
-		if p1prevhp ~= nil and p1currhp < p1prevhp then
-			data.p1hpcountdown = gamemeta.delay or 3
-			--console.log("HP went from "..p1prevhp.." to "..p1currhp.."; setting p1hpcountdown to "..data.p1hpcountdown);
-		end
-
-		-- check to see if life count went down
-		if p1prevlc ~= nil and p1currlc == p1prevlc - 1 then -- MUST CHECK THAT LIVES ALWAYS GO DOWN BY 1. BUT THIS SHOULD HELP REMOVE NONSENSE SWAPS
-			--console.log("Lives went from "..p1prevlc.." to "..p1currlc..", so swapping");
-			return true
-		end
-
-		--console.log("All good; health: "..p1currhp..", lives: "..p1currlc);
-		return false
-	end
-end
-
--- 240p Suite on NES has a stopwatch, so you can force a swap within a second
--- Useful if you only have one real game to test swaps on
-local function StopWatch_swap(gamemeta)
-	return function()
-		if gamemeta.gmode and not gamemeta.gmode() then
-			return false
-		end
-
-		local secondsChanged, seconds, prevSeconds = update_prev('seconds', memory.read_u8(0x0029, "RAM"));
-		if (secondsChanged) then return true end;
-		return false;
 	end
 end
 
@@ -2281,16 +2138,8 @@ local function TecmoSuperBowl_NES_swap(gamemeta)
 			data.p1_injured_music_cued = false
 		end
 		
-		-- we need to implement a delay for certain swaps, so we will add a countdown here
-		if data.delayCountdown ~= nil and data.delayCountdown > 0 then
-			--console.log("delayCountdown: "..data.delayCountdown);
-			data.delayCountdown = data.delayCountdown - 1
-			if data.delayCountdown == 0 then
-				--console.log("delayCountdown is 0; swapping");
-				return true;
-			end
-			return false;
-		end
+		-- we need to implement a delay for certain swaps
+		local swap_delay = nil
 		
 		-- SWAPS
 		-- first, swap on p2 scoring a TD or FG, after a 60-frame delay
@@ -2302,13 +2151,13 @@ local function TecmoSuperBowl_NES_swap(gamemeta)
 		if data.p2_scored == true and 
 			((p2_kickoff_curr == true and p2_kickoff_prev == false) or (p1_kickoff_curr == true and p1_kickoff_prev == false)) -- latter will handle kickoffs back to p2 after halftime if p2 to end 2Q and gets possession to start Q3
 		then
-			data.delayCountdown = 3
+			swap_delay = 3
 			data.p2_scored = false
 		end
 		-- We need to shuffle if p2 wins the game.
 		if gamemeta.get_end_of_game() == true and p2_points_curr > p1_points_curr
 		then
-			data.delayCountdown = 169 -- wait for scoreboard
+			swap_delay = 169 -- wait for scoreboard
 		end
 		-- We need to shuffle if a p1 player gets injured. We'll know because the music (0x2B) played.
 		-- conveniently, music and sound cues only last for one frame
@@ -2316,13 +2165,13 @@ local function TecmoSuperBowl_NES_swap(gamemeta)
 		-- When the cue goes through to silence the music (0x01), swap
 		if music_cue_curr == 0x01 and data.p1_injured_music_cued == true
 		then
-			data.delayCountdown = 3
+			swap_delay = 3
 		end
 		-- next, swap on possession losses by checking if possession changed to p2 ("p1 now has ball" is irrelevant here)
 		if p1_possession_curr == false and p1_possession_prev == true then
 			-- compare p1's score before and after the possession change (the only time we would not swap right away is if p1 scored and is kicking off)
 			if p1_points_curr == data.p1_score_on_load then -- p1 gave up the ball and didn't score? swap now
-				data.delayCountdown = 3
+				swap_delay = 3
 			else -- p1 is kicking off after a score? update that stored score, and reset "play picker seen" to 0 because it's about to be a new drive for p2
 				data.p1_score_on_load = p1_points_curr
 				data.play_picker_seen = 0
@@ -2331,17 +2180,18 @@ local function TecmoSuperBowl_NES_swap(gamemeta)
 		-- now that we've handled possession changes, we need to check mid-drive failures (p1 doesn't get a first down, or p2 gets one)
 		if picking_play_curr == true and picking_play_prev == false then -- down just changed if the playbook screen just came up
 			if p1_possession_curr and whatdown_curr > data.down_at_start_of_play then -- did down just go up? oh, then you didn't get a first down, huh? swap now
-				data.delayCountdown = 3
+				swap_delay = 3
 			-- next, we need to swap if the opponent has earned a first down - this would happen after the play picker has been seen at least once
 			elseif p1_possession_curr == false and whatdown_curr == 0 and -- it's p2's ball and first down?
 				picking_play_curr == true and picking_play_prev == false and data.play_picker_seen > 0 then -- and the play picker just showed up, and we've seen them pick a play already? swap now
-				data.delayCountdown = 3
+				swap_delay = 3
 			-- and, if none of that is true, update the down we saw the last time the play picker came up
 			else
 				data.down_at_start_of_play = whatdown_curr
 			end
 		end
 		
+		return swap_delay ~= nil, swap_delay
     end
 end
 
@@ -2473,6 +2323,16 @@ local gamedata = {
 		p2getlc=function() return memory.read_u8(0x0012, "RAM") end,
 		gettogglecheck=function() return memory.read_u8(0x0011, "RAM") == 255 or memory.read_u8(0x0011, "RAM") == 255 end, --did a toad just join or drop?
 		maxhp=function() return 6 end,
+		cheats = {
+			ClingerSpeed = { -- This enables the Game Genie code for always moving at max speed in Clinger Winger. Can only be applied to the unpatched ROM.
+				func = function()
+					if memory.read_u8(0x000D, "RAM") == 11 and memory.read_u8(0xA706, "System Bus") == 5 then
+						memory.write_u8(0xA706, 0, "System Bus")
+					end
+				end,
+				on_frame = true,
+			},
+		},
 	},
 	['BT_NES_patched']={ -- Battletoads NES with bugfix patch
 		func=twoplayers_withlives_swap,
@@ -2874,51 +2734,35 @@ local gamedata = {
 		ActiveP1=function() return memory.read_u8(0x000DBE) > 0 and memory.read_u8(0x000DBE) < 255 end,
 	},
 	['SMAS_SNES']={ -- Super Mario All Stars (SNES)
-		-- to do, function to define "which game"
-		-- though I don't think that can go in this block and likely needs to go in the swap function instead
-		SMAS_which_game=function()
-			if memory.read_u8(0x01FF00, "WRAM") == 2 then
-				return "SMB1"
-			end
-			if memory.read_u8(0x01FF00, "WRAM") == 4 then
-				return "SMB2J"
-			end
-			if memory.read_u8(0x01FF00, "WRAM") == 6 and memory.read_u8(0x000547, "WRAM") < 128 then
-				return "SMB2U" -- >128 means slots or menu
-			end
-			if memory.read_u8(0x01FF00, "WRAM") == 10 then
-				return "SMW"
-			end
-			if memory.read_u8(0x01FF00, "WRAM") == 8 then
-				if memory.read_u8(0x00072B, "WRAM") == 3 then
-					return "SMB3Battle"
-				else
-					return "SMB3"
-				end
-			end
-			return false
-		end,
-		func=SMAS_swap,
+		-- which game is active is noted at 0x01FF00
+		-- 2 for SMB1, 4 for SMB2J, 6 for SMB2U, 10 for SMW (not used if ROM doesn't include SMW)
+		-- 8 for SMB3; if 0x00072B == 3 as well, then SMB3 is in Battle Mode
+		func=twoplayers_withlives_swap,
 		gmode=function()
 			if ((memory.read_u8(0x01FF00, "WRAM") == 2 or memory.read_u8(0x01FF00, "WRAM") == 4)
 				and memory.read_u8(0x000770, "WRAM") ~= 1) -- demo == 0, end of world == 2, game over == 3 false
+			then
+				return false
+			elseif
+				memory.read_u8(0x01FF00, "WRAM") == 0 -- no game selected
 			then
 				return false
 			else
 				return true
 			end
 		end,
-		getsmb2mode=function()
-			return memory.read_u8(0x0004C4, "WRAM")
-			-- number of health bars available, changes on entering slots and can cause false swaps
-		end,
 		gettogglecheck=function()
 			if memory.read_u8(0x01FF00, "WRAM") == 10 then
 				return memory.read_u8(0x000DB3, "WRAM")
 				-- tells us active character in SMW, so we know if we are switching
 			elseif memory.read_u8(0x01FF00, "WRAM") == 8 then
-				return memory.read_u8(0x000577, "WRAM")
-				-- tells us if we have the boot in SMB3, to not swap when we get/lose it
+				return memory.read_u8(0x00072B, "WRAM") + memory.read_u8(0x000577, "WRAM")
+				-- 0x72B tells us what mode we are in
+				-- if it switches, for example, activating battle mode, we should not swap
+				-- 0x577 tells us if we have the boot in SMB3 (1 for yes, 0 for no), to not swap when we get/lose it
+			elseif memory.read_u8(0x01FF00, "WRAM") == 6 then
+				return memory.read_u8(0x0004C4, "WRAM")
+				-- tells us the maxhp for SMB2U; we should not swap on any frame where this changes
 			else
 				return nil
 			end
@@ -4092,23 +3936,25 @@ local gamedata = {
 		-- being grabbed by an enemy needs to allow mashing out before swapping
 		suspend_updates = function() return memory.read_u8(0x3F9A, "IWRAM") & 128 ~= 0 end,
 		grace = 30, -- give the default iframe period to react after swapping in
+		grace_on_hit = true, -- prevent multiple swaps from spike floors and similar
 		-- OTHER NOTES:
 		-- gamestate is 0x1002 IWRAM: 0 title, 1 savefiles, 2 game, 3 gameover, 4 credits
 		-- display health is half other health values (4/heart vs 8/heart)
 		-- health flows 0x2AEA -> 0xAF03 EWRAM (plus an 0x11A5 IWRAM copy)
 		-- copy health should be updated on actual damage, will get re-set on area change
-		-- max health is +1 offset from current health (0x2AEB/0xAF04/0x11A6)
+		-- max health is +1 offset from current health (0x2AEB/0xAF04)
 		-- money is 0x2B00 -> 0xAF0E EWRAM, 2 bytes LE (0-999)
 		-- iframes is 0x119D IWRAM if needed, 0x11A2 perhaps also related?
-		-- 30 iframes on hit by default, 255 (or 254) while invulnerable (during text, etc)
-		-- some hits do less, down to 12
+		-- iframes value is signed, negative values count up to 0 w/o hurt animation
+		-- 30 iframes on hit by default, -1 (or -2) while invulnerable (during text, etc)
+		-- some hits do less (down to 12), others more (up to 124)
 		-- iframes from falling in water w/ no damage
 		-- 0x3F9A IWRAM & 128 for being grabbed (allow breaking out without swaps)
 		-- for enemy that grabs w/ damage: 12 iframes, max 4 hits, 40-56 frames between hits
 		-- 0x3FB1 IWRAM & 1 is wallmaster? (minish eviction from boss too uhhh)
 		-- for timed sequence, 0x2ECC EWRAM is set to 10800 frames (180s), gameover on hitting 0
 		
-		--get_iframes = function() return memory.read_u8(0x119D, "IWRAM") end,
+		--get_iframes = function() return memory.read_s8(0x119D, "IWRAM") end,
 		--iframe_minimum = function() return 15 end,
 	},
 	['MPAINT_DPAD_SNES']={ -- Gnat Attack in Mario Paint for SNES
@@ -4300,11 +4146,11 @@ local gamedata = {
 		LivesWhichRAM = function() return "MainRAM" end,
 		maxlives = function() return 9 end,
 		ActiveP1 = function() return true end,
-		delay = 45,
 	},
 	['ROCKET_KNIGHT_ADVENTURES_GEN']={ -- Rocket Knight Adventures, Genesis
-		func=Rocket_Knight_Adventures_swap,
-		p1gethp=function() return memory.read_s16_be(0xC040, "68K RAM") end,
+		func=singleplayer_withlives_swap,
+		p1gethp = function() return math.max(memory.read_s16_be(0xC040, "68K RAM"), -1) end,
+		minhp = -1,
 		maxhp=function() return 32767 end, -- Realistically this won't be above 63, but the game handles this value *somewhat* gracefully
 		p1getlc = function()
 			-- This is stored in decimal mode, meaning 0x69 is treated as 69 and
@@ -4332,9 +4178,13 @@ local gamedata = {
 		-- the value for the continue/game over screen, and is basically the
 		-- only way I can find to detect that the player's run out of lives,
 		-- since 0 is a valid life value and it never goes negative (unlike HP).
+		
+		-- finally, 0xB008 is set to 1 in the demo (poking with 0 will give 1p control)
+		-- do not shuffle during demo (damage occurs in some of these)
 		gmode = function()
-			return memory.read_s16_be(0xC000, "68K RAM") == 1
-				and memory.read_s16_be(0xB02C, "68K RAM") ~= 3
+			return (memory.read_s16_be(0xC000, "68K RAM") == 1
+				or memory.read_s16_be(0xB02C, "68K RAM") == 3)
+				and memory.read_s16_be(0xB008, "68K RAM") ~= 1
 			end,
 		-- Life Bonus, ticks down alongside health during stage clear screen
 		gettogglecheck = function() return memory.read_u32_be(0xB174, "68K RAM") end,
@@ -4446,8 +4296,15 @@ local gamedata = {
 		gettogglecheck=function() return memory.read_u8(0xEF1, "WRAM") end,
 	},
 	['240P_NES']={
-		func=StopWatch_swap,
-		gmode=function() return memory.read_u8(0x01FB, "RAM") == 136 end, -- 136 is the stopwatch mode
+	-- 240p Suite on NES has a stopwatch, so you can force a swap within a second
+	-- Useful if you only have one real game to test swaps on
+		func=function()
+			return function()
+				local secondsChanged, seconds, prevSeconds = update_prev('seconds', memory.read_u8(0x0029, "RAM"));
+				if (secondsChanged) and memory.read_u8(0x01FB, "RAM") == 136 then return true end;
+				return false;
+			end
+		end,
 	},
 	['SOTN_PS1']={ -- Japan (1.0, 1.1) and North America releases
 		func=sotn_swap,
@@ -4573,28 +4430,23 @@ local gamedata = {
 	},
 	['IceClimber_NES']={ -- Ice Climber NES
 		func=twoplayers_withlives_swap,
-		maxhp=function() return 2 end,
+		maxhp=function() return 1 end,
+		p1gethp=function() return 1 end,
+		p2gethp=function() return 1 end,
+		p1getlc=function() return memory.read_u8(0x0020, "RAM") end,
+		p2getlc=function() return memory.read_u8(0x0021, "RAM") end,
+		gmode=function() return memory.read_u8(0x0053, "RAM") ~= 1 end, -- 1 == in demo
 		-- we can implement a swap on failing the bonus game
 		-- 0x0055 RAM is a sort of game mode, 0 title, 1 main level, 2 bonus, 3 and 4 bonus screen, 5 fly up to preview level
 		-- 0x001E RAM is "got dactyl", 0 no, 1 1p, 2 2p
 		-- so, if 0x0055 == 3 and 0x001E == 0, you just lost the bonus game
-		p1gethp=function()
-			if memory.read_u8(0x0055, "RAM") == 3 and
-				memory.read_u8(0x001E, "RAM") == 0
-				then return 1
-			else return 2
+		other_swaps=function()
+			if get_setting('IceClimberBonusSwaps') then
+				return memory.read_u8(0x0055, "RAM") == 3 and memory.read_u8(0x001E, "RAM") == 0
 			end
+			return false
 		end,
-		p2gethp=function()
-			if memory.read_u8(0x0055, "RAM") == 3 and
-				memory.read_u8(0x001E, "RAM") == 0
-				then return 1
-			else return 2
-			end
-		end,
-		p1getlc=function() return memory.read_u8(0x0020, "RAM") end,
-		p2getlc=function() return memory.read_u8(0x0021, "RAM") end,
-		gmode=function() return memory.read_u8(0x0053, "RAM") ~= 1 end, -- 1 == in demo
+		settings={'IceClimberBonusSwaps'},
 		CanHaveInfiniteLives=true,
 		LivesWhichRAM=function() return "RAM" end,
 		p1livesaddr=function() return 0x0020 end,
@@ -4602,10 +4454,6 @@ local gamedata = {
 		maxlives=function() return 69 end,
 		ActiveP1=function() return memory.read_u8(0x0020, "RAM") ~= 252 end, -- 0 on start, 252 if player out of lives
 		ActiveP2=function() return memory.read_u8(0x0021, "RAM") ~= 252 end, -- 0 on start, 252 if player out of lives
-		DisableExtraSwaps=function() return 
-			(memory.read_u8(0x0055, "RAM") == 3 and memory.read_u8(0x001E, "RAM") == 0) or -- p1 fails at bonus
-			(memory.read_u8(0x0055, "RAM") == 3 and memory.read_u8(0x001E, "RAM") == 0) -- p2 fails at bonus
-		end
 	},
 	['DarkwingDuck_NES']={ -- Darkwing Duck (NES)
 		func=singleplayer_withlives_swap,
@@ -5292,6 +5140,7 @@ local gamedata = {
 			
 		end,
 		grace=50, -- just make sure we don't combo on deaths (previously 20)
+		delay=10, -- should make damage more perceptible given frame rate
 		CanHaveInfiniteLives=true,
 		p1livesaddr=function() return 0x157911 end,
 		-- importantly, we have to write just one byte
@@ -5604,14 +5453,14 @@ local gamedata = {
 	},
 	['BuckyOHare_NES']={ -- Bucky O'Hare, NES
 		func=singleplayer_withlives_swap,
-		p1gethp=function() return memory.read_u8(0x5a0, "RAM") end,
+		p1gethp=function() return memory.read_u8(0x05A0, "RAM") end,
 		p1getlc=function() return memory.read_u8(0x004C, "RAM") end,
-		maxhp=function() return 255 end,
-		grace=50, -- note, you appear to get 32 iframes with no recoil
+		maxhp=function() return 36 end, -- collecting L-heart at 36 only refills
+		grace=50, -- on hit, you get 32 iframes with no recoil (at 0x0680), extendable with a hack?
 		CanHaveInfiniteLives=true,
 		LivesWhichRAM=function() return "RAM" end,
 		p1livesaddr=function() return 0x004C end,
-		maxlives=function() return 127 end,
+		maxlives=function() return 69 end, -- true max is 99
 		ActiveP1=function() return true end, -- p1 is always active!
 	},
 	['DynamiteHeaddy_GEN']={ -- Dynamite Headdy, Genesis
@@ -5976,7 +5825,7 @@ local gamedata = {
 		CanHaveInfiniteLives=true,
 		LivesWhichRAM=function() return "68K RAM" end,
 		p1livesaddr=function() return 0x7E3c end,
-		maxlives=function() return 55 end,
+		maxlives=function() return 55 end, -- 0 lives is 48, add 7 for infinite lives target
 		ActiveP1=function() return true end, -- p1 is always active!
 		grace=45,
 	},
@@ -6073,7 +5922,7 @@ local gamedata = {
 		maxlives=function() return 9 end,
 		ActiveP1=function() return true end, -- p1 is always active!
 	};	
-	['JungleBook_GEN']={ -- Jungle Book, G
+	['JungleBook_GEN']={ -- Jungle Book, Genesis
 		func=singleplayer_withlives_swap,
 		p1gethp=function() return memory.read_u8(0xf4da, "68K RAM") end,
 		p1getlc=function() return memory.read_s8(0xfad4, "68K RAM") end,
@@ -6081,7 +5930,7 @@ local gamedata = {
 		CanHaveInfiniteLives=true,
 		LivesWhichRAM=function() return "68K RAM" end,
 		p1livesaddr=function() return 0xfad4 end,
-		maxlives=function() return 55 end,
+		maxlives=function() return 55 end, -- 0 lives is 48, add 7 for infinite lives target
 		ActiveP1=function() return true end, -- p1 is always active!	
 	},
 	['JungleBook_NES']={ -- Jungle Book, NES
@@ -6192,7 +6041,7 @@ local gamedata = {
 		maxlives=function() return 5 end,
 		ActiveP1=function() return memory.read_u8(0x006a, "WRAM") > 0 end,
 		ActiveP2=function() return memory.read_u8(0x006b, "WRAM") > 0 end,
-		grace=60,
+		grace=120, -- you can be comboed extremely hard in this game
 	},
  	['PockyRocky2_SNES']={ -- Pocky & Rocky 2, SNES
 		func=PockyRocky2_SNES_swap,
@@ -6457,7 +6306,7 @@ local gamedata = {
 		maxlives=function() return 69 end,
 		ActiveP1=function() return true end, -- p1 is always active!	
 	},
-	['CrashBandicoot4_NES']={ -- Crash Bandicoot 4 (Bootleg), NES
+	['CrashBandicoot4_NES']={ -- Crash Bandicoot 4 (bootleg), NES
 		func=singleplayer_withlives_swap,
 		p1gethp=function() return memory.read_u8(0x62a2, "IWRAM") end,
 		p1getlc=function() return memory.read_u8(0x009a, "IWRAM") end,
@@ -6468,7 +6317,7 @@ local gamedata = {
 		maxlives=function() return 69 end,
 		ActiveP1=function() return true end, -- p1 is always active!	
 	},
-	['Hercules2_GEN']={ -- Hercules II (Bootleg), Genesis
+	['Hercules2_GEN']={ -- Hercules II (bootleg), Genesis
 		func=singleplayer_withlives_swap,
 		p1gethp=function() return memory.read_u8(0xe373, "68K RAM") end,
 		p1getlc=function() return memory.read_u8(0xe371, "68K RAM") end,
@@ -6479,7 +6328,7 @@ local gamedata = {
 		maxlives=function() return 5 end,
 		ActiveP1=function() return true end, -- p1 is always active!
 	},
-	['LionKingI_NES']={ -- Lion King (Bootleg), NES
+	['LionKingI_NES']={ -- Lion King (bootleg), NES
 		func=singleplayer_withlives_swap,
 		p1gethp=function() return memory.read_u8(0x063c, "RAM") end,
 		p1getlc=function() return memory.read_s8(0x063d, "RAM") end,
@@ -6490,7 +6339,7 @@ local gamedata = {
 		maxlives=function() return 7 end,
 		ActiveP1=function() return true end, -- p1 is always active!	
 	},
-	['LionKingII_GEN']={ -- Lion King 2 (Bootleg), GEN
+	['LionKingII_GEN']={ -- Lion King 2 (bootleg), GEN
 		func=singleplayer_withlives_swap,
 		p1gethp=function() return memory.read_u8(0x7217, "68K RAM") end,
 		p1getlc=function() return memory.read_s8(0x7219, "68K RAM") end,
@@ -6618,7 +6467,7 @@ local gamedata = {
 		maxlives=function() return 9 end,
 		ActiveP1=function() return true end, -- p1 is always active!
 		grace=60,
-		delay=30,
+		delay=10,
 	},
 	['TMNT2_NES']={ -- Teenage Mutant Ninja Turtles II: The Arcade Game (NES)
 		func=twoplayers_withlives_swap,
@@ -6636,7 +6485,7 @@ local gamedata = {
 		ActiveP2=function() return memory.read_u8(0x0047, "RAM") == 1 end, -- 1 means 2p mode
 		maxhp=function() return 60 end,
 		grace=60,
-		delay=30,
+		delay=10,
 	},
 	['TMNT3_NES']={ -- Teenage Mutant Ninja Turtles III: The Manhattan Project (NES)
 		func=twoplayers_withlives_swap,
@@ -6654,7 +6503,7 @@ local gamedata = {
 		ActiveP2=function() return memory.read_u8(0x0028, "RAM") == 1 end, -- 1 means 2p mode
 		maxhp=function() return 127 end,
 		grace=60,
-		delay=30,
+		delay=10,
 		swap_exceptions=function()
 			-- if both HP goes down and "doing a special/desperation move" is true, don't swap.
 			local p1_special_changed, p1_special_curr = update_prev("p1_special", memory.read_u8(0x04E9, "RAM"))
@@ -6679,7 +6528,7 @@ local gamedata = {
 		ActiveP2=function() return memory.read_u8(0x00A8, "WRAM") == 1 end, -- 1 means 2p mode
 		maxhp=function() return 96 end,
 		grace=60,
-		delay=30,
+		delay=10,
 		swap_exceptions=function()
 		-- special moves cost HP if they hit, either during the special or on their finishing frame
 		-- so, if turtle status is "special," or goes back from special to normal, don't swap
@@ -8111,7 +7960,7 @@ local gamedata = {
 	['AstroBoyOmegaFactor_GBA']={ -- Astro Boy - Omega Factor, GBA (USA)
 		func=health_swap,
 		is_valid_gamestate=function() return true end,
-		get_health=function() return memory.read_u32_le(0x2802, "IWRAM") end,
+		get_health=function() return memory.read_u16_le(0x2802, "IWRAM") end,
 		other_swaps=function() return false end,
 	},
 	['JurassicPark1_SNES']={ -- Jurassic Park, SNES (USA)
@@ -8328,11 +8177,37 @@ local function BT_NES_Zitz_Override()
 	return false
 end
 
+local shared_cheats = {
+	
+}
+
+local function apply_cheats(cheats, settings, on_frame)
+	for name, value in pairs(cheats) do
+		-- unspecified settings default to true
+		if settings[name] ~= false then
+			-- check for shared functions first
+			local shared = shared_cheats[name]
+			if shared then
+				shared(value, on_frame)
+			else
+				-- ensure table format for value
+				local cheat = wrap(value, "func")
+				-- only run on frame if requested
+				if not on_frame or cheat.on_frame then
+					cheat:func()
+				end
+			end
+		end
+	end
+end
+
 function plugin.on_game_load(data, settings)
 	prevdata = {}
 	debug_timer = 0
+	last_hit = 0
 	swap_scheduled = false
 	shouldSwap = function() return false end
+	game_settings = {}
 
 	prev_framecount = emu.framecount()
 	
@@ -8491,6 +8366,16 @@ function plugin.on_game_load(data, settings)
 		local func = gamemeta.func
 		shouldSwap = func(gamemeta)
 		
+		if gamemeta.settings then
+			for _, name in ipairs(gamemeta.settings) do
+				game_settings[name] = settings[name]
+			end
+		end
+		
+		if gamemeta.cheats and settings.UngenuineGameplay then
+			apply_cheats(gamemeta.cheats, settings, false)
+		end
+		
 		-- Infinite* Lives - set lives to max on game load
 		local CanHaveInfiniteLives = gamemeta.CanHaveInfiniteLives
 		
@@ -8616,14 +8501,13 @@ if type(tonumber(which_level)) == "number" then
 	-- TODO: CAN WE MAKE THIS A FUNCTION AND CALL IT WHEN WE NEED IT
 	
 	-- avoiding super short swaps (<10) as a precaution
-	local grace = math.max(gamemeta and gamemeta.grace or 0, settings.grace, 10)
+	local grace = math.max(gamemeta and gamemeta.grace or 0, settings.grace or 0, 10)
 	
 	if settings.DebugSingleGame and swap_scheduled then
-		debug_timer = debug_timer + 1
-		-- rearm the shuffler even though no on_load happened to reset things
-		if debug_timer > grace then
+		-- rearm the shuffler even though no on_game_load happened to reset things
+		if frames_since_restart - 1 >= debug_timer then
 			prevdata = {}
-			debug_timer = 0
+			last_hit = frames_since_restart - 1
 			swap_scheduled = false
 		end
 	end
@@ -8646,30 +8530,33 @@ if type(tonumber(which_level)) == "number" then
 			end
 		end
 		
-		-- Ice Climber (NES)
-		if tag == "IceClimber_NES" and settings.IceClimberBonusSwaps ~= true then
-		-- can add "or this game+setting, that game+setting, etc." in the future
-			if gamemeta.DisableExtraSwaps() == true then 
-				return 
-				-- don't swap
-			end
-		end
-		
 		-- AND NOW WE SWAP
-		local schedule_swap, delay = shouldSwap(prevdata)
-		if schedule_swap and frames_since_restart > grace then
-			delay = delay or 3
-			debug_timer = -delay
-			swap_game_delay(delay)
-			swap_scheduled = true
-			if not settings.SuppressLog or settings.DebugSingleGame then
-				log_console('Chaos Shuffler: swap scheduled for %s (frame: %d, delay: %d)', tag, frames_since_restart, delay)
+		local schedule_swap, delay = shouldSwap(prevdata, game_settings)
+		if schedule_swap then
+			if frames_since_restart > last_hit + grace then
+				delay = delay or 3
+				debug_timer = frames_since_restart + delay
+				swap_game_delay(delay)
+				swap_scheduled = true
+				if not settings.SuppressLog or settings.DebugSingleGame then
+					log_console('Chaos Shuffler: swap scheduled for %s (frame: %d, delay: %d)', tag, frames_since_restart, delay)
+				end
+				if PAUSE_ON_SWAP then client.pause() end
+			else
+				log_debug('Chaos Shuffler: swap blocked (grace) for %s (frame: %d, grace: %d)', tag, frames_since_restart, grace)
+				if settings.GraceOnHit or gamemeta.grace_on_hit then
+					last_hit = frames_since_restart
+				end
 			end
-			if PAUSE_ON_SWAP then client.pause() end
 		end
 	end
 	
 	if gamemeta then
+		
+		if gamemeta.cheats and settings.UngenuineGameplay then
+			apply_cheats(gamemeta.cheats, settings, true)
+		end
+		
 		-- Infinite* Lives ON FRAME - set lives to max on frame when we are either on the last game or in a game that requires it
 		local MustDoInfiniteLivesOnFrame = false
 		if gamemeta.MustDoInfiniteLivesOnFrame then MustDoInfiniteLivesOnFrame = gamemeta.MustDoInfiniteLivesOnFrame() end
@@ -8736,15 +8623,6 @@ if type(tonumber(which_level)) == "number" then
 		end
 
 		-- Battletoads NES
-		
-		-- CLINGER-WINGER SPEED
-		-- This enables the Game Genie code for always moving at max speed in Clinger Winger.
-		-- The bugfix makes this not work! This will only work on an unpatched ROM. The proper, non-patched tag handles this.
-		if tag == "BT_NES" then
-			if settings.ClingerSpeed == true and memory.read_u8(0x000D, "RAM") == 11 and memory.read_u8(0xA706, "System Bus") == 5 then
-				memory.write_u8(0xA706, 0, "System Bus")
-			end
-		end
 		
 		-- Set the memory value that represents the starting stage to the number specified by the file name.
 		if tag == "BT_NES" or tag == "BT_NES_patched" then
@@ -8822,8 +8700,7 @@ if type(tonumber(which_level)) == "number" then
 						if memory.read_u8(0x000E5E, "WRAM") > 1 then
 							memory.write_u8(0x000E5E, 0, "WRAM")
 							-- set Pimple's health to 0
-							swap_scheduled = false
-							-- override the swap being scheduled for a health drop
+							-- 0 is the minhp for this game, so swap should only occur when lives drop
 						end
 					end
 				end
