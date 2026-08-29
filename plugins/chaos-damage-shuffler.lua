@@ -8070,8 +8070,7 @@ local gamedata = {
 			if gmode then
 				-- process shuffling for health loss first
 			
-				-- boss stages occur ever other stage, with the first regular stage being 0. stage 31 is the intro area, ghost health does drain in that area so should not be used
-				if currentstage % 2 == 1 and currentstage ~= 31 then 
+				if currentstage == 1 or currentstage == 3 or currentstage == 5 or currentstage == 8 or currentstage == 25 or currentstage == 29 then -- detect boss stage
 				-- only ghost health is actually used in boss fights
 				-- avoid shuffle on death since that'll be handled by coins
 					if ghosthealth_changed and ghosthealth_curr > 0 and ghosthealth_curr < ghosthealth_prev then return true end
