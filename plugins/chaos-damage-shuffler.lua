@@ -6147,7 +6147,6 @@ local gamedata = {
 		cheats = {
 			AmmoRefill = function() memory.write_u8(0x00B8, 99, "RAM") end,
 			-- This sets the ammo count to the max after every shuffle.
-			},
 		},
 	},
 	['Rollergames_NES']={ -- Rollergames, NES
