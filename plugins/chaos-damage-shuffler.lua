@@ -199,6 +199,7 @@ plugin.description =
 	-Double Dare (NES), 1p
 	-Double Dragon 1 (NES), 1-2p, Mode A or B, shuffles on knockdown and death
 	-Double Dragon 2 (NES), 1-2p, shuffles on knockdown and death
+	-Dragon Ball - Advanced Adventure (GBA), 1p
 	-DuckTales (NES), 1p
 	-DuckTales 2 (NES), 1p
 	-Dynamite Headdy (Genesis/Mega Drive), 1p
@@ -5444,6 +5445,59 @@ local gamedata = {
 		ActiveP2=function() return memory.read_u8(0x0433, "RAM") > 0 end,
 		delay=7,
 		-- let players see the knockdown happen
+	},
+	['DragonballAdvanced_GBA']={ -- Dragon Ball - Advanced Adventure (USA)
+		func=function() return function()		
+			-- separate addresses are used for health in the unarmed fighting game mode and the other, primarily platforming game stages
+			local platformhealth_changed, platformhealth_curr, platformhealth_prev = update_prev('platformhealth', memory.read_u16_le(0x020646, "EWRAM"))
+			local fighthealth_changed, fighthealth_curr, fighthealth_prev = update_prev('fighthealth', memory.read_s16_le(0x029986, "EWRAM"))
+		
+			local maxplatformhp = 1024
+			local maxfighthp = 512
+			local minhp = 0 -- seems to not apply in fighting mode
+			local maxstun = 16
+			local minstun = 0
+		
+			local stunmeter_changed, stunmeter_curr, stunmeter_prev = update_prev('stunmeter', memory.read_u8(0x029988, "EWRAM"))
+		
+			local gmode = memory.read_u8(0x2EF1, "IWRAM")==66
+			
+			local hptypeused = memory.read_u8(0x029937, "EWRAM")
+			
+			local platformhptype=0
+			local fighthptype=3
+			
+			if gmode then -- check for gmode
+				if hptypeused == platformhptype and platformhealth_curr >= minhp and platformhealth_curr <= maxplatformhp then
+					if platformhealth_changed and platformhealth_curr < platformhealth_prev then return true end
+				elseif hptypeused == fighthptype and fighthealth_curr <= maxplatformhp then
+					--[[ The fighting mode uses a different health system. In this mode, both fighters do not take damage from normal hits until their stun meter is broken, at 
+					which point they will take damage from every hit until the combo ends and their health is recovered.
+					
+					Since all damage takes place when the stun is at zero, a natural restriction on shuffling is to allow one shuffle for each meter break. Since it's possible
+					for the meter to be broken without taking damage, we should also not shuffle on meter breaks that did not result in damage. So, we'll check if damage is 
+					caused, then shuflfe when the stun is restored. ]]
+			
+					if prevdata["wasdamagetaken"] == nil then 
+						prevdata["wasdamagetaken"] = false -- set a starting value of false, but do not overwrite a true value
+					elseif stunmeter_curr == minstun and fighthealth_changed and fighthealth_curr < fighthealth_prev then
+						prevdata["wasdamagetaken"] = true end
+
+					-- stun meter instant restores to full when combo is dropped
+					if prevdata["wasdamagetaken"] and stunmeter_changed and stunmeter_curr == maxstun and stunmeter_prev == minstun then return true end
+
+					-- stun meter is not restored after ko, so we need to specifically shuffle on ko
+					if fighthealth_changed and fighthealth_curr <= 0 then return true end
+				end
+			end
+		
+			return false end
+		end,
+		CanHaveInfiniteLives=true,
+		p1livesaddr=function() return 0x029F36 end,
+		LivesWhichRAM=function() return "EWRAM" end,
+		maxlives=function() return 69 end,
+		ActiveP1=function() return true end, -- p1 is always active!
 	},
 	['DonkeyKong94_GB']={ -- Donkey Kong (GB)
 		func=singleplayer_withlives_swap,
