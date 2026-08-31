@@ -313,6 +313,7 @@ plugin.description =
 	-Shinobi Legions (Saturn), 1p
 	-Shinobi-X - Shin Shinobi Den (Saturn), 1p
 	-Simpsons: Bart vs. the World (NES), 1p
+	-Skyblazer (SNES), 1p
 	-Snake Rattle 'n Roll (NES), 1p
 	-Solomon no Kagi (Arcade), 1p
 	-Sonic Jam 6 (bootleg) (Genesis/Mega Drive), 1p
@@ -7096,6 +7097,20 @@ local gamedata = {
 		LivesWhichRAM=function() return "RAM" end,
 		p1livesaddr=function() return 0x06c1 end,
 		maxlives=function() return 5 end,
+		ActiveP1=function() return true end, -- p1 is always active!
+	},
+	['Skyblazer_SNES']={ -- Skyblazer (USA)
+		func=singleplayer_withlives_swap,
+		p1gethp=function() return memory.read_u8(0x00F801, "WRAM") end,	
+		p1getlc=function() return memory.read_u8(0x001F00, "WRAM") end,
+		maxhp=function() return 8 end,
+		other_swaps=function() return false end,
+		gmode=function() return memory.read_u8(0x000072, "WRAM") ~= 1 end, -- not in intro stage defeat cutscene			
+		swap_exceptions=function() return memory.read_u8(0x001F09, "WRAM") == 1 end, -- not in stage transition; hp drops to zero for exactly one frame during screen transitions
+		CanHaveInfiniteLives=true,
+		p1livesaddr=function() return 0x001F00 end,
+		LivesWhichRAM=function() return "WRAM" end,
+		maxlives=function() return 69 end,
 		ActiveP1=function() return true end, -- p1 is always active!
 	},
 	['Sparkster_SNES']={ -- Sparkster, SNES
