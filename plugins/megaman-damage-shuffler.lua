@@ -17,10 +17,11 @@ plugin.description =
 	Supports:
 	- Mega Man 1-6 NES
 	- Mega Man 7 SNES
-	- Mega Man 8 PSX
+	- Mega Man 8 PSX & Saturn
 	- Mega Man X 1-3 SNES
 	- Mega Man X3 PSX (PAL & NTSC-J)
 	- Mega Man X 4-6 PSX
+	- Mega Man X4 Saturn
 	- Mega Man Xtreme 1 & 2 GBC
 	- Rockman & Forte SNES
 	- Mega Man I-V GB
@@ -56,7 +57,7 @@ plugin.description =
 
 local NO_MATCH = 'NONE'
 
-local tags = {}
+local tags
 local prevdata
 local swap_scheduled
 local shouldSwap
@@ -274,6 +275,24 @@ local gamedata = {
 		getlc=function() return memory.read_u8(0x1C3370, "MainRAM") end,
 		maxhp=function() return 40 end,
 	},
+	['mm8sat-us']={ -- Mega Man 8 Saturn
+		gethp=function() return memory.read_u8(0x02FFDF, "Work Ram High") end,
+		getlc=function() return memory.read_u8(0x02DA88, "Work Ram High") end,
+		maxhp=function() return 40 end,
+		swap_exceptions=function()
+			local ingame_check = memory.read_u8(0x2DA5A, "Work Ram High")
+			return (ingame_check ~= 0x3 and ingame_check ~= 0x4)
+		end,
+	},
+	['mm8sat-jp']={ -- Rockman 8: Metal Heroes Saturn
+		gethp=function() return memory.read_u8(0x02FFA7, "Work Ram High") end,
+		getlc=function() return memory.read_u8(0x02DA50, "Work Ram High") end,
+		maxhp=function() return 40 end,
+		swap_exceptions=function()
+			local ingame_check = memory.read_u8(0x2DA22, "Work Ram High")
+			return (ingame_check ~= 0x3 and ingame_check ~= 0x4)
+		end,
+	},
 	['mmwwgen']={ -- Mega Man Wily Wars GEN
 		gethp=function() return memory.read_u8(0xA3FE, "68K RAM") end,
 		getlc=function() return memory.read_u8(0xCB39, "68K RAM") end,
@@ -339,6 +358,38 @@ local gamedata = {
 			-- this address goes alongside the addresses that hold checkpoint and level
 			-- 0 in active gameplay, 1 when loading/in cutscene
 			return hp_changed and hp_curr == 0 and cutscene_curr == 1
+		end,
+	},
+	['mmx4sat-us']={ -- Mega Man X4 Saturn NTSC-U
+		gethp=function() return memory.read_u8(0x54988, "Work Ram High") end,
+		getlc=function() return memory.read_s8(0x5490C, "Work Ram High") end,
+		maxhp=function() return memory.read_u8(0x5490E, "Work Ram High") end,
+		swap_exceptions=function()
+			-- Only care when the engine state variable is 0x5, 0x6 or 0x8 -- 0x6 is gameplay, 0x5 seems to be a loading thing, and 0x8 is the game over menu(?)
+			local state = memory.read_u8(0x548C8, "Work Ram High")
+			local state_irrelevant = (state ~= 0x05 and state ~= 0x06 and state ~= 0x08)
+			-- If in 0x5 and 0x8, only care if lives go down; health is immaterial
+			local in_lives_decreasing_state = (state == 0x05 or state == 0x08)
+			local _, lives, prev_lives = update_prev("rmx4_swap_exception_lives", memory.read_s8(0x5490C, "Work Ram High"))
+			local lives_decreased = (prev_lives ~= nil and lives == prev_lives - 1)
+			-- If either of those are true, do not swap
+			return state_irrelevant or (in_lives_decreasing_state and not lives_decreased)
+		end,
+	},
+	['mmx4sat-jp']={ -- Rockman X4 Saturn NTSC-J
+		gethp=function() return memory.read_u8(0x545FC, "Work Ram High") end,
+		getlc=function() return memory.read_s8(0x54580, "Work Ram High") end,
+		maxhp=function() return memory.read_u8(0x54582, "Work Ram High") end,
+		swap_exceptions=function()
+			-- Only care when the engine state variable is 0x5, 0x6 or 0x8 -- 0x6 is gameplay, 0x5 seems to be a loading thing, and 0x8 is the game over menu(?)
+			local state = memory.read_u8(0x5453C, "Work Ram High")
+			local state_irrelevant = (state ~= 0x05 and state ~= 0x06 and state ~= 0x08)
+			-- If in 0x5 and 0x8, only care if lives go down; health is immaterial
+			local in_lives_decreasing_state = (state == 0x05 or state == 0x08)
+			local _, lives, prev_lives = update_prev("rmx4_swap_exception_lives", memory.read_s8(0x54580, "Work Ram High"))
+			local lives_decreased = (prev_lives ~= nil and lives == prev_lives - 1)
+			-- If either of those are true, do not swap
+			return state_irrelevant or (in_lives_decreasing_state and not lives_decreased)
 		end,
 	},
 	['mmx5psx-us']={ -- Mega Man X5 PSX
@@ -700,6 +751,10 @@ local function get_game_tag()
 	end
 
 	return nil
+end
+
+function plugin.on_setup(data, settings)
+	tags = {}
 end
 
 function plugin.on_game_load(data, settings)

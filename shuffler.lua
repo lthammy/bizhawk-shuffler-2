@@ -235,6 +235,11 @@ end
 -- types of files to ignore in the games directory
 local IGNORED_FILE_EXTS = to_lookup({ '.msu', '.pcm', '.txt', '.ini' })
 
+function split_filename(filename)
+	local name, ext = filename:match("^(.+)(%.[^.]+)$")
+	return name or filename, ext or ""
+end
+
 local function get_ext(name)
 	local ext = name:match("%.[^.]+$")
 	return ext and ext:lower() or ""
@@ -708,14 +713,21 @@ function complete_setup()
 end
 
 function get_tag_from_hash_db(target, database)
-	local resp = nil
-	local fp = assert(io.open(database, 'r'))
-	for x in fp:lines() do
-		local hash, tag = x:match("^([0-9A-Fa-f]+)%s+(%S+)")
-		if hash == target then resp = tag; break end
+	local function match_tag(fp)
+		if not fp then return end
+		local resp = nil
+		for x in fp:lines() do
+			local hash, tag = x:match("^([0-9A-Fa-f]+)%s+(%S+)")
+			if hash == target then resp = tag; break end
+		end
+		fp:close()
+		return resp
 	end
-	fp:close()
-	return resp
+
+	local name, extension = split_filename(database)
+	local user_database = string.format("%s.user%s", name, extension)
+
+	return match_tag(io.open(user_database, "r")) or match_tag(assert(io.open(database, "r")))
 end
 
 if not check_compatibility() then

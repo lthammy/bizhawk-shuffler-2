@@ -1,3 +1,4 @@
+# You can add your own hashes for romhacks etc. by creating a file called "megaman-hashes.user.dat" with the same format as this one
 0FE255649359ECE8CB64B6F24ACAF09F17AF746C mm1nes -- Mega Man (E) [!].nes
 17730D3A6E4A618CF1AA106024C8FB4EE2E18907 mm1nes -- Mega Man (E) [T+Dut1.0_Ok Impala!].nes
 6F6C21598A417CC3AD6D06D32CAB7372F12C1C7C mm1nes -- Mega Man (E) [T+Ita][b1].nes
@@ -182,6 +183,8 @@ CA1610103BFD310A64AA436B9636B721288C0FB6 mm7snes -- Rockman 7 - Shukumei no Taik
 84B58F0B3C525767114227BDC1C9D3FB48856596 mm7snes -- Rockman 7 - Shukumei no Taiketsu! (J) [t3].smc
 A907F7ECE8A8D89126C466079712282D675486EF mm7snes -- Rockman 7 - Shukumei no Taiketsu! (J).smc
 CA2E63F7                                 mm8psx
+6B226B873AC65C8A1D5F1162A91CBCB7         mm8sat-us -- Mega Man 8: Special Anniversary Edition (Saturn, NTSC-U)
+5893CBCB2AB7BF1EE0F8345E283E5661         mm8sat-jp -- Rockman 8: Metal Heroes (Saturn, NTSC-J)
 8A32570FAD3BFC92C0508C88022FB20412DD7BED mmx1 -- Mega Man X (E).smc
 449A00631208FBCC8D58209E66D0D488674B7FB1 mmx1 -- Mega Man X (U) (V1.0) [!].smc
 E8921E243394B03382C03A6A08054F490C8F3DC8 mmx1 -- Mega Man X (U) (V1.0) [f1].smc
@@ -236,6 +239,8 @@ B226F7EC59283B05C1E276E2F433893F45027CAC mmx3snes -- Mega Man X 3 (U).smc
 30776FC9                                 mmx3psx-eu -- Mega Man X3 (Europe)
 470B67F2                                 mmx3psx-jp -- Rockman X3 (Japan)
 314E06A8                                 mmx4psx-us
+179EF67C1BA0DB54CD8C2ECCB88F45DC         mmx4sat-us -- Mega Man X4 (Saturn, NTSC-U)
+A8F409C3942CFADFF04A86AF7C68EE06         mmx4sat-jp -- Rockman X4 (Saturn, NTSC-J, both (1M) and (3M))
 1C64D6EA                                 mmx5psx-us
 614E644C                                 mmx5psx-us -- Mega Man X5 (USA) [Improvement Project Addendum v1.5].xdelta
 24E0C305                                 mmx5psx-us -- Mega Man X5 (USA) [Improvement Project Addendum v1.11].xdelta
@@ -431,3 +436,4 @@ E063416D9A327E618FDC2D0A0C452E6AE5D86DAB mmx3gen -- Rockman X3 (Unl) [f1] [Heart
 0212DC4B34DA1DA42311BF7D47FC1383DAF88033 mmx3gen -- Rockman X3 (Unl) [b2] [Heart Crash Fix]
 256CF8372391BB5CE68459E2F57230AAE1E03F33 sequel-wars-red -- Mega Man The Sequel Wars Episode Red
 55056DD411539AA76A3C1E2371542E5BDDA5D174 sequel-wars-red -- Mega Man The Sequel Wars Episode Red v1.1
+# You can add your own hashes for romhacks etc. by creating a file called "megaman-hashes.user.dat" with the same format as this one
