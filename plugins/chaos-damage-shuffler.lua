@@ -7201,12 +7201,17 @@ local gamedata = {
 	},
 	['Skyblazer_SNES']={ -- Skyblazer (USA)
 		func=singleplayer_withlives_swap,
-		p1gethp=function() return memory.read_u8(0x00F801, "WRAM") end,	
+		p1gethp=function()
+			local basehp = memory.read_u8(0x00F801, "WRAM")
+			local on_intro_stage = memory.read_u8(0x001F02, "WRAM") == 0
+			if on_intro_stage then return basehp + 1 end -- workaround to shuffle on death in intro stage by avoiding hitting minhp
+			return basehp end,
 		p1getlc=function() return memory.read_u8(0x001F00, "WRAM") end,
 		maxhp=function() return 8 end,
 		other_swaps=function() return false end,
 		gmode=function() return memory.read_u8(0x000072, "WRAM") ~= 1 end, -- not in intro stage defeat cutscene			
-		swap_exceptions=function() return memory.read_u8(0x001F09, "WRAM") == 1 end, -- not in stage transition; hp drops to zero for exactly one frame during screen transitions
+		swap_exceptions=function() return memory.read_u8(0x000901, "WRAM") == 0 -- not in stage transition; hp drops to zero for exactly one frame during screen transitions
+			or memory.read_u8(0x003011, "WRAM") == 0 end, -- not in new ability animation; hp drops to 1 during animation
 		CanHaveInfiniteLives=true,
 		p1livesaddr=function() return 0x001F00 end,
 		LivesWhichRAM=function() return "WRAM" end,
