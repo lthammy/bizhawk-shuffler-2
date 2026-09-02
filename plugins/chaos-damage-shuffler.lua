@@ -6633,7 +6633,7 @@ local gamedata = {
 		maxhp=function() return 6 end,
 		CanHaveInfiniteLives=true,
 		LivesWhichRAM=function() return "WRAM" end,
-		p1livesaddr=function() return 0xd089 end,
+		p1livesaddr=function() return 0x1089 end,
 		maxlives=function() return 69 end,
 		ActiveP1=function() return true end, -- p1 is always active!
 	},
