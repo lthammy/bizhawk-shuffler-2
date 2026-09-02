@@ -128,8 +128,8 @@ plugin.description =
 	-Donkey Kong Land (GB), 1p
 
 	KIRBY BLOCK
-	-Kirby's Dream Land (GB), 1p
-	-Kirby's Dream Land 2 (GB), 1p
+	-Kirby's Dream Land (GB), 1p - also supports DX version 1.3
+	-Kirby's Dream Land 2 (GB), 1p - also supports DX version 1.2
 	-Kirby's Adventure (NES), 1p
 	-Kirby: Super Star (SNES), 1p
 	-Kirby: Nightmare in Dream Land (GBA), 1p
