@@ -1,7 +1,7 @@
 local plugin = {}
 
 plugin.name = "Chaos Damage Shuffler"
-plugin.author = "authorblues and kalimag (MMDS), Phiggle, Rogue_Millipede, Shadow Hog, expeditedDelivery, Smight, endrift, ZoSym, Extreme0, L Thammy"
+plugin.author = "authorblues and kalimag (MMDS), Phiggle, Rogue_Millipede, Shadow Hog, expeditedDelivery, Smight, endrift, ZoSym, Extreme0, L Thammy, ExKirby, RamseyFox"
 plugin.minversion = "2.9.1"
 plugin.settings =
 {
@@ -26,10 +26,14 @@ plugin.description =
 	This is a mod of the excellent Mega Man Damage Shuffler plugin by authorblues and kalimag.
 	Get swapped to a different game upon taking damage. Supported games listed below. What is 'damage' depends on the game!
 	If your ROM is not recognized, no damage swap will occur. Most of the time, NTSC-U versions are supported.
-	For Battletoads games, you can choose the level where you start and enable other bonuses.
-	Multiplayer shuffling supported.
-	Randomizers should be supported (e.g., ALTTPR, VARIA, ZOoTR, SMZ3) by adding your game's hash to the .dat file.
-	Additional ideas from the TownEater fork have been implemented.
+	Many quality of life features, especially infinite lives and grace periods between swaps, can be enabled.
+	For most Battletoads games, you can choose the level where you start and enable other bonuses.
+	Multiplayer shuffling supported where noted (see number of players listed with a game).
+	Randomizers and romhacks are usually supported (e.g., ALTTPR, VARIA, ZOoTR, SMZ3) - see below!
+	
+	Acknowledgements/thanks:
+	Ideas from the TownEater fork, in particular grace time, have been implemented.
+	Work from RetroAchievements helped greatly for identifying memory addresses to track damage and more.
 	Thank you to Diabetus, Smight and ConstantineDTW for extensive playthroughs that tracked down bugs!
 
 	YOU WILL NEED BizHawk 2.10 MINIMUM for Sega CD and Sega Saturn games to be recognized and shuffled correctly!
@@ -385,7 +389,14 @@ plugin.description =
 	----PREPARATION----
 	Set Min and Max Seconds VERY HIGH, assuming you don't want time swaps in addition to damage swaps.
 
-	Non-Battletoads games: just put your game in the games folder.
+	Non-Battletoads games: 
+	- Just put your game in the games folder.
+
+	Randomizers, romhacks, and variants: 
+	- You can add your own hashes for these by creating a file called "chaos-shuffler-hashes.user.dat" in the plugins folder.
+	- First, copy the relevant line from the main .dat for your game of choice.
+	- Then, paste that line into chaos-shuffler-hashes.user.dat and replace the hash with your own.
+	- You can also update the comment with information about your game version.
 
 	Battletoads games:
 	To run the game just like any other game, simply put it in the games folder.
