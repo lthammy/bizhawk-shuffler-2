@@ -1,3 +1,4 @@
+# You can add your own hashes for romhacks etc. by creating a file called "chaos-shuffler-hashes.user.dat" with the same format as this one
 -- Battletoads Block
 5C3A497A82BE60704DEDF45248B6AD9B32C855AB BT_NES                       -- Battletoads NES (US)
 B5E4AF9DF63361498ED54A4E71BFE01E8D1A1481 BT_NES                       -- Battletoads NES (US) (No Intro Headered)
@@ -143,13 +144,11 @@ A12D74C73A0481599A5D832361D168F4737BBCF6 Zelda_1                      -- The Leg
 4671517D72D09799403F6C672CD2B395933E926E Zelda_1                      -- The Legend of Zelda NES (US 1.1) (No Intro Headered)
 BE2F5DC8C5BA8EC1A344A71F9FB204750AF24FE7 Zelda_1                      -- The Legend of Zelda NES (US 1.1) (No Intro Headerless)
 84A8149F5A71BA00FCE846F85D166EB866DE3E7C Zelda_1                      -- The Legend of Zelda Redux quality of life patch (Headered)
--- The Legend of Zelda Redux comes with many optional patches, too many to include here by default, add your favorite's hash as needed
 353489A57F24A429572E76BD455BC51D821F7036 Zelda_2                      -- Zelda II The Adventure of Link NES (US)
 08FA60F23E477752FDD850B1FD4171C6CA025127 Zelda_2                      -- Zelda II The Adventure of Link NES (US) (No Intro Headered)
 11333ADB723A5975E0ECCA3AEE8F4747AA8D2D26 Zelda_2                      -- Zelda II The Adventure of Link NES (US) (No Intro Headerless)
 19C6C1CDFC1EED5C280995C433B3A35F45C6C0AB Zelda_2                      -- Zelda 2 Redux quality of life patch
 4F2657269FA17C3E4A670A0A8B227208085E3555 Zelda_2                      -- Zelda 2 Redux quality of life patch (Headered)
--- Zelda 2 Redux comes with many optional patches, too many to include here by default, add your favorite's hash as needed
 602167F897B4F56FE8CEE837933DA3BED5882BBD Zelda_LA                     -- The Legend of Zelda Link's Awakening GB (EN 1.0)
 5259E68522225A7A830E29EA17DFDDC33263CED5 Zelda_LA                     -- The Legend of Zelda Link's Awakening GB (EN 1.1)
 5AB63DEF958728933571C3B4F6AF54DB14F3F8B2 Zelda_LA                     -- The Legend of Zelda Link's Awakening GB (EN 1.2)
@@ -158,8 +157,6 @@ D90AC17E9BF17B6C61624AD9F05447BDB5EFC01A Zelda_LA                     -- The Leg
 1C091225688D966928CC74336DBEF2E07D12A47C Zelda_LA                     -- The Legend of Zelda Link's Awakening DX GBC (EN 1.2)
 8BF965E21B79C74E605B11CC69D25BF64D4AF326 Zelda_LA                     -- Link's Awakening DX Redux quality of life patch (Variable Width Font version)
 4A413F3AD189BCAE954564CC716E947C1CE7E265 Zelda_LA                     -- Link's Awakening DX Redux quality of life patch (Font Improvement version)
--- Link's Awakening Redux comes with many optional patches, too many to include here by default, add your favorite's hash as needed
--- Reminder to enable the Expansion Slot if playing an N64 game or the shuffler won't work!
 AD69C91157F6705E8AB06C79FE08AAD47BB57BA7 Zelda_Ocarina_10             -- The Legend of Zelda Ocarina of Time N64 (US 1.0)
 D3ECB253776CD847A5AA63D859D8C89A2F37B364 Zelda_Ocarina_11             -- The Legend of Zelda Ocarina of Time N64 (US 1.1)
 41B3BDC48D98C48529219919015A1AF22F5057C2 Zelda_Ocarina_12             -- The Legend of Zelda Ocarina of Time N64 (US 1.2)
@@ -167,10 +164,8 @@ B82710BA2BD3B4C6EE8AA1A7E9ACF787DFC72E9B Zelda_Ocarina_GC             -- The Leg
 8B5D13AAC69BFBF989861CFDC50B1D840945FC1D Zelda_Ocarina_MQ             -- The Legend of Zelda Ocarina of Time Master Quest N64 (US GameCube)
 BE88A72E623A8C9D16A561D8880469392229424A Zelda_Ocarina_10             -- Ocarina of Time Redux quality of life patch
 076BA198F988EFAA32D03B254832E3762D8B3AA6 Zelda_Ocarina_10             -- Master Quest Redux quality of life patch
--- Ocarina of Time Redux comes with many optional patches, too many to include here by default, add your favorite's hash as needed
 D6133ACE5AFAA0882CF214CF88DABA39E266C078 Zelda_Majora                 -- The Legend of Zelda Majora's Mask N64 (US)
 E3415F908B1CE47111E67C2535C8087A359B17F6 Zelda_Majora                 -- Majora's Mask Redux quality of life patch
--- Majora's Mask Redux comes with many optional patches, too many to include here by default, add your favorite's hash as needed
 BA1268290FB2B1B70505D2D7B5825FC8A4816A4B Zelda_Seasons                -- The Legend of Zelda Oracle of Seasons GBC (US)
 880374FB978B18AF4AA529E2E32F7FFB4D7DD2F4 Zelda_Ages                   -- The Legend of Zelda Oracle of Ages GBC (US)
 0D0FB2355D02E195677130BA8F89DA7413D81AED Zelda_Ages                   -- Oracle of Ages GBC with good swimming patch
@@ -180,10 +175,6 @@ B4BD50E4131B027C334547B4524E2DBBD4227130 Zelda_Minish                 -- The Leg
 DA957F0D63D14CB441D215462904C4FA8519C613 MetroidSuper                 -- Super Metroid SNES (US/JP 1.0)
 E7E852F0159CE612E3911164878A9B08B3CB9060 Zelda_LTTP                   -- Link to the Past SNES (JP 1.0)
 6D4F10A8B10E10DBE624CB23CF03B88BB8252973 Zelda_LTTP                   -- Link to the Past SNES (US)
---"PASTE YOUR HASH HERE AND REMOVE THE -- AT THE FRONT OF THIS LINE" Zelda_LTTP                   -- YOUR SEED/REVISION FOR LTTP
---"PASTE YOUR HASH HERE AND REMOVE THE -- AT THE FRONT OF THIS LINE" MetroidSuper                 -- YOUR SEED/REVISION FOR SUPER METROID
---"PASTE YOUR HASH HERE AND REMOVE THE -- AT THE FRONT OF THIS LINE" SMZ3                         -- YOUR SMZ3 ROM
--- MAKE MULTIPLE LINES WITH EACH HASH IF YOU ARE SHUFFLING MULTIPLE ROMS OF THESE RANDOMIZERS
 
 -- Sonic Block
 1BC674BE034E43C96B86487AC69D9293         Sonic1_GEN                   -- Sonic The Hedgehog 1 (Genesis/Mega Drive) (International/Rev. 00)
@@ -203,7 +194,6 @@ C82B0B73AF1FC91CC8EE9D997C9B2B29D6105B2D Sonic2_GEN                   -- Bubsy i
 D724EA4DD417FE330C9DCFD955C596B2         Sonic3K_GEN                  -- Sonic the Hedgehog 3 (Genesis/Mega Drive) (NTSC-U)
 4EA493EA4E9F6C9EBFCCBDB15110367E         Sonic3K_GEN                  -- Sonic & Knuckles (Genesis/Mega Drive) (World)
 C5B1C655C19F462ADE0AC4E17A844D10         Sonic3K_GEN                  -- Sonic the Hedgehog 3 & Knuckles (Genesis/Mega Drive) (World)
---"PASTE YOUR HASH HERE AND REMOVE THE -- AT THE FRONT OF THIS LINE"         Sonic3K_GEN                  -- Sonic 3 Complete (ROM is customizable, so checksum could be anything)
 8C7237C503276E5DDE93FE4FA5300CBE996DFBEF Sonic3K_GEN                  -- Sonic 3 Complete (Arcade Pit config)
 BBA401CFF383AD7946978A600E756561         SonicCD_SCD                  -- Sonic the Hedgehog CD (Sega CD) (NTSC-U)
 FA354D70DEE21CE70F425CC918150922         SonicCD_SCD                  -- Sonic the Hedgehog CD (Sega CD) (Beta 920 - essentially the NTSC-U version but just before the soundtrack changed)
@@ -257,6 +247,7 @@ A60BA28ACA558FE3527D46B0DF33BDD038D4C635 CNDRR2_NES                   -- Chip an
 2E140EDBBD6BE832462B9833A1A593D5C901BF5F CNDRR2_NES                   -- Chip and Dale Rescue Rangers 2 NES (Europe)
 0B39CD3B2EBCC8430A4B2585DFD7880BC8AE63DF CNDRR2_NES                   -- Chip and Dale Rescue Rangers 2 NES (Japan)
 C45AEEC492D02E1058293F5B523E3C6323D3D2F3 CNDRR2_NES                   -- Chip and Dale Rescue Rangers 2 NES (beta)
+CD484AB73278D8D58E8068CCDCEAC6EEFBA12F68 ClashAtDemonhead_NES         -- Clash At Demonhead
 C9EA66BB7CB30AD5343F1721B1D4D3219859319B Contra_NES                   -- Contra NES (US)
 376836361F404C815D404E1D5903D5D11F4EFF0E Contra_NES                   -- Contra NES (Japan)
 265886E3F665ADF2507E7B2F08B6B2ED9D0018B2 ContraIII_SNES               -- Contra III: The Alien Wars, SNES (US)
@@ -301,6 +292,7 @@ A582DF3B880A0C8DDC1CDA358C96E306C1E222BB FZERO_SNES                   -- F-Zero 
 8556B6545B78022FE55705A83C3E751C463F56C7 FamilyFeud_SNES              -- Family Feud SNES (US 1.1)
 329F3B32                                 Frogger2_PS1                 -- Frogger 2 - Swampy's Revenge (USA)
 1DA5834CD7CEA711195CD8581614C5022DA768B7 GargoylesQuest1_GB           -- Gargoyle's Quest - Ghosts'n Goblins, GB (USA, Europe)
+612F2AA339BF1AE54B466F1574752CD753097503 GunSmoke_NES                 -- Gun.Smoke (NES)
 5F3CE44716754BF0423AEDDE7CB1693CEA328A0D GunstarSuperHeroes_GBA       -- Gunstar Super Heroes, GBA (USA)
 704721C0B1209CB2BAE8AC1C22F2D3BC3FD53EDB Gyruss_NES                   -- Gyruss (NES)
 09D97003BF9D676F24A75CF3E1DCED28CDA3BE59 IceClimber_NES               -- Ice Climber (North America, Europe)
@@ -326,6 +318,7 @@ E6E13FB9BE8DE11016EFBAAC9AD5655B8E43B180 MagicalDoropie_NES           -- Magical
 5ABC2616687E7E7A8C8749D16A3AA99778469D6E MagicalDoropie_NES           -- Krion Conquest, The
 02573470E2A48E641A180FCB320EA3AAAC635F3D MagicalDoropie_NES           -- Hyper Rockman Jet (romhack)
 5EAEAB859E5F647FAC354DAD285A311387EA126B MakaiMuraForWS_WS            -- Makai Mura for WonderSwan (Japan)
+4643F5DA530463356CE56FAE5C346DDC         Mercs_GEN                    -- Mercs (W) [!] (Genesis)
 5DB2C9E02D3551292A0218F73875F9F08318ECB9 Monopoly_NES                 -- Monopoly NES (US)
 8B152D1948CE4113F06757D2F33C2DAB9D5E7CCD Monopoly_NES                 -- Monopoly NES (US) (No Intro Headered)
 67FD2B7B9B72B8635515BB37926D77970720E3D6 Monopoly_NES                 -- Monopoly NES (US) (No Intro Headerless)
@@ -337,6 +330,7 @@ B1796660E4A4CEFC72181D4BF4F97999BC048A77 NinjaGaiden2_NES             -- Ninja G
 3F2E6DAC76BA14EFC177B5653AB043E53A04D365 NinjaGaiden3_NES             -- Ninja Gaiden III NES (US)
 6958358C4A554BDC6D4F8571F83829989D0BB018 NinjaGaiden3_NES             -- Ninja Gaiden III NES (Restored & Restored+ hack)
 2FF9443C                                 NBA_JAM_PS1                  -- NBA Jam Tournament Edition, PS1 (North America)
+E6AD766B7F42113325DEB96917CCD81DA92EEFA7 PanicRestaurant_NES          -- Panic Restaurant
 CC4580A855AE032E87C3419DDA773FA600397873 PanoramaCotton_GEN           -- Panorama Cotton (English v1.0.1)
 BA9742A4                                 PaRappa1_PS1                 -- PaRappa the Rapper, PS1 (US)
 24AD606614D7D2A510F5FD58FCDC28FE         PEBBLE_BEACH_GOLF_LINKS_SAT  -- Pebble Beach Golf Links, Saturn (North America)
@@ -373,6 +367,7 @@ A2DD48574B9F7A49977C91D12D5C52C17C2C82AA UNSquadron_SNES              -- U.N. Sq
 0F500AB60B7DDB382F70A9EA3FB68E7FC593091C UNSquadron_SNES              -- U.N. Squadron (-grind hack)
 B9E2FCAABC7BB71BEC3B6AD4BA1CD26E2A441A9C UNSquadron_SNES              -- U.N. Squadron (Europe)
 3F556448D290FA5406D6ED367FEE16CC02387AD3 WarioWare_GBA                -- WarioWare, Inc.: Mega Microgame$! (US)
+8580B3DEEDDFA75C12DFE2F6CAB8D062E52FDB34 WerewolfLastWarrior_NES      -- Werewolf: The Last Warrior
 851F299275226D95BEA56D4C53F15FC646AE7B27 MooMesa_ARC                  -- Wild West C.O.W.-Boys of Moo Mesa (ver EAB)
 3042DC1FBF896BEC0944B24A19042324CD3E1BFE WolverineAdamantium_SNES     -- Wolverine - Adamantium Rage, SNES (USA)
 
@@ -399,12 +394,15 @@ B01DC83C                                 Bubsy3D_PS1                  -- Bubsy 3
 E708011B76EE757EB27D1B0626071A055DEACACB Castlevania2_GB              -- Castlevania II - Belmont's Revenge (US)
 08512605E5C02E81A72E24C2C8D4959D8E84E1F4 Celeste_GBA                  -- Celeste [Pico-8] (homebrew port, v1.2)
 19DC1DD4E53722DC64CD1E7F97847B4CABF2F658 Celeste2_GBA                 -- Celeste 2 [Pico-8] (homebrew port)
+5494532A09401287FE5D23EB75270937         ClockworkKnight_SAT          -- Clockwork Knight (US)
+B4E22A9DD66743490716CB3790668FE9         ClockworkKnight2_SAT         -- Clockwork Knight 2 (US)
+BEE7607B526579EECD7E286202ED7CF5         ClockworkKnight2_SAT         -- Clockwork Knight 2 (US) (Part 1 unlock patch)
 2BD30479556DA5C310D8F2A1FE66E8FA         ContraHardCorps_GEN          -- Contra - Hard Corps (US)
 3D94F57AF4258416E65197A9DA854219         ContraHardCorps_GEN          -- Contra - Hard Corps (JP)
 A2B264DF56B2E024CCBB90D28B29B01D0F94ACC1 ContraHardCorps_GEN          -- Contra - Hard Corps (US) (Anniversary Collection)
 F9AA7A0E7EC07E0F1512B582C279E378EEE7C902 ContraHardCorps_GEN          -- Contra - Hard Corps (US) (Mega Drive Mini, Genesis Mini)
 9FD4867AA64804A97F600550B8A11233D8D034D6 ContraHardCorps_GEN          -- Contra - Hard Corps (US) (Health Mod)
-5EE3AF9C                                 ChocoboRacing_PSX            -- Chocobo Racing (US)
+-- 5EE3AF9C                                 ChocoboRacing_PSX            -- Chocobo Racing (US)
 249FC147                                 CrashBandicoot1_PS1_USA      -- Crash Bandicoot (USA)
 149A203B                                 CrashBandicoot2_PS1_USA      -- Crash Bandicoot 2 - Cortex Strikes Back (USA)
 9BF37B2C                                 CrashBandicoot3_PS1_USA      -- Crash Bandicoot - Warped (USA)
@@ -414,6 +412,7 @@ E56EBBCD0A2DB7BF58E2209ADB96F589F0100702 DoReMiFantasy_SNES           -- Do-Re-M
 345E32FDA9EE9DA42B96B50E9F3E89A506C5F03F DoReMiFantasy_SNES           -- Do-Re-Mi Fantasy - Milon no Dokidoki Daibouken (Gaijin translation)
 4E6D8F085CA197479D59912C1D58E4F3B40C28AC DonkeyKongLand_GB            -- Donkey Kong Land (USA, Europe)
 69C267201EB327D086164A15B8A57C4A43E107D8 DonkeyKongLand_GB            -- Donkey Kong Land (new colors mode v1.01)
+1338584D8CFA57402603197E65D2E2FF0184D24F DragonballAdvanced_GBA       -- Dragon Ball - Advanced Adventure (USA)
 4B5720BC6E0590C9372CFBD0C418F8EFD4D0C96D DuckTales_NES                -- Duck Tales (US)
 2E4716E9FACCAF362FBE7D7FD05246332BB2BBBC DuckTales_NES                -- Duck Tales (modded moon music)
 76093EA07A16FDAA8AA58730FD29B4977A264B5E DuckTales2_NES               -- Duck Tales 2 (US)
@@ -456,11 +455,12 @@ DCF24B8BCBDA766FFAFDEBFD39AAD073C18176F3 JurassicPark1_SNES           -- Jurassi
 7B07791F9AEA7170A43F54390B45F2904F78FF0F KabukiQuantumFighter_NES     -- Kabuki Quantum Fighter (US)
 37A476567D133C146FEE6B5E2EB0B07A215DA6B0 KirbyNightmareDreamland_GBA  -- Kirby: Nightmare in Dreamland (US)
 274B102B6D940F46861A92B4E65F89A51815C12C KirbyMirror_GBA              -- Kirby & the Amazing Mirror (US)
-FF66CEFEFBDB85E5AE28BE3C3742C060BF78A5EB KirbyDreamland_GB            -- Kirby's Dream Land (US)
+90979BAA1D0E24B41B5C304C5DDAF77450692D5A KirbyDreamland_GB            -- Kirby's Dream Land (US)
+FF66CEFEFBDB85E5AE28BE3C3742C060BF78A5EB KirbyDreamland_GB            -- Kirby's Dream Land (US) - DX version 1.3
 8A2898FFA17E25F43793F40C88421D840D372D3C KirbyDreamland2_GB           -- Kirby's Dream Land 2 (US, EU)
 CCA1E67FA230BF4F60154F5EA55D06568229DC5D KirbySuperStar_SNES          -- Kirby Super Star (US)
 6CEA2D46B929A3BB347B060A77FCCC83526FB855 KirbyCrystalShards_N64       -- Kirby 64: The Crystal Shards (US)
-E8C38075334CFED4A3AEE5C420E9D0E60B21E27E KonamiKrazyRacers_GBA        -- Konami Krazy Racers (US)
+-- E8C38075334CFED4A3AEE5C420E9D0E60B21E27E KonamiKrazyRacers_GBA        -- Konami Krazy Racers (US)
 6025EF597DB2684AE064FFE22B4FD1D37941F887 KurukuruKururin_GBA          -- KuruKuru Kururin (EU)
 73BE3B930E2436D1C7BDB74AC281DD27C72E1F9E KururinParadise_GBA          -- Kururin Paradise (J)
 E5319132495FD34D03F141962D9D6E3D76FE7B02 LionKing_SNES                -- The Lion King (US)
@@ -577,7 +577,7 @@ B9FE05A8080E124B67BCE6A623234EE3B518A2C1 WarioLand4_GBA               -- Wario L
 80A68B09778F80618552E90458B64515A01F6BB7 Wits_NES                     -- Wit's (Japan)
 BC1BDFBBF96B0D147066DF5448C2D8819875F1B7 Wits_NES                     -- Wit's (Nalwonk's mod for 3 rounds)
  
-33930C8FD186490D99EE2FE387B987AC0831C123 DKC4JungleBook_NES           -- 2-in-1 Donkey Kong Country 4 + Jungle Book (Bootleg)
+-- 33930C8FD186490D99EE2FE387B987AC0831C123 DKC4JungleBook_NES           -- 2-in-1 Donkey Kong Country 4 + Jungle Book (Bootleg)
 401260FD94F88AA66D91E77D3155BD2C30586244 AdvOfGummiBear_GEN           -- Adventures of the Gummi Bears (Bootleg)
 E52A46F93236346F0E1B99E2EDA46DD9731A7AC2 BaoQingTian_NES              -- Bao Qing Tian (Ch)
 A122A0C7D2CF2CB58D12007A79F811044A9F3539 CrashBandicoot4_GBA          -- Crash Bandicoot IV (Bootleg)
@@ -589,11 +589,20 @@ A336913F4325C18E22ECE1D680A41BBB         LionKingII_GEN               -- Lion Ki
 217DE3A3C63B04DD839289D46C924907         SonicJam6_GEN                -- Sonic Jam 6 (Unl) [f1]
 31ECCAD1B33E8F4BA8DFA319A6DF43A221FFBADC SuperAladdin_NES             -- Super Aladdin (Bootleg)
 0AAD6634FA869E8407C0AADD461D124336407F2E SuperContra7_NES             -- Super Contra 7 (Bootleg)
-ECF7A986266818933022FD370BB30943         SuperKingKong99_GEN          -- Super King Kong 99 (Bootleg)
+-- ECF7A986266818933022FD370BB30943         SuperKingKong99_GEN          -- Super King Kong 99 (Bootleg)
 2931B872753C6400AC53268CCB77862D         SuperMarioWorldSK_GEN        -- Super Mario World (Squirrel King) (Bootleg)
 7127E7A39DA36EC509280E27C72494A827BB6A5A TarzanLOTJ_SNES              -- Tarzan: Lord of the Jungle (unreleased title)
 DF7CF1157F4D716C14037D68997FBFE5E454FFF9 Titenic_NES                  -- Titenic (Bootleg)
 
 -- 2026 Additions (non-exhaustive)
+A9B8168DFE135A643C59BBBAB0E3B274F2A9C23A ClassicConcentration_NES     -- Classic Concentration (NES)
 74BDE12741469D1A266EC0C60672464D         Contra4_DS                   -- Contra 4 (Nintendo DS, NTSC-U)
+F8BDEED573BD4324B5AB174BEDE444C4F53A49D0 DoubleDare_NES               -- Double Dare (NES)
 E1F29AD02981EC84156B68D4FB95B2182DC8CD82 KirbysDreamCourse_SNES       -- Kirby's Dream Course (USA)
+8426A16F7D8656C8D2CE4AC3151EC96B433F938D Skyblazer_SNES               -- Skyblazer (USA)
+9B06E78849F68B78E1E9581E04A6BE2892543C0B Superturrican_SNES           -- Super Turrican (SNES, NTSC-U)
+A70896843FB9EA0A30F4A9F9CA443135552F0157 Superturrican2_SNES          -- Super Turrican 2 (SNES, NTSC-U)
+64D3D6334F38C8B10E819FCFB874CA9DCE13B5D3 WheelOfFortune_NES           -- Wheel of Fortune (NES)
+BF9BA30D9B54701BF744EB3284C0B5937FBD6533 WheelOfFortune_Family_NES    -- Wheel of Fortune - Family Edition (NES)
+AAF2397CF3D0080E89DF096D2DC46A4E5F043F89 WheelOfFortune_Junior_NES    -- Wheel of Fortune - Junior Edition (NES)
+# You can add your own hashes for romhacks etc. by creating a file called "chaos-shuffler-hashes.user.dat" with the same format as this one

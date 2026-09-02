@@ -13,8 +13,10 @@ plugin.settings =
 	{ name='DebugSingleGame', type='boolean', label='Debugging: Rearm the shuffler logic even if no new game was loaded' },
 	{ name='SMW2YI_MiniBonusSwaps', type='boolean', label="Yoshi's Island: Shuffle on Mini Battle damage/loss", default=true},
 	{ name='IceClimberBonusSwaps', type='boolean', label="Ice Climber (NES): Shuffle on failing the bonus game"},
-	{ name='AdamantiumRageEnhanceHealing', type='boolean', label="Wolverine Adamantium Rage SNES: Greatly increases regeneration rate" },
-	{ name='GQ1NoRandomEncounters', type='boolean', label="Gargoyle's Quest 1: No random encounters" },
+	{ name='LittleSamsonReviveFellas', type='boolean', label="QoL: Revive allies on swapping in after death"},
+	{ name='AdamantiumRageEnhanceHealing', type='boolean', label="QoL: Wolverine Adamantium Rage SNES: Greatly increases regeneration rate" },
+	{ name='GQ1NoRandomEncounters', type='boolean', label="QoL: Gargoyle's Quest 1: No random encounters" },
+	{ name='AmmoRefill', type='boolean', label="QoL: Refills the player's ammo after every shuffle" },
 	{ name='grace', type='number', label="Minimum grace period before swapping (won't go < 10 frames)", default=10 },
 	{ name='GraceOnHit', type='boolean', label="Apply grace period from last hit instead of last swap" },
 }
@@ -182,6 +184,10 @@ plugin.description =
 	-Celeste 2 [Pico-8] (homebrew port) (GBA), 1p
 	-Chip and Dale Rescue Rangers 1 (NES), 1-2p
 	-Chip and Dale Rescue Rangers 2 (NES), 1-2p
+	-Clash At Demonhead (NES), 1p
+	-Classic Concentration (NES), 1p
+	-Clockwork Knight (SAT), 1p
+	-Clockwork Knight 2 (SAT), 1p
 	-Crash Bandicoot 1-3 (PSX), 1p, US version
 	-Cyber-Lip (Arcade), 1p
 	-Crash Bandicoot 4 (bootleg) (GBA), 1p
@@ -191,8 +197,10 @@ plugin.description =
 	-Dick Tracy (NES), 1p
 	-Do-Re-Mi Fantasy - Milon no Dokidoki Daibouken (SNES), 1p
 	-DoDonPachi (Arcade), 1p
+	-Double Dare (NES), 1p
 	-Double Dragon 1 (NES), 1-2p, Mode A or B, shuffles on knockdown and death
 	-Double Dragon 2 (NES), 1-2p, shuffles on knockdown and death
+	-Dragon Ball - Advanced Adventure (GBA), 1p
 	-DuckTales (NES), 1p
 	-DuckTales 2 (NES), 1p
 	-Dynamite Headdy (Genesis/Mega Drive), 1p
@@ -210,6 +218,7 @@ plugin.description =
 	-Goldeneye: 007 (N64), 1p
 	-Goof Troop (SNES), 1-2p
 	-Gremlins 2: The New Batch (NES), 1p
+	-Gun.Smoke (NES), 1p
 	-Gunstar Heroes (Genesis/Mega Drive), 1p
 	-Gunstar Super Heroes (GBA), 1p
 	-Gyruss (NES), 1p
@@ -251,6 +260,7 @@ plugin.description =
 	-Math Blaster - Episode 1 (SNES), 1p
 	-Mega Q*Bert (Genesis/Mega Drive), 1p
 	-Mendel Palace (NES), 1p
+	-Mercs (Genesis/Mega Drive), 1p
 	-Metal Slug - Super Vehicle-001 (Arcade), 1p
 	-Metal Slug X - Super Vehicle-001 (Arcade), 1p
 	-Metal Slug 3 (Arcade), 1p
@@ -272,6 +282,7 @@ plugin.description =
 	-Ninja Gaiden II - The Dark Sword of Chaos (NES), 1p
 	-Ninja Gaiden III - The Ancient Ship of Doom (NES), 1p
 	-Ninjawarriors (SNES), 1p
+	-Panic Restaurant (NES), 1p
 	-Panorama Cotton (English v1.0.1) (Mega Drive/Genesis), 1p
 	-PaRappa the Rapper (PSX), 1p - shuffles on dropping a rank
 	-Pebble Beach Golf Links (Sega Saturn), 1p - Tournament Mode, shuffles after stroke
@@ -304,6 +315,7 @@ plugin.description =
 	-Shinobi Legions (Saturn), 1p
 	-Shinobi-X - Shin Shinobi Den (Saturn), 1p
 	-Simpsons: Bart vs. the World (NES), 1p
+	-Skyblazer (SNES), 1p
 	-Snake Rattle 'n Roll (NES), 1p
 	-Solomon no Kagi (Arcade), 1p
 	-Sonic Jam 6 (bootleg) (Genesis/Mega Drive), 1p
@@ -326,6 +338,8 @@ plugin.description =
 	-Super Monkey Ball: Touch & Roll (DS), 1p
 	-Super Smash Bros. (N64), 1p - also supports Smash Remix mod
 	-Super Smash TV (SNES), 1p
+	-Super Turrican (SNES), 1p
+	-Super Turrican 2 (SNES), 1p
 	-TaleSpin (NES), 1p
 	-Tarzan: Lord of the Jungle (unreleased) (SNES), 1p
 	-Tecmo Super Bowl (NES), 1p (on opponent scores, giveaways, giving up first down, failing to get a first down)
@@ -354,7 +368,11 @@ plugin.description =
 	-Wario Land 3 (GBC), 1p
 	-Wario Land 4 (GBA), 1p
 	-WarioWare, Inc.: Mega Microgame$! (GBA), 1p - bonus games including 2p are pending
+	-Werewolf: The Last Warrior (NES), 1p
 	-WarioWare: Twisted! (GBA), 1p
+	-Wheel of Fortune (NES)
+	-Wheel of Fortune Family Edition (NES)
+	-Wheel of Fortune Junior Edition (NES)
 	-Wild Guns (SNES), 1p
 	-Wild West C.O.W.-Boys of Moo Mesa (Arcade), 1p
 	-Windjammers / Flying Power Disc (Arcade), 1p
@@ -412,9 +430,16 @@ plugin.description =
 	- Several games do not have 'lives' to make infinite, such as Anticipation, Super Metroid, A Link to the Past, and others. Nothing will change in these games with this option.
 	- ADVANCED: To override individual games (for example, to turn OFF infinite lives for a given game): find #TO_OVERRIDE_INFINITE_LIVES in this plugin and consult the example.
 
+	FOR QUALITY OF LIFE HACKS:
+	Enable the global QoL hacks setting, AND check the relevant QoL hacks that you want.  
+
+	Examples:
 	Auto-Clinger-Winger NES: You can enable max speed and auto-clear the maze (level 11).
 	-- You MUST use an unpatched ROM for this option to activate. The second player will not be able to move, so only Rash can get to the boss in 2p. Infinite Lives will be disabled for the second player in this scenario to prevent a softlock.
 	-- You still have to beat the boss. If you use Infinite Lives, this could make Clinger-Winger fairly trivial.
+	Ammo Refill currently applies to Batman (NES).
+	Revive Allies currently applies to Little Samson (NES).
+	These will be expanded!
 
 	Rash 1-player mode in Battlemaniacs (SNES): see above! Start in 2p, let Pimple die and let the continue timer run out to deathwarp. Make sure your 2p controller is mapped the same as 1p aside from Start, so you can progress. In the future, this may be more automated.
 
@@ -667,6 +692,29 @@ local function FamilyFeud_SNES_swap(gamemeta)
 			(player < 2), 30 -- It's player 1 or 2, not the CPU; give 30 frames of buzzer before and after (roughly) swaps
 		end
 	end
+
+local function WheelOfFortune_NES_swap(gamemeta)
+	return function()
+		local p2total_changed, p2total, prev_p2total = update_prev('p2total', gamemeta.getp2total())
+		local p3total_changed, p3total, prev_p3total = update_prev('p3total', gamemeta.getp3total())
+		local player_changed, player, prev_player = update_prev('player', gamemeta.getplayer())
+		local text_changed, text, prev_text = update_prev('text', gamemeta.gettext())
+		local name_changed, name, prev_name = update_prev('name', gamemeta.getname())
+		
+		return	
+			(text ~= name) and -- In the unlikely scenario that a player name matches the text checks, this prevents those shuffles entirely.
+			(p2total_changed and p2total > prev_p2total) or -- Player 2 solves
+			(p3total_changed and p3total > prev_p3total) or	-- Player 3 solves
+			((text_changed and player == 1) and -- Checking text rather than active player so it also works in 1-player without CPU opponents
+			(text == 3570914557 or -- Wrong Letter
+			text == 3891917012 or -- Miss Turn
+			text == 3925530105 or -- Bankrupt
+			text == 4057266675 or -- Must Buy Vowels
+			text == 4093049812 or -- Wrong Solve
+			text == 4177062384 or -- Bought a non-vowel
+			text == 4193506304)), 50 -- Out of Time
+		end
+	end	
 
 local function singleplayer_withlives_swap(gamemeta)
 	return function(data)
@@ -4421,6 +4469,58 @@ local gamedata = {
 		getwhichplayer=function() return memory.read_u8(0x08DF, "WRAM") end,
 		CanHaveInfiniteLives=false
 	},
+	['ClassicConcentration_NES']={ -- Classic Concentration (NES)
+		func=function() return function()
+		local prize_changed, prize, prev_prize = update_prev('prize', memory.read_u8(0x005B, "RAM"))
+		local solve_changed, solve, prev_solve = update_prev('solve', memory.read_u8(0x00C0, "RAM"))
+		local scene_changed, scene, prev_scene = update_prev('scene', memory.read_u8(0x0012, "RAM"))
+		local active_changed, active, prev_active = update_prev('active', memory.read_u8(0x001F, "RAM"))
+		return
+			--(prize_changed and prize > prev_prize) or -- Activate to swaps on any opponent matches.
+			(scene ~= 127 and active_changed and active == 1) or -- Swaps when P1 misses a match in main rounds. Does not trigger in bonus rounds.
+			(solve_changed and solve > prev_solve), 30  -- Swaps on P2 solving
+		end
+	end,
+	},
+	['WheelOfFortune_NES']={ -- Wheel of Fortune (NES)
+		func=WheelOfFortune_NES_swap,
+		getplayer=function() return memory.read_u8(0x0006, "RAM") end,
+		getp2total=function() return memory.read_u8(0x03AD, "RAM") end,
+		getp3total=function() return memory.read_u8(0x03B0, "RAM") end,
+		getname=function() return memory.read_u32_le(0x0382, "RAM") end,
+		gettext=function() return memory.read_u32_le(0x047C, "RAM") end,
+	},
+	['WheelOfFortune_Family_NES']={ -- Wheel of Fortune Family Edition (NES)
+		func=WheelOfFortune_NES_swap,
+		getplayer=function() return memory.read_u8(0x0006, "RAM") end,
+		getp2total=function() return memory.read_u8(0x043D, "RAM") end,
+		getp3total=function() return memory.read_u8(0x0440, "RAM") end,
+		getname=function() return memory.read_u32_le(0x0412, "RAM") end,
+		gettext=function() return memory.read_u32_le(0x050C, "RAM") end,
+	},
+	['WheelOfFortune_Junior_NES']={ -- Wheel of Fortune Junior Edition (NES)
+		func=WheelOfFortune_NES_swap,
+		getplayer=function() return memory.read_u8(0x0006, "RAM") end,
+		getp2total=function() return memory.read_u8(0x03AD, "RAM") end,
+		getp3total=function() return memory.read_u8(0x03B0, "RAM") end,
+		getname=function() return memory.read_u32_le(0x0382, "RAM") end,
+		gettext=function() return memory.read_u32_le(0x047C, "RAM") end,
+	},
+	['DoubleDare_NES']={ -- Double Dare (NES)
+		func=function() return function()
+			local score_changed, score, prev_score = update_prev('score', memory.read_u8(0x0607, "RAM"))
+			local player_changed, player, prev_player = update_prev('player', memory.read_u8(0x0570, "RAM"))
+			local text_changed, text, prev_text = update_prev('text', memory.read_u8(0x05F0, "RAM"))
+			local round_changed, round, prev_round = update_prev('round', memory.read_u8(0x05F8, "RAM"))
+			local parse_changed, parse, prev_parse = update_prev('parse', memory.read_u32_le(0x05C8, "RAM"))
+			return
+				--(score_changed and score > prev_score) or -- covers all instances of opponent getting money, including losing challenges and base value questions
+				(score_changed and score > prev_score and round == 0 and parse ~= 774910244) or -- Use these instead to not shuffle on base value questions in Round 1
+				(score_changed and score > prev_score and round == 1 and parse ~= 774910500) or -- Round 2
+				(text == 12 and player == 0), 50 -- covers getting a question wrong without a dare
+			end
+		end,
+	},
 	['Frogger2_PS1']={ -- Frogger 2 - Swampy's Revenge (USA)
 		func=singleplayer_withlives_swap,
 		p1gethp=function() return 1 end,
@@ -5347,6 +5447,59 @@ local gamedata = {
 		delay=7,
 		-- let players see the knockdown happen
 	},
+	['DragonballAdvanced_GBA']={ -- Dragon Ball - Advanced Adventure (USA)
+		func=function() return function()		
+			-- separate addresses are used for health in the unarmed fighting game mode and the other, primarily platforming game stages
+			local platformhealth_changed, platformhealth_curr, platformhealth_prev = update_prev('platformhealth', memory.read_u16_le(0x020646, "EWRAM"))
+			local fighthealth_changed, fighthealth_curr, fighthealth_prev = update_prev('fighthealth', memory.read_s16_le(0x029986, "EWRAM"))
+		
+			local maxplatformhp = 1024
+			local maxfighthp = 512
+			local minhp = 0 -- seems to not apply in fighting mode
+			local maxstun = 16
+			local minstun = 0
+		
+			local stunmeter_changed, stunmeter_curr, stunmeter_prev = update_prev('stunmeter', memory.read_u8(0x029988, "EWRAM"))
+		
+			local gmode = memory.read_u8(0x2EF1, "IWRAM")==66
+			
+			local hptypeused = memory.read_u8(0x029937, "EWRAM")
+			
+			local platformhptype=0
+			local fighthptype=3
+			
+			if gmode then -- check for gmode
+				if hptypeused == platformhptype and platformhealth_curr >= minhp and platformhealth_curr <= maxplatformhp then
+					if platformhealth_changed and platformhealth_curr < platformhealth_prev then return true end
+				elseif hptypeused == fighthptype and fighthealth_curr <= maxplatformhp then
+					--[[ The fighting mode uses a different health system. In this mode, both fighters do not take damage from normal hits until their stun meter is broken, at 
+					which point they will take damage from every hit until the combo ends and their health is recovered.
+					
+					Since all damage takes place when the stun is at zero, a natural restriction on shuffling is to allow one shuffle for each meter break. Since it's possible
+					for the meter to be broken without taking damage, we should also not shuffle on meter breaks that did not result in damage. So, we'll check if damage is 
+					caused, then shuflfe when the stun is restored. ]]
+			
+					if prevdata["wasdamagetaken"] == nil then 
+						prevdata["wasdamagetaken"] = false -- set a starting value of false, but do not overwrite a true value
+					elseif stunmeter_curr == minstun and fighthealth_changed and fighthealth_curr < fighthealth_prev then
+						prevdata["wasdamagetaken"] = true end
+
+					-- stun meter instant restores to full when combo is dropped
+					if prevdata["wasdamagetaken"] and stunmeter_changed and stunmeter_curr == maxstun and stunmeter_prev == minstun then return true end
+
+					-- stun meter is not restored after ko, so we need to specifically shuffle on ko
+					if fighthealth_changed and fighthealth_curr <= 0 then return true end
+				end
+			end
+		
+			return false end
+		end,
+		CanHaveInfiniteLives=true,
+		p1livesaddr=function() return 0x029F36 end,
+		LivesWhichRAM=function() return "EWRAM" end,
+		maxlives=function() return 69 end,
+		ActiveP1=function() return true end, -- p1 is always active!
+	},
 	['DonkeyKong94_GB']={ -- Donkey Kong (GB)
 		func=singleplayer_withlives_swap,
 		p1gethp=function() return 1 end, -- no health system
@@ -5789,6 +5942,27 @@ local gamedata = {
 		LivesWhichRAM=function() return "RAM" end,
 		maxlives=function() return 69 end,
 		ActiveP1=function() return true end, -- p1 is always active!
+		cheats = {
+			LittleSamsonReviveFellas = { 
+			-- goal: if you lose an ally, detect that and resurrect them on swapping in
+				func = function()
+					-- check if level is high enough to have all the teammates (not 0 through 3) and if "all teammates selectable" is set
+					if memory.read_u8(0x003F, "RAM") > 3 and memory.read_u8(0x0090, "RAM") % 16 == 0xF
+					then
+					-- if ally has 0 health, they died; set ally's hp to their own max hp to revive them
+						if memory.read_u8(0x0098, "RAM") == 0 -- Kikira (dragon)
+							then memory.write_u8(0x0098, memory.read_u8(0x0094, "RAM"), "RAM")
+						end 
+						if memory.read_u8(0x0099, "RAM") == 0 -- Gamm (golem)
+							then memory.write_u8(0x0099, memory.read_u8(0x0095, "RAM"), "RAM")
+						end 
+						if memory.read_u8(0x009A, "RAM") == 0 -- K.O. (mouse)
+							then memory.write_u8(0x009A, memory.read_u8(0x0096, "RAM"), "RAM")
+						end 
+					end
+				end
+			},
+		},
 	},
 	['WarioWare_GBA']={ -- WarioWare, Inc. / Made in Wario, GBA
 		func=singleplayer_withlives_swap,
@@ -5971,6 +6145,10 @@ local gamedata = {
 		maxlives=function() return 9 end, -- Anything higher corrupts the pause menu graphics,
 		-- but technically works; anything negative, however, immediately triggers a Game Over
 		ActiveP1=function() return true end, -- p1 is always active!
+		cheats = {
+			AmmoRefill = function() memory.write_u8(0x00B8, 99, "RAM") end,
+			-- This sets the ammo count to the max after every shuffle.
+		},
 	},
 	['Rollergames_NES']={ -- Rollergames, NES
 		func=singleplayer_withlives_swap,
@@ -6057,6 +6235,18 @@ local gamedata = {
 			return gameMode >= 1 and gameMode <= 8 -- p1 is always active, but don't set lives when in sim mode
 		end,
 		grace=60, -- Professional/Action Mode (Nintendo Super System only???? Must verify) can combo you too rapidly to recover
+	},
+	['PanicRestaurant_NES']={ -- Panic Restaurant
+		func=singleplayer_withlives_swap,
+		p1gethp=function() return memory.read_u8(0x00D7, "RAM") end,
+		p1getlc=function() return memory.read_u8(0x00D6, "RAM") end,
+		maxhp=function() return 4 end,
+		gmode=function() return memory.read_u8(0x0019, "RAM")==6 end,
+		CanHaveInfiniteLives=true,
+		p1livesaddr=function() return 0x00D6 end,
+		LivesWhichRAM=function() return "RAM" end,
+		maxlives=function() return 9 end,
+		ActiveP1=function() return true end, -- p1 is always active!
 	},
 	['PaRappa1_PS1']={ -- PaRappa the Rapper, PSX
 		func=singleplayer_withlives_swap,
@@ -6444,7 +6634,7 @@ local gamedata = {
 		maxhp=function() return 6 end,
 		CanHaveInfiniteLives=true,
 		LivesWhichRAM=function() return "WRAM" end,
-		p1livesaddr=function() return 0xd089 end,
+		p1livesaddr=function() return 0x1089 end,
 		maxlives=function() return 69 end,
 		ActiveP1=function() return true end, -- p1 is always active!
 	},
@@ -6997,6 +7187,20 @@ local gamedata = {
 		LivesWhichRAM=function() return "RAM" end,
 		p1livesaddr=function() return 0x06c1 end,
 		maxlives=function() return 5 end,
+		ActiveP1=function() return true end, -- p1 is always active!
+	},
+	['Skyblazer_SNES']={ -- Skyblazer (USA)
+		func=singleplayer_withlives_swap,
+		p1gethp=function() return memory.read_u8(0x00F801, "WRAM") end,	
+		p1getlc=function() return memory.read_u8(0x001F00, "WRAM") end,
+		maxhp=function() return 8 end,
+		other_swaps=function() return false end,
+		gmode=function() return memory.read_u8(0x000072, "WRAM") ~= 1 end, -- not in intro stage defeat cutscene			
+		swap_exceptions=function() return memory.read_u8(0x001F09, "WRAM") == 1 end, -- not in stage transition; hp drops to zero for exactly one frame during screen transitions
+		CanHaveInfiniteLives=true,
+		p1livesaddr=function() return 0x001F00 end,
+		LivesWhichRAM=function() return "WRAM" end,
+		maxlives=function() return 69 end,
 		ActiveP1=function() return true end, -- p1 is always active!
 	},
 	['Sparkster_SNES']={ -- Sparkster, SNES
@@ -7857,6 +8061,7 @@ local gamedata = {
 		p1livesaddr=function() return 0x1298 end,
 		LivesWhichRAM=function() return "Main RAM" end,
 		maxlives=function() return 69 end, -- The HUD stops counting at 9; the code itself does not
+	},
 	['SonicAdvance1_GBA']={ -- Sonic Advance (GBA)
 		func=sonic_swap,
 		gmode=function() return memory.read_u8(0x58c0, "IWRAM") ~= 0 end,
@@ -8259,6 +8464,17 @@ local gamedata = {
 		end,
 		grace=80,
 		delay=7,
+	},
+	['WerewolfLastWarrior_NES']={ -- Werewolf: The Last Warrior
+		func=singleplayer_withlives_swap,
+		p1gethp=function() return memory.read_u8(0x00BC, "RAM") end,
+		p1getlc=function() return memory.read_u8(0x0406, "RAM") end,
+		maxhp=function() return 20 end,
+		CanHaveInfiniteLives=true,
+		p1livesaddr=function() return 0x0406 end,
+		LivesWhichRAM=function() return "RAM" end,
+		maxlives=function() return 69 end,
+		ActiveP1=function() return true end, -- p1 is always active!
 	},
 	['WarioLand1_GB']={ -- Wario Land - Super Mario Land 3, GB
 		func=singleplayer_withlives_swap,
@@ -8920,7 +9136,30 @@ local gamedata = {
 			-- Shuffle when a balloon is used to save from a pit even though there's no actual damage
 			local balloon_changed, balloon_curr, balloon_prev = update_prev('balloon', memory.read_u8(0x050C, "RAM"))
 			return balloon_changed and balloon_curr < balloon_prev end,
-    },
+	},
+	['GunSmoke_NES']={ -- Gun.Smoke (NES)
+		func=singleplayer_withlives_swap,
+		p1gethp=function() return memory.read_u8(0x0077, "RAM") end, -- horse health
+		p1getlc=function() return memory.read_u8(0x007A, "RAM") end,
+		maxhp=function() return 3 end,
+		minhp=-1, -- horse dying does not result in player death
+		swap_exceptions=function()
+			-- the player loses their horse between levels, so horse health drops to zero, causing a swap whenever the player clears a level with a horse.
+			-- suppress shuffling on frame when stage changes
+			local stage_changed, stage_curr, stage_prev = update_prev('stage', memory.read_u8(0x0041, "RAM"))
+			if stage_changed then return true end
+			
+			-- horse health is reduced to zero at the start of the new horse animation, potentially leading to shuffling if the player already has a horse.
+			-- attempt to suppress shuffling during the new horse animation by identifying appropriate flag
+			if memory.read_u8(0x0420, "RAM")==12 then return true end
+			
+			return false end,
+		CanHaveInfiniteLives=true,
+		p1livesaddr=function() return 0x007A end,
+		LivesWhichRAM=function() return "RAM" end,
+		maxlives=function() return 10 end,
+		ActiveP1=function() return true end, -- p1 is always active!
+	},
 	['GargoylesQuest1_GB']={ -- Gargoyle's Quest - Ghosts'n Goblins, GB
 		func=singleplayer_withlives_swap,
 		p1gethp=function() return memory.read_u8(0x020A, "WRAM") end,
@@ -9167,6 +9406,13 @@ local gamedata = {
 		maxlives=function() return 3 end,
 		ActiveP1=function() return true end, -- p1 is always active!
 		delay=5, -- good to give a slightly higher delay to make the damage more readable to the player
+	},
+	['ClashAtDemonhead_NES']={ -- Clash At Demonhead
+		func=health_swap,
+		is_valid_gamestate=function() return memory.read_u8(0x002C, "RAM")==24 end,
+		get_health=function() return memory.read_s8(0x009F, "RAM") end,	
+		other_swaps=function() return false end,
+		grace=20,
 	},
 	['MarioKart_DS'] = { -- Mario Kart DS
 		func = function(gamemeta)
@@ -9437,6 +9683,17 @@ local gamedata = {
 		maxlives=function() return 2 end,
 		ActiveP1=function() return true end, -- p1 is always active!
 	},
+	['Mercs_GEN']={ -- Mercs (W) [!] (Genesis)
+		func=health_swap,
+		is_valid_gamestate=function() return memory.read_u8(0x00C5BE, "68K RAM") ~= 255 end, -- confirms that character is not being switched
+		get_health=function() return memory.read_u8(0x00C349, "68K RAM") end,
+		other_swaps=function() return false end,
+		CanHaveInfiniteLives=true,
+		p1livesaddr=function() return 0x00C343 end,
+		LivesWhichRAM=function() return "68K RAM" end,
+		maxlives=function() return 36 end, -- values are stored as multiples of 4; max of 9 continues is 9*4=36
+		ActiveP1=function() return true end, -- p1 is always active!
+	},
 	['MetalSlug1_ARC']={ -- Metal Slug - Super Vehicle-001, arcade
 		func=singleplayer_withlives_swap,
 		-- 0xfdb6 and 0xfdb7 are P2 and P1 states: 0x00=Inactive, 0x01=Playing, 0x02=Continue, 0x03=Game Over
@@ -9535,7 +9792,7 @@ local gamedata = {
 			-- it's possible to get an extra life while you have the maximum lives, but your lives will be pushed back down to 8 at the start of the next level. 
 			return math.min(memory.read_u8(0x0020, "rp2a03 : ram : 0x0-0x7FF"), 8) end,
 		maxhp=function() return 1 end, 
-		gmode=function() return memory.read_u8(0x0219, "rp2a03 : ram : 0x0-0x7FF") == 251 end,
+		gmode=function() return memory.read_u8(0x00F5, "rp2a03 : ram : 0x0-0x7FF") == 6 end,
 		CanHaveInfiniteLives=true,
 		p1livesaddr=function() return 0x0020 end,
 		LivesWhichRAM=function() return "rp2a03 : ram : 0x0-0x7FF" end,
@@ -9640,6 +9897,82 @@ local gamedata = {
 		CanHaveInfiniteLives=true,
 		p1livesaddr=function() return 0x00D7F4 end,
 		LivesWhichRAM=function() return "WRAM" end,
+		maxlives=function() return 69 end,
+		ActiveP1=function() return true end, -- p1 is always active!
+	},
+	['Superturrican_SNES']={ -- Super Turrican, SNES 
+		func=singleplayer_withlives_swap,
+		p1gethp=function() return memory.read_u8(0x04FD, "WRAM") end,
+		p1getlc=function() return memory.read_u8(0x04FB, "WRAM") end,
+		p1getcc=function() return memory.read_u8(0x0578, "WRAM") end,
+		maxhp=function() return 12 end,
+		CanHaveInfiniteLives=true,
+		LivesWhichRAM=function() return "WRAM" end,
+		p1livesaddr=function() return 0x04FB end,
+		maxlives=function() return 99 end,
+		ActiveP1=function() return true end, -- p1 is always active!
+	},
+	['Superturrican2_SNES']={ -- Super Turrican 2, SNES
+		func=singleplayer_withlives_swap,
+		p1gethp=function() return memory.read_u8(0x0AEE, "WRAM") end, -- ((0x0AF0, "WRAM") for Alt Address for Health)
+		p1getlc=function() return memory.read_u8(0x0AF2, "WRAM") end,
+		p1getcc=function() return memory.read_u8(0x1014, "WRAM") end,
+		maxhp=function() return 12 end,
+		CanHaveInfiniteLives=true,
+		LivesWhichRAM=function() return "WRAM" end,
+		p1livesaddr=function() return 0x0AF2 end,
+		maxlives=function() return 99 end,
+		ActiveP1=function() return true end, -- p1 is always active!
+	},
+	['ClockworkKnight_SAT']={ -- Clockwork Knight, Saturn
+		func=singleplayer_withlives_swap,
+		p1gethp=function() return memory.read_u8(0x43CB4, "Work Ram High") end,
+		p1getlc=function() return memory.read_u16_be(0x43CBC, "Work Ram High") end,
+		maxhp=function() return 5 end,
+		CanHaveInfiniteLives=true,
+		p1livesaddr=function() return 0x43CBD end, -- technically this is two bytes
+		LivesWhichRAM=function() return "Work Ram High" end,
+		maxlives=function() return 69 end,
+		ActiveP1=function() return true end, -- p1 is always active!
+	},
+	['ClockworkKnight2_SAT']={ -- Clockwork Knight, Saturn
+		func=singleplayer_withlives_swap,
+		gmode=function()
+			local is_ck1 = memory.read_u32_be(0x5BD28, "Work Ram High") ~= 0
+			local is_ck2 = memory.read_u8(0x413D1, "Work Ram High") >= 2
+			local ck1_max_health = memory.read_u8(0x41881, "Work Ram High") >= 2
+			return (is_ck1 and ck1_max_health) or is_ck2
+		end,
+		p1gethp=function()
+			if memory.read_u32_be(0x5BD28, "Work Ram High") ~= 0 then
+				return memory.read_u8(0x41880, "Work Ram High")
+			elseif memory.read_u8(0x413D1, "Work Ram High") >= 2 then
+				return memory.read_u8(0x413D0, "Work Ram High")
+			else
+				return 0
+			end
+		end,
+		p1getlc=function()
+			if memory.read_u32_be(0x5BD28, "Work Ram High") ~= 0 then
+				return memory.read_u16_be(0x41888, "Work Ram High")
+			elseif memory.read_u8(0x413D1, "Work Ram High") >= 2 then
+				return memory.read_u16_be(0x413D8, "Work Ram High")
+			else
+				return 0
+			end
+		end,
+		maxhp=function() return 5 end,
+		CanHaveInfiniteLives=true,
+		p1livesaddr=function()
+			if memory.read_u32_be(0x5BD28, "Work Ram High") ~= 0 then
+				return 0x41889
+			elseif memory.read_u8(0x413D1, "Work Ram High") >= 2 then
+				return 0x413D9
+			else
+				return 0
+			end
+		end, -- technically this is two bytes
+		LivesWhichRAM=function() return "Work Ram High" end,
 		maxlives=function() return 69 end,
 		ActiveP1=function() return true end, -- p1 is always active!
 	},
@@ -9809,28 +10142,6 @@ function plugin.on_game_load(data, settings)
 			and memory.read_u8(0x00002A, "WRAM") > 0 and memory.read_u8(0x00002A, "WRAM") < 255 -- have we started playing?
 		then
 			memory.write_u8(0x00002A, 69, "WRAM") -- if so, set lives to 69. Nice.
-		end
-	end
-	
-	-- Little Samson (NES)
-	-- goal: if you lose an ally, detect that and resurrect them on swapping in
-	if tag == "LittleSamson_NES" then
-		local LittleSamson_NES_ReviveAllies = true -- turn this to false if you don't want this upgrade to Infinite Lives
-		if settings.InfiniteLives == true -- is Infinite Lives enabled?
-			and LittleSamson_NES_ReviveAllies == true
-		-- check if level is high enough to have all the teammates (not 0 through 3) and if "all teammates selectable" is set
-			and memory.read_u8(0x003F, "RAM") > 3 and memory.read_u8(0x0090, "RAM") % 16 == 0xF
-		then
-		-- if ally has 0 health, they died; set ally's hp to their own max hp to revive them
-			if memory.read_u8(0x0098, "RAM") == 0 -- D
-			then memory.write_u8(0x0098, memory.read_u8(0x0094, "RAM"), "RAM")
-			end 
-			if memory.read_u8(0x0099, "RAM") == 0 -- G
-			then memory.write_u8(0x0099, memory.read_u8(0x0095, "RAM"), "RAM")
-			end 
-			if memory.read_u8(0x009A, "RAM") == 0 -- M
-			then memory.write_u8(0x009A, memory.read_u8(0x0096, "RAM"), "RAM")
-			end 
 		end
 	end
 	
