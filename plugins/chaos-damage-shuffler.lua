@@ -129,6 +129,7 @@ plugin.description =
 
 	KIRBY BLOCK
 	-Kirby's Dream Land (GB), 1p
+	-Kirby's Dream Land 2 (GB), 1p
 	-Kirby's Adventure (NES), 1p
 	-Kirby: Super Star (SNES), 1p
 	-Kirby: Nightmare in Dream Land (GBA), 1p
@@ -6646,6 +6647,42 @@ local gamedata = {
 		p1livesaddr=function() return 0x1089 end,
 		maxlives=function() return 69 end,
 		ActiveP1=function() return true end, -- p1 is always active!
+	},
+	['KirbyDreamland2_GB'] = { -- Kirby's Dream Land 2, GB
+		func = singleplayer_withlives_swap,
+		gmode = function() return memory.read_u8(0x1EFF, "WRAM") == 0 end,
+		p1gethp = function()
+			return memory.read_u8(0x71, "CartRAM") > 0 -- riding an animal
+				and memory.read_u8(0x72, "CartRAM") + 1 -- animal health (no minhp)
+				or memory.read_u8(0x4C, "CartRAM") -- regular health
+		end,
+		p1getlc = function() return from_bcd(memory.read_u8(0x84, "CartRAM")) end,
+		-- don't swap for hp address changes from gaining/losing animal
+		gettogglecheck = function() return memory.read_u8(0x71, "CartRAM") end,
+		maxhp = function() return 12 end,
+		other_swaps = function()
+			if memory.read_u8(0x84, "CartRAM") == 0 then
+				-- also swap for deaths at zero lives, delay for text to show
+				local status = memory.read_u8(0x82, "CartRAM")
+				return update_prev('status', status) and status == 2, 45
+			end
+			return false
+		end,
+		-- Infinite* Lives section
+		CanHaveInfiniteLives = true,
+		p1livesaddr = function() return 0x84 end,
+		LivesWhichRAM = function() return "CartRAM" end,
+		maxlives = function() return 0x69 end, -- BCD format
+		ActiveP1 = function() return true end,
+		-- OTHER NOTES:
+		-- different hp value if you're riding an animal
+		--   0x71 CartRAM has the id of the animal (1-3), 0 if none
+		-- regular health is 2/pip, animal health is 1/pip
+		-- current ability (0-6) is at 0x5B CartRAM, -1 for none
+		--   for testing, id changes will be applied if you 'regrab' the ability
+		-- 0x82 CartRAM holds a status value: normally 0, 2 on death, (4 paused etc)
+		-- 0x1EFF WRAM holds the id for demos (1-3), 0 for regular gameplay
+		-- you only have one life for the boss rush, regardless of life count
 	},
 	['KirbyMirror_GBA']={ -- Kirby and the Amazing Mirror, (GBA)
 		func=singleplayer_withlives_swap,
