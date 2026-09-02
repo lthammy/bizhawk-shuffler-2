@@ -6618,11 +6618,11 @@ local gamedata = {
 	['KirbySuperStar_SNES']={ -- Kirby Super Star, (SNES)
 		func=singleplayer_withlives_swap,
 		p1gethp=function() return memory.read_u8(0x00BB, "WRAM") end,
-		p1getlc=function() return memory.read_u8(0x00B9, "WRAM") end,
+		p1getlc=function() return memory.read_u8(0x137A, "CARTRAM") end,
 		maxhp=function() return 56 end,
 		CanHaveInfiniteLives=true,
-		p1livesaddr=function() return 0x00B9 end,
-		LivesWhichRAM=function() return "WRAM" end,
+		p1livesaddr=function() return 0x137A end,
+		LivesWhichRAM=function() return "CARTRAM" end,
 		maxlives=function() return 69 end,
 		ActiveP1=function() return true end, -- p1 is always active!
 	},
