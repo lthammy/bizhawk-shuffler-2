@@ -5447,7 +5447,7 @@ local gamedata = {
 		-- let players see the knockdown happen
 	},
 	['DragonballAdvanced_GBA']={ -- Dragon Ball - Advanced Adventure (USA)
-		func=function() return function()		
+		func=function() return function(data)
 			-- separate addresses are used for health in the unarmed fighting game mode and the other, primarily platforming game stages
 			local platformhealth_changed, platformhealth_curr, platformhealth_prev = update_prev('platformhealth', memory.read_u16_le(0x020646, "EWRAM"))
 			local fighthealth_changed, fighthealth_curr, fighthealth_prev = update_prev('fighthealth', memory.read_s16_le(0x029986, "EWRAM"))
@@ -5467,30 +5467,29 @@ local gamedata = {
 			local platformhptype=0
 			local fighthptype=3
 			
-			if gmode then -- check for gmode
-				if hptypeused == platformhptype and platformhealth_curr >= minhp and platformhealth_curr <= maxplatformhp then
-					if platformhealth_changed and platformhealth_curr < platformhealth_prev then return true end
-				elseif hptypeused == fighthptype and fighthealth_curr <= maxplatformhp then
-					--[[ The fighting mode uses a different health system. In this mode, both fighters do not take damage from normal hits until their stun meter is broken, at 
-					which point they will take damage from every hit until the combo ends and their health is recovered.
-					
-					Since all damage takes place when the stun is at zero, a natural restriction on shuffling is to allow one shuffle for each meter break. Since it's possible
-					for the meter to be broken without taking damage, we should also not shuffle on meter breaks that did not result in damage. So, we'll check if damage is 
-					caused, then shuflfe when the stun is restored. ]]
+			if not gmode then return false end -- check for gmode, do not process if not in gameplay
 			
-					if prevdata["wasdamagetaken"] == nil then 
-						prevdata["wasdamagetaken"] = false -- set a starting value of false, but do not overwrite a true value
-					elseif stunmeter_curr == minstun and fighthealth_changed and fighthealth_curr < fighthealth_prev then
-						prevdata["wasdamagetaken"] = true end
-
-					-- stun meter instant restores to full when combo is dropped
-					if prevdata["wasdamagetaken"] and stunmeter_changed and stunmeter_curr == maxstun and stunmeter_prev == minstun then return true end
-
-					-- stun meter is not restored after ko, so we need to specifically shuffle on ko
-					if fighthealth_changed and fighthealth_curr <= 0 then return true end
+			if hptypeused == platformhptype and platformhealth_curr >= minhp and platformhealth_curr <= maxplatformhp then
+				if platformhealth_changed and platformhealth_curr < platformhealth_prev then return true end
+			elseif hptypeused == fighthptype and fighthealth_curr <= maxplatformhp then
+			--[[ The fighting mode uses a different health system. In this mode, both fighters do not take damage from normal hits until their stun meter is broken, at 
+			which point they will take damage from every hit until the combo ends and their health is recovered.
+				
+			Since all damage takes place when the stun is at zero, a natural restriction on shuffling is to allow one shuffle for each meter break. Since it's possible
+			for the meter to be broken without taking damage, we should also not shuffle on meter breaks that did not result in damage. So, we'll check if damage is 
+			caused, then shuflfe when the stun is restored. ]]
+				
+				if data.wasdamagetaken == nil then 
+					data.wasdamagetaken = false -- set a starting value of false, but do not overwrite a true value
+				elseif stunmeter_curr == minstun and fighthealth_changed and fighthealth_curr < fighthealth_prev then
+					data.wasdamagetaken = true
 				end
+				-- stun meter instant restores to full when combo is dropped
+				if data.wasdamagetaken and stunmeter_changed and stunmeter_curr == maxstun and stunmeter_prev == minstun then return true end
+				-- stun meter is not restored after ko, so we need to specifically shuffle on ko
+				if fighthealth_changed and fighthealth_curr <= 0 then return true end
 			end
-		
+			
 			return false end
 		end,
 		CanHaveInfiniteLives=true,
