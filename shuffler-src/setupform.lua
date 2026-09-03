@@ -62,6 +62,7 @@ function module.make_plugin_window(plugins)
 		['select'] = {
 			make = function(plugin, win, setting, x, y)
 				setting.input = forms.dropdown(win, setting.options, x, y, 150, 20)
+				if setting.ordered then forms.setdropdownitems(setting.input, setting.options, false) end
 				if setting.default then forms.settext(setting.input, setting.default) end
 				if setting._value then forms.settext(setting.input, setting._value) end
 				local label = forms.label(win, setting.label, x+155, y+3, 150, 20)
