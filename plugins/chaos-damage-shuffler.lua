@@ -4709,7 +4709,7 @@ local gamedata = {
 		func=health_swap,
 		is_valid_gamestate=function() return (memory.read_u8(0x000163, "m68000 : ram : 0x100000-0x10FFFF")==178 -- gmode
 			and memory.read_u8(0x002EA6, "m68000 : ram : 0x100000-0x10FFFF")~=255) -- value at 255 shows for onscreen messages like penalty strokes; prevent shuffling on penalty
-			or memory.read_u8(0x007085, "m68000 : ram : 0x100000-0x10FFFF")==1 -- 
+			or memory.read_u8(0x007085, "m68000 : ram : 0x100000-0x10FFFF")==1 -- specifically allow shuffling on hole complete despite displaying an onscreen message
 			end,
 		get_health=function()
 			-- score incrementation occurs before the stroke, so we ignore the first incrementation to prevent the appearance of a false shuffle at the start
