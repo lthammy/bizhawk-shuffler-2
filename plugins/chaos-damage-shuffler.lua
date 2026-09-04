@@ -2687,7 +2687,6 @@ local gamedata = {
 			
 			return false end
 		end,
-		grace=10,
 	},
 	['CaptainNovolin']={ -- Captain Novolin SNES
 		func=singleplayer_withlives_swap,
